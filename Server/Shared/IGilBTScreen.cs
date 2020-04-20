@@ -7,7 +7,7 @@ namespace WebServiceGilBT.Shared{
 	mono
     }
 
-    public interface IGilBTScreen{
+    public interface IScreen{
 	public int ID { set; get; }
 	public string Name { set; get; }
 	public string FirmwareVer { set; get; }

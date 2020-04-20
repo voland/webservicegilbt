@@ -2,7 +2,7 @@ using System;
 
 namespace WebServiceGilBT.Shared{
 
-    public class GilBTScreen: IGilBTScreen{
+    public class Screen: IScreen{
 	public int ID { set; get; }
 	public string Name { set; get; }
 	public string FirmwareVer { set; get; }
@@ -17,7 +17,7 @@ namespace WebServiceGilBT.Shared{
 	public string Ip { set; get; }
 	public string Ma { set; get; }
 	public string Gw { set; get; }
-	public GilBTScreen(){
+	public Screen(){
 	}
     }
 }

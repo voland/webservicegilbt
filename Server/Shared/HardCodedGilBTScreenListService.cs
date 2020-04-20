@@ -1,18 +1,27 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace PizzaPlace.Shared {
+namespace WebServiceGilBT.Shared {
     public class HardCodedGilBTScreenListService :IScreenListService  {
-        public Task<GilBTScreenList> GetGilBTScreenList() {
+
+
+	public ScreenList GetGilBTScreenList() {
+	    return new ScreenList { 
+		Screens = new List<Screen>{ 
+		    new Screen() { ID= 0, Name="Komorniki",},
+			new Screen() { ID= 1, Name="Kościan",},
+			new Screen() { ID= 2, Name="Lubon",},
+			new Screen() { ID= 3, Name="Grodzisk",},
+			new Screen() { ID= 4, Name="Łódź",},
+			new Screen() { ID= 5, Name="Stęszew",},
+		} 
+	    };
 	}
-	/* } */
-            /* return Task.FromResult<Menu>(new Menu { */
-            /*     Pizzas = new List<Pizza>{ */
-					/* new Pizza( 1, "Peperoni", 8.99M, Spiciness.None), */
-					/* new Pizza( 2, "Margarita", 6.99M, Spiciness.Hot), */
-					/* new Pizza( 3, "Peperoni", 8.99M, Spiciness.Spicy), */
-            /* } */
-            /* }); */
-        /* } */
+
+	public Task<ScreenList> GetGilBTScreenListAsync() {
+	    return Task.FromResult<ScreenList>( 
+		    GetGilBTScreenList()
+		); 
+	}
     }
 }

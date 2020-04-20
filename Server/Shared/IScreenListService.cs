@@ -2,6 +2,7 @@ using System.Threading.Tasks;
 
 namespace WebServiceGilBT.Shared{
     public interface IScreenListService{
-	public Task<GilBTScreenList> GetGilBTScreenList();
+	public Task<ScreenList> GetGilBTScreenListAsync();
+	public ScreenList GetGilBTScreenList();
     }
 }
