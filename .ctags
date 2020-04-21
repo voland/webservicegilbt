@@ -1,0 +1,10 @@
+-R           
+--language-force=c#
+--fields=+l
+--c-kinds=+p
+--extra=+q
+--exclude=.git
+--exclude=obj
+--exclude=bin
+--exclude=out
+-L .ctagsfiles
