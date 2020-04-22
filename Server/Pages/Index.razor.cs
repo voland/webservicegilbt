@@ -18,7 +18,7 @@ namespace WebServiceGilBT.Pages{
 	}
 
 	protected async override Task OnInitializedAsync(){
-	    /* Console.WriteLine("async Initialising ScreenList"); */
+	    Console.WriteLine("async Initialising ScreenList");
 	    /* ScreenList = await ScreenListService.GetGilBTScreenListAsync(); */
 	}
     }
