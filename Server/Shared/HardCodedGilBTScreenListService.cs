@@ -7,12 +7,12 @@ namespace WebServiceGilBT.Shared {
 	public ScreenList GetGilBTScreenList() {
 	    return new ScreenList { 
 		Screens = new List<Screen>{ 
-		    new Screen() { UID= 0, Name="Komorniki",},
-			new Screen() { UID= 1, Name="Kościan",},
-			new Screen() { UID= 2, Name="Lubon",},
-			new Screen() { UID= 3, Name="Grodzisk",},
-			new Screen() { UID= 4, Name="Łódź",},
-			new Screen() { UID= 5, Name="Stęszew",},
+		    new Screen() { uid= 0, name="Komorniki",},
+			new Screen() { uid= 1, name="Kościan",},
+			new Screen() { uid= 2, name="Lubon",},
+			new Screen() { uid= 3, name="Grodzisk",},
+			new Screen() { uid= 4, name="Łódź",},
+			new Screen() { uid= 5, name="Stęszew",},
 		} 
 	    };
 	}

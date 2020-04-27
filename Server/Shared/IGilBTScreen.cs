@@ -8,19 +8,20 @@ namespace WebServiceGilBT.Shared{
     }
 
     public interface IScreen{
-	public int UID { set; get; }
-	public string Name { set; get; }
-	public string FirmwareVer { set; get; }
-	public byte[] FirmwareBin { set; get; }
-	public int Contrast { set; get; }
-	public int ContrastNight { set; get; }
-	public DateTime LastRequest { set; get; }
-	public eScreenType ScreenType { set; get; }
-	public int Width { set; get; }
-	public int Height { set; get; }
-	public bool Dhcp { set; get; }
-	public string Ip { set; get; }
-	public string Ma { set; get; }
-	public string Gw { set; get; }
+	public int uid { set; get; }
+	public string name { set; get; }
+	public string firmware_ver { set; get; }
+	/* public byte[] firmware_bin { set; get; } */
+	public int contrast { set; get; }
+	public int contrast_night { set; get; }
+	public int contrast_max { set; get; }
+	public DateTime last_request { set; get; }
+	public eScreenType screen_type { set; get; }
+	public int width { set; get; }
+	public int height { set; get; }
+	public bool dhcp { set; get; }
+	public string ip { set; get; }
+	public string ma { set; get; }
+	public string gw { set; get; }
     }
 }

@@ -11,12 +11,11 @@ namespace WebServiceGilBT.Controller
     public class ScreensController : ControllerBase{
 
 	public static List<Screen>  ScreenList = new List<Screen>{ 
-	    new Screen() { UID= 0, Name="Komorniki",},
-	    new Screen() { UID= 1, Name="Kościan", FirmwareBin = new byte[] { 1,2,3 ,4 ,5}},
-	    new Screen() { UID= 2, Name="Lubon",},
-	    new Screen() { UID= 3, Name="Grodzisk",},
-	    new Screen() { UID= 4, Name="Łódź",},
-	    new Screen() { UID= 5, Name="Stęszew",},
+	    new Screen() { uid= 0, name="Komorniki",},
+	    new Screen() { uid= 1, name="Kościan", },
+	    new Screen() { uid= 2, name="Lubon",},
+	    new Screen() { uid= 3, name="Grodzisk",},
+	    new Screen() { uid= 4, name="Łódź",},
 	}; 
 
 	[HttpGet]
@@ -27,24 +26,30 @@ namespace WebServiceGilBT.Controller
 	[HttpGet("{uid:int}")]
 	public Screen GetScreen(int uid){
 	    Console.WriteLine($"Getting {uid}");
-	    Screen temp = ScreenList.Single( screen => screen.UID == uid);
+	    Screen temp = null;
+	    foreach ( Screen s in ScreenList ) if ( s.uid == uid) temp = s;
 	    if ( temp != null ){
-		temp.LastRequest = DateTime.Now;
+		temp.last_request = DateTime.Now;
 		return temp;
 	    }else{
-		return null;
+		return new Screen { name = "null", uid = 0 };
 	    }
 	}
 
-	[HttpPost("AddScreen")]
+	[HttpPost]
 	public IActionResult PostScreen([FromBody] Screen argScreen){
+	    Console.WriteLine("Posting Screen {0}.", argScreen.uid);
 	    if ( argScreen != null ){
-		Screen temp = ScreenList.Single(  screen => argScreen.UID == screen.UID );
+		argScreen.last_request = DateTime.Now;
+		Screen temp = null;
+		foreach ( Screen s in ScreenList ) if ( s.uid == argScreen.uid) temp = s;
 		if ( temp!= null){
+		    Console.WriteLine("Already exists Uid {0}.", argScreen.uid);
 		    return Created($"Already exists.", null);
 		}else{
+		    Console.WriteLine("Adding screen Uid {0}.", argScreen.uid);
 		    ScreenList.Add(argScreen);
-		    return Created($"Success, added.", null);
+		    return Created($"Success, added Uid {argScreen.uid}.", null);
 		}
 	    }else{
 		return Created($"Fail.", null);
