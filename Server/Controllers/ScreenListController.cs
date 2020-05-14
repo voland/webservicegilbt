@@ -9,13 +9,25 @@ namespace WebServiceGilBT.Controller {
     [ApiController]
     public class ScreensController : ControllerBase {
 
+        private static void LoadList() {
+            if (_screenList == null) {
+                _screenList = ScreenList.Load();
+            }
+        }
 
-        public static List<Screen> ScreenList = new List<Screen>{
-        new Screen() { uid= 4, name="Stęszew"} };
+        private static List<Screen> _screenList;
+
+        public static List<Screen> screenList {
+            get {
+                LoadList();
+                return _screenList;
+            }
+        }
 
         [HttpGet]
         public IQueryable<Screen> GetScreenList() {
-            return ScreenList.AsQueryable();
+            LoadList();
+            return screenList.AsQueryable();
         }
 
         static int iter = 0;
@@ -92,7 +104,7 @@ namespace WebServiceGilBT.Controller {
         public Screen GetScreen(int uid) {
             Console.WriteLine($"Getting {uid}");
             Screen temp = null;
-            foreach (Screen s in ScreenList) if (s.uid == uid) temp = s;
+            foreach (Screen s in screenList) if (s.uid == uid) temp = s;
             if (temp != null) {
                 temp.last_request = DateTime.Now;
                 return temp;
@@ -105,17 +117,19 @@ namespace WebServiceGilBT.Controller {
         public IActionResult PostScreen([FromBody] Screen argScreen) {
             Console.WriteLine("Posting Screen {0}.", argScreen.uid);
             if (argScreen != null) {
-                argScreen.last_request = DateTime.Now;
                 Screen temp = null;
-                foreach (Screen s in ScreenList) if (s.uid == argScreen.uid) temp = s;
+                foreach (Screen s in screenList) if (s.uid == argScreen.uid) temp = s;
                 if (temp != null) {
                     Console.WriteLine("Already exists Uid {0}.", argScreen.uid);
-		    ScreenList.Remove( temp );
-		    ScreenList.Add( argScreen );
+                    screenList.Remove(temp);
+                    screenList.Add(argScreen);
+                    ScreenList.Save(screenList);
                     return Created($"Already exists.", null);
                 } else {
+		    argScreen.last_request = DateTime.Now;
                     Console.WriteLine("Adding screen Uid {0}.", argScreen.uid);
-                    ScreenList.Add(argScreen);
+                    screenList.Add(argScreen);
+                    ScreenList.Save(screenList);
                     return Created($"Success, added Uid {argScreen.uid}.", null);
                 }
             } else {
