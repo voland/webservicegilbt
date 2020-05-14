@@ -1,0 +1,45 @@
+@* @using webservicegilbt.shared *@
+<h1>
+    <h>Configuration of screen</h>
+    <label>Uid: </label>
+    <label>@Screen.uid</label>
+</h1>
+<p>
+    <label>Firmware Version: </label>
+    <label>@Screen.firmware_ver</label>
+</p>
+<p>
+    <label>Last Request:</label>
+    <label>@Screen.last_request</label>
+</p>
+<p>
+    <label>Resolution: </label>
+    <label>@Screen.resolution()</label>
+</p>
+
+<p>
+    <label>Type: </label>
+    <label>"@Screen.screen_type_str()"</label>
+</p>
+
+<p>
+    <label>Name: </label>
+    <input @bind="Screen.name"/>
+</p>
+
+<p>
+    <label>Contrast: </label>
+    <input type="range" min="1" max="@Screen.contrast_max" @bind="Screen.contrast" class="slider" id="slcontrast"/>
+</p>
+
+<p>
+    <label>Night contrast: </label>
+    <input type="range" min="1" max="@Screen.contrast_max" @bind="Screen.contrast_night" class="slider" id="slcontrastnight"/>
+</p>
+
+<p>
+<button class="btn btn-primary" @onclick="UploadFirmwareClicked">Upload Firmware</button>
+</p>
+<p>
+<button class="btn btn-primary" @onclick="SubmintClicked">Submint</button>
+</p>

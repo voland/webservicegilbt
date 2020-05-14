@@ -4,7 +4,8 @@ namespace WebServiceGilBT.Shared{
 
     public enum eScreenType{
 	rgb,
-	mono
+	mono,
+	unknown
     }
 
     public interface IScreen{
