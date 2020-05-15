@@ -38,8 +38,21 @@
 </p>
 
 <p>
-<button class="btn btn-primary" @onclick="UploadFirmwareClicked">Upload Firmware</button>
+    <button class="btn btn-primary" @onclick="UploadFirmwareClicked">Upload firmware</button>
 </p>
 <p>
-<button class="btn btn-primary" @onclick="SubmintClicked">Submint</button>
+    <button class="btn btn-primary" @onclick="SubmintClicked">Submint</button>
+    <button class="btn btn-primary" @onclick="CancelClicked">Cancel</button>
+    <button class="btn btn-primary" @onclick="()=>ShowConfirmDelete=true">Delete from Db.</button>
 </p>
+
+@if ( ShowConfirmDelete ) {
+<p>
+    <hr style="height:5px;border-width:0;color:red;background-color:red">
+    <p> <label>Confirm deleting this screen from Db.</label> </p>
+    <p>
+	<button class="btn green btn-primary" @onclick="()=>ShowConfirmDelete=false">Cancel</button>
+	<button class="btn red btn-primary" @onclick="DeleteClicked">Delete</button>
+    </p>
+</p>
+}

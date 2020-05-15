@@ -113,6 +113,21 @@ namespace WebServiceGilBT.Controller {
             }
         }
 
+        [HttpDelete("{uid:int}")]
+        public IActionResult DeleteScreen(int uid) {
+            Console.WriteLine("Trying to delete existing screen {0}.", uid);
+            Screen temp = null;
+            foreach (Screen s in screenList) if (s.uid == uid) temp = s;
+            if (temp != null) {
+                Console.WriteLine("Deleting existing screen {0}.", temp.uid);
+                screenList.Remove(temp);
+                ScreenList.Save(screenList);
+                return Created($"Deleted screen", null);
+            } else {
+                return Created($"No such screen to delete.", null);
+            }
+        }
+
         [HttpPost]
         public IActionResult PostScreen([FromBody] Screen argScreen) {
             Console.WriteLine("Posting Screen {0}.", argScreen.uid);
@@ -126,7 +141,7 @@ namespace WebServiceGilBT.Controller {
                     ScreenList.Save(screenList);
                     return Created($"Already exists.", null);
                 } else {
-		    argScreen.last_request = DateTime.Now;
+                    argScreen.last_request = DateTime.Now;
                     Console.WriteLine("Adding screen Uid {0}.", argScreen.uid);
                     screenList.Add(argScreen);
                     ScreenList.Save(screenList);

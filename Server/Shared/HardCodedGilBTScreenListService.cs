@@ -36,6 +36,12 @@ namespace WebServiceGilBT.Shared {
 	    await httpClient.PostJsonAsync("http://localhost:5000/api/screens/postscreen", argS);
 	}
 
+	public async Task DeleteScreenAsync( Screen argS ){
+	    int uid = argS.uid;
+	    Console.WriteLine("Deleting screen uid {0}", uid);
+	    await httpClient.DeleteAsync($"http://localhost:5000/api/screens/deletescreen/{uid}");
+	}
+
 	public async Task<ScreenList> GetGilBTScreenListAsync() {
 	    List<Screen> sl = await httpClient.GetJsonAsync<List<Screen>>("http://localhost:5000/api/screens/getscreenlist");
 	    ScreenList screenList = new ScreenList();
