@@ -12,6 +12,12 @@ namespace WebServiceGilBT.Controller {
         private static void LoadList() {
             if (_screenList == null) {
                 _screenList = ScreenList.Load();
+                foreach (Screen s in _screenList) {
+                    /* s.firmware_ver = "kolejkowe_2020-06-10_7edce17"; */
+                    /* s.firmware_ver = "kolejkowe_2020-06-10_7edce17"; */
+                    /* s.firmware_ver = "kolejkowe_2020-06-09_50cf6f5"; */
+                    s.firmware_ver = "NULL";
+                }
             }
         }
 
@@ -30,7 +36,23 @@ namespace WebServiceGilBT.Controller {
             return screenList.AsQueryable();
         }
 
+        [HttpGet("{uid:int}")]
+        public ApiPres GetApiPres(int uid) {
+            Console.WriteLine($"Getting Json Presentation for {uid}");
+            ApiPres ap = new ApiPres();
+            ApiPage page1 = new ApiPage(5000);
+            page1.elements.Add(ApiPageElement.NewApiText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontNames.fontnormal));
+            page1.elements.Add(ApiPageElement.NewApiText("Forever", 32, 24, 0xffffffff, FontNames.fontfat));
+            ApiPage page2 = new ApiPage(5000);
+            page2.elements.Add(ApiPageElement.NewApiText("Hate never", 32, 16, 0xffffffff, FontNames.fontnormal));
+            page2.elements.Add(ApiPageElement.NewApiText($"Uid {uid}", 32, 24, 0xffffffff, FontNames.fontfat));
+            ap.pages.Add(page1);
+            ap.pages.Add(page2);
+            return ap;
+        }
+
         static int iter = 0;
+
         [HttpGet("{uid:int}")]
         public JsonPage GetJsonPage(int uid) {
             Console.WriteLine($"Getting Json Page for {uid}");
@@ -93,10 +115,10 @@ namespace WebServiceGilBT.Controller {
             return p;
         }
 
-        [HttpGet("{uid:int}")]
-        public Firmware GetFirmware(int uid) {
-            Console.WriteLine($"Getting firmware for {uid}");
-            Firmware temp = new Firmware("rgb_cm4.frm");
+        [HttpGet("{file_name}")]
+        public Firmware GetFile(String file_name) {
+            Console.WriteLine($"Getting file_name {file_name}.");
+            Firmware temp = new Firmware($"Firmwares/{file_name}");
             return temp;
         }
 
@@ -107,6 +129,7 @@ namespace WebServiceGilBT.Controller {
             foreach (Screen s in screenList) if (s.uid == uid) temp = s;
             if (temp != null) {
                 temp.last_request = DateTime.Now;
+                //temp data
                 return temp;
             } else {
                 return new Screen { name = "null", uid = 0 };

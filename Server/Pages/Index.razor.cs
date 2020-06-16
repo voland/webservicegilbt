@@ -28,7 +28,7 @@ namespace WebServiceGilBT.Pages{
 	}
 
 	protected void NavigateToConfigureScreen( Screen argScreen){
-	    string newurl = $"http://localhost:5000/configure/{argScreen.uid}";
+	    string newurl = $"configure/{argScreen.uid}";
 	    Console.WriteLine($"navigating to {newurl}");
 	    NavigationManager.NavigateTo(newurl);
 	}

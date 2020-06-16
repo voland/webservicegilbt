@@ -26,7 +26,8 @@ namespace WebServiceGilBT.Shared {
             if (argScreens != null) {
                 lock (locker) {
                     string serialised_list = JsonSerializer.Serialize(argScreens);
-		    File.Copy(ScreenListFileName, $"{ScreenListFileName}.back");
+                    File.Delete($"{ScreenListFileName}.back");
+                    File.Copy(ScreenListFileName, $"{ScreenListFileName}.back");
                     File.WriteAllText(ScreenListFileName, serialised_list);
                 }
             }

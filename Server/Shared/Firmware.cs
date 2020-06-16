@@ -38,6 +38,7 @@ namespace WebServiceGilBT.Shared {
                     }
                 }
             } catch {
+                filename = "NULL";
             }
         }
     }
