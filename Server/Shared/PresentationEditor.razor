@@ -1,0 +1,37 @@
+@* @using webservicegilbt.shared *@
+<h1>
+    <h>Screen content:</h>
+</h1>
+<p>
+	@foreach ( Page p in Pres.pages){
+	<hr style="height:2px;border-width:0;color:gray;background-color:gray">
+	<table style="widht:80%" class="table">
+		<thead>
+		<tr>
+			<th>Type</th>
+			<th>Position</th>
+			<th>Parameters</th>
+			<th>Text</th>
+			<th>Delete</th>
+		</tr>
+		</thead>
+		<tbody>
+		@foreach( PageElement pe in p.elements){
+			<tr>
+				<td><label>typ</label></td>
+				<td><label>xy</label></td>
+				<td>Parameters</td>
+				<td><label>@pe.text</label></td>
+				<td> <button class="btn btn-primary" @onclick="()=>DeleteElement(pe)">Delete</button> </td>
+			</tr>
+		}
+		</tbody>
+	</table>
+	<button class="btn btn-primary" @onclick="()=>DeletePage(p)">Delete page</button>
+	<button class="btn btn-primary" @onclick="()=>DeletePage(p)">Add element</button>
+	}
+</p>
+	<hr style="height:2px;border-width:0;color:gray;background-color:black">
+<p>
+    <button class="btn btn-primary" @onclick="AddPageClicked">Add page</button>
+</p>

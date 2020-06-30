@@ -4,7 +4,7 @@
 --c-kinds=+p
 --extra=+q
 --exclude=.git
---exclude=obj
---exclude=bin
---exclude=out
+--exclude=Server/obj
+--exclude=Server/out
+--exclude=Server/bin
 -L .ctagsfiles

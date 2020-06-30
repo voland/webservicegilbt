@@ -3,6 +3,10 @@ using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Linq;
 using WebServiceGilBT.Shared;
+using System.Xml.Serialization;
+using System.IO;
+using System.Text.Json;
+using System.Text;
 
 namespace WebServiceGilBT.Controller {
     [Route("Api/[controller]/[action]")]
@@ -36,18 +40,46 @@ namespace WebServiceGilBT.Controller {
             return screenList.AsQueryable();
         }
 
+        string pres_json = "{\"pages\":[{\"time\":5000, \"elements\":[]} ]}";
+
+        private static Stream StringToStream(string src) {
+            byte[] byteArray = Encoding.UTF8.GetBytes(src);
+            return new MemoryStream(byteArray);
+        }
+
         [HttpGet("{uid:int}")]
-        public ApiPres GetApiPres(int uid) {
+        public Pres GetApiPres(int uid) {
             Console.WriteLine($"Getting Json Presentation for {uid}");
-            ApiPres ap = new ApiPres();
-            ApiPage page1 = new ApiPage(5000);
-            page1.elements.Add(ApiPageElement.NewApiText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontNames.fontnormal));
-            page1.elements.Add(ApiPageElement.NewApiText("Forever", 32, 24, 0xffffffff, FontNames.fontfat));
-            ApiPage page2 = new ApiPage(5000);
-            page2.elements.Add(ApiPageElement.NewApiText("Hate never", 32, 16, 0xffffffff, FontNames.fontnormal));
-            page2.elements.Add(ApiPageElement.NewApiText($"Uid {uid}", 32, 24, 0xffffffff, FontNames.fontfat));
+            Pres ap = new Pres();
+            Page page1 = new Page(5000);
+            page1.elements.Add(PageElement.NewText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontNames.fontnormal));
+            page1.elements.Add(PageElement.NewText("Forever", 32, 24, 0xffffffff, FontNames.fontfat));
+            Page page2 = new Page(5000);
+            page2.elements.Add(new Sensor(455, "pm2_5", 32, 16, 0xffffffff, FontNames.fontfat));
+            page2.elements.Add(new Sensor(455, "temperature", 32, 24, 0xffffffff, FontNames.fontfat));
             ap.pages.Add(page1);
             ap.pages.Add(page2);
+
+
+            XmlSerializer ser = new XmlSerializer(typeof(Pres),
+                    new Type[] { typeof(List<Page>), typeof(List<PageElement>), typeof(PageElement), typeof(Sensor) });
+
+            string content;
+            using (FileStream fs = new FileStream("pres.xml", FileMode.Open)) {
+                using (StreamReader r = new StreamReader(fs)) {
+                    content = r.ReadToEnd();
+                }
+            }
+            string xmlpres = "<Pres xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"> <pages>\n";
+            xmlpres += content;
+            xmlpres += " </pages> </Pres>";
+            using (Stream ms = StringToStream(xmlpres)) {
+                Pres p = (Pres)ser.Deserialize(ms);
+                Console.WriteLine("pagescnt {0} first page time is {1} {2} color {3}",
+                        p.pages.Count, p.pages[0].time, p.pages[0].elements[0].text,
+                        p.pages[0].elements[0].color
+                        );
+            }
             return ap;
         }
 
@@ -128,7 +160,12 @@ namespace WebServiceGilBT.Controller {
             Screen temp = null;
             foreach (Screen s in screenList) if (s.uid == uid) temp = s;
             if (temp != null) {
+#if DEBUG
                 temp.last_request = DateTime.Now;
+#else
+				//dodajemy 2 h dla serwera gdzies za granica
+                temp.last_request = DateTime.Now.AddHours(2);
+#endif
                 //temp data
                 return temp;
             } else {
@@ -164,7 +201,11 @@ namespace WebServiceGilBT.Controller {
                     ScreenList.Save(screenList);
                     return Created($"Already exists.", null);
                 } else {
-                    argScreen.last_request = DateTime.Now;
+#if DEBUG
+                    temp.last_request = DateTime.Now;
+#else
+					temp.last_request = DateTime.Now.AddHours(2);
+#endif
                     Console.WriteLine("Adding screen Uid {0}.", argScreen.uid);
                     screenList.Add(argScreen);
                     ScreenList.Save(screenList);
