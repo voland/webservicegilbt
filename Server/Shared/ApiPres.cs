@@ -5,13 +5,24 @@ using System.Text.Json;
 
 namespace WebServiceGilBT.Shared {
 
-    enum ElementType {
+    public enum ElementType {
         TEXT,
         RECTANGLE,
         IMAGE,
-        SENSOR,
         TIME,
-        DATE
+        DATE,
+        SENSOR_TEMPERATURE,
+        SENSOR_HUMIDITY,
+        SENSOR_PRESSURE,
+        SENSOR_PM2_5,
+        SENSOR_PM10,
+        SENSOR_PM1,
+        UID
+    }
+
+    public enum FontType {
+        fontnormal8px,
+        fontfat8px
     }
 
     static public class FontNames {
@@ -20,140 +31,227 @@ namespace WebServiceGilBT.Shared {
     }
 
     public class PageElement {
+        //sensornames
+        const string temperature = "temperature";
+        const string humidity = "humidity";
+        const string air_pressure = "air_pressure";
+        const string pm2_5 = "pm2_5";
+        const string pm10 = "pm10";
+        const string pm1 = "pm1";
+
         public int ver { get { return 2; } }
-        public virtual int type { set; get; }
+        public ElementType type { set; get; }
         public int x { set; get; }
         public int y { set; get; }
         public uint color { set; get; }
-        public string fontname { set; get; }
-        public virtual string text { set; get; }
-
-        public static PageElement NewText(string text, int x, int y, uint color, string fontname) {
-            PageElement temp = new PageElement();
-            temp.type = (int)ElementType.TEXT;
-            temp.x = x;
-            temp.y = y;
-            temp.color = color;
-            temp.text = text;
-            temp.fontname = fontname;
-            return temp;
-        }
-
-        public PageElement() { }
-
-        public PageElement(string text, int x, int y, uint color, string fontname) {
-            this.type = (int)ElementType.TEXT;
-            this.x = x;
-            this.y = y;
-            this.color = color;
-            this.text = text;
-            this.fontname = fontname;
-        }
-    }
-
-    public class Text : PageElement {
-        public virtual int type { get { return (int)ElementType.TEXT; } }
-        public Text() { }
-        public Text(string text, int x, int y, uint color, string fontname) : base(text, x, y, color, fontname) {
-        }
-    }
-
-    public class Time : PageElement {
-        public virtual int type { get { return (int)ElementType.TIME; } }
-
-        public override string text {
+        public FontType font { set; get; }
+        private string _text = "Text...";
+        /*******************************/
+        /*  Date Time                  */
+        /*******************************/
+        private DateTime Now {
             get {
-                DateTime now = DateTime.Now;
 #if DEBUG
+                return DateTime.Now;
 #else
-				//dodajemy 2 h dla serwera gdzies za granica
-				now  = now.AddHours(2);
+				return DateTime.Now.AddHours(2);
 #endif
-
-                int h = now.Hour;
-                int m = now.Minute;
-                return string.Format("{0}{1}:{2}{3}", h < 10 ? "0" : "", h, m < 10 ? "0" : "", m);
             }
         }
-
-        public Time() { }
-        public Time(int x, int y, uint color, string fontname) : base("", x, y, color, fontname) {
-        }
-    }
-
-    public class Date : PageElement {
-        public virtual int type { get { return (int)ElementType.DATE; } }
-        public override string text {
+        /*******************************/
+        /*  Sensor                     */
+        /*******************************/
+        private int _idx;
+        public int idx {
+            set {
+                if (value != _idx) {
+                    _idx = value;
+                    try {
+                        using (WebClient wc = new WebClient()) {
+                            var json = wc.DownloadString(GetUrl());
+                            d = JsonSerializer.Deserialize<Device>(json);
+                            if (d != null) {
+                                _city = d.city;
+                                Console.WriteLine(city);
+                            }
+                        }
+                    } catch {
+                        _city = unknowncity;
+                    }
+                }
+            }
             get {
-                DateTime now = DateTime.Now;
-#if DEBUG
-#else
-				//dodajemy 2 h dla serwera gdzies za granica
-				now = now.AddHours(2.0);
-#endif
-                int d = now.Day;
-                int m = now.Month;
-                int y = now.Year;
-                return string.Format("{0}-{1}-{2}", d, m, y);
+                return _idx;
             }
         }
-
-        public Date() { }
-        public Date(int x, int y, uint color, string fontname) : base("", x, y, color, fontname) {
-        }
-    }
-
-    public class Sensor : PageElement {
-        public int idx { set; get; }
-
-        public string name { set; get; }
-
-        public string city { set; get; }
-
         private string url = "https://api.syngeos.pl/api/public/data/device/{0}";
+        private const string unknowncity = "unknown city";
+        private string _city = unknowncity;
+        private Device d = null;
 
         private string GetUrl() {
             return string.Format(url, idx);
         }
 
-        public virtual int type { get { return (int)ElementType.SENSOR; } }
+        public string city {
+            get { return _city; }
 
-        public override string text {
-            get {
-                if (idx == -1) {
-                    //find idx based on city
-                    if (city == "") {
-                        return "SensFail";
-                    } else {
-                    }
+            set { _city = value; }
+        }
+
+        private string GenerateSensorText(string sensor_name) {
+            Console.Write("Generate sensor {0}... ", sensor_name);
+            //setting default sensor in case its 0;
+            if (idx <= 0) idx = 444;
+            if (idx == -1) {
+                //find idx based on city
+                if (city == "") {
+                    return "SensFail";
+                } else {
                 }
+            }
 
+            try {
                 using (WebClient wc = new WebClient()) {
                     var json = wc.DownloadString(GetUrl());
-                    Device device = JsonSerializer.Deserialize<Device>(json);
-                    foreach (DeviceSensor ds in device.sensors) {
-                        if (ds.name == name) {
-                            string output = string.Format("{0} {1}", ds.data[0].value, ds.unit);
-                            /* Console.WriteLine(output); */
-                            return output;
+                    d = JsonSerializer.Deserialize<Device>(json);
+                    if (d != null) {
+                        /* city = d.city; */
+                        Console.WriteLine(city);
+                        foreach (DeviceSensor ds in d.sensors) {
+                            if (ds.name == sensor_name) {
+                                string output = string.Format("{0} {1}", ds.data[0].value, ds.unit);
+                                Console.WriteLine(output);
+                                return output;
+                            }
                         }
                     }
-                    /* Console.WriteLine($"cant find {name}"); */
-                    return $"cant find {name}";
+                    Console.WriteLine($"cant find {sensor_name} sensor.");
+                    return $"cant find {sensor_name} sensor.";
                 }
+            } catch {
+                return unknowncity;
             }
         }
 
-        public Sensor(int idx, string sensor_name, int x, int y, uint color, string fontname) : base("", x, y, color, fontname) {
-            this.idx = idx;
-            this.name = sensor_name;
+        public string text {
+            set {
+                _text = value;
+            }
+            get {
+                switch (type) {
+                    case ElementType.TEXT:
+                        return _text;
+                    case ElementType.TIME: {
+                            int h = Now.Hour;
+                            int m = Now.Minute;
+                            return string.Format("{0}{1}:{2}{3}", h < 10 ? "0" : "", h, m < 10 ? "0" : "", m);
+                        }
+                    case ElementType.DATE: {
+                            int d = Now.Day;
+                            int m = Now.Month;
+                            int y = Now.Year;
+                            return string.Format("{0}-{1}-{2}", d, m, y);
+                        }
+                    case ElementType.RECTANGLE: {
+                            return "Rectangle not supported";
+                        }
+                    case ElementType.IMAGE: {
+                            return "Image not supported";
+                        }
+                    case ElementType.SENSOR_PM2_5: {
+                            return GenerateSensorText(pm2_5);
+                        }
+                    case ElementType.SENSOR_PM10: {
+                            return GenerateSensorText(pm10);
+                        }
+                    case ElementType.SENSOR_TEMPERATURE: {
+                            return GenerateSensorText(temperature);
+                        }
+                    case ElementType.SENSOR_PRESSURE: {
+                            return GenerateSensorText(air_pressure);
+                        }
+                    case ElementType.SENSOR_HUMIDITY: {
+                            return GenerateSensorText(humidity);
+                        }
+                    case ElementType.SENSOR_PM1: {
+                            return GenerateSensorText(pm1);
+                        }
+                    case ElementType.UID: {
+                            return "Screen id number.";
+                        }
+                }
+                return "element not supported";
+            }
         }
 
-        public Sensor(string city, string sensor_name, int x, int y, uint color, string fontname) : base("", x, y, color, fontname) {
-            this.city = city;
-            this.name = sensor_name;
+        public static PageElement NewSensorPm2_5(int idx, int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.SENSOR_PM2_5;
+            temp.idx = idx;
+            return temp;
         }
-        public Sensor() { }
+
+        public static PageElement NewSensorPm10(int idx, int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.SENSOR_PM10;
+            temp.idx = idx;
+            return temp;
+        }
+
+        public static PageElement NewSensorTemperature(int idx, int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.SENSOR_TEMPERATURE;
+            temp.idx = idx;
+            return temp;
+        }
+
+        public static PageElement NewSensorPressure(int idx, int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.SENSOR_PRESSURE;
+            temp.idx = idx;
+            return temp;
+        }
+
+        public static PageElement NewTime(int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.TIME;
+            return temp;
+        }
+
+        public static PageElement NewDate(int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.DATE;
+            return temp;
+        }
+
+        public static PageElement NewUid(int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement("", x, y, color, font);
+            temp.type = ElementType.UID;
+            return temp;
+        }
+
+        public static PageElement NewText(string text, int x, int y, uint color, FontType font) {
+            PageElement temp = new PageElement();
+            temp.type = ElementType.TEXT;
+            temp.x = x;
+            temp.y = y;
+            temp.color = color;
+            temp.text = text;
+            temp.font = font;
+            return temp;
+        }
+
+        public PageElement() { }
+
+        public PageElement(string text, int x, int y, uint color, FontType font) {
+            this.type = ElementType.TEXT;
+            this.x = x;
+            this.y = y;
+            this.color = color;
+            this.text = text;
+            this.font = font;
+        }
     }
 
     public class Page {
@@ -167,9 +265,9 @@ namespace WebServiceGilBT.Shared {
             elements = new List<PageElement>();
         }
         public Page() { }
-		public override string ToString(){
-			return String.Format("page: time {0}, elements_count {1}", time, elements.Count);
-		}
+        public override string ToString() {
+            return String.Format("page: time {0}, elements_count {1}", time, elements.Count);
+        }
     }
 
     public class Pres {

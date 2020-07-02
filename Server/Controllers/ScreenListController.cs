@@ -52,34 +52,13 @@ namespace WebServiceGilBT.Controller {
             Console.WriteLine($"Getting Json Presentation for {uid}");
             Pres ap = new Pres();
             Page page1 = new Page(5000);
-            page1.elements.Add(PageElement.NewText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontNames.fontnormal));
-            page1.elements.Add(PageElement.NewText("Forever", 32, 24, 0xffffffff, FontNames.fontfat));
+            page1.elements.Add(PageElement.NewText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontType.fontnormal8px));
+            page1.elements.Add(PageElement.NewText("Forever", 32, 24, 0xffffffff, FontType.fontfat8px));
             Page page2 = new Page(5000);
-            page2.elements.Add(new Sensor(455, "pm2_5", 32, 16, 0xffffffff, FontNames.fontfat));
-            page2.elements.Add(new Sensor(455, "temperature", 32, 24, 0xffffffff, FontNames.fontfat));
+            page2.elements.Add(PageElement.NewSensorPm2_5(455, 32, 16, 0xffffffff, FontType.fontfat8px));
+            page2.elements.Add(PageElement.NewSensorPm10(455, 32, 24, 0xffffffff, FontType.fontfat8px));
             ap.pages.Add(page1);
             ap.pages.Add(page2);
-
-
-            XmlSerializer ser = new XmlSerializer(typeof(Pres),
-                    new Type[] { typeof(List<Page>), typeof(List<PageElement>), typeof(PageElement), typeof(Sensor) });
-
-            string content;
-            using (FileStream fs = new FileStream("pres.xml", FileMode.Open)) {
-                using (StreamReader r = new StreamReader(fs)) {
-                    content = r.ReadToEnd();
-                }
-            }
-            string xmlpres = "<Pres xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\"> <pages>\n";
-            xmlpres += content;
-            xmlpres += " </pages> </Pres>";
-            using (Stream ms = StringToStream(xmlpres)) {
-                Pres p = (Pres)ser.Deserialize(ms);
-                Console.WriteLine("pagescnt {0} first page time is {1} {2} color {3}",
-                        p.pages.Count, p.pages[0].time, p.pages[0].elements[0].text,
-                        p.pages[0].elements[0].color
-                        );
-            }
             return ap;
         }
 

@@ -27,24 +27,24 @@ namespace WebServiceGilBT.Shared {
                     _pres = new Pres();
 
                     Page p1 = new Page(5);
-                    p1.elements.Add(new Text("Screen uid:", 0, 0, 1, "FONTNORMAL"));
-                    p1.elements.Add(new Text(uid.ToString(), 0, 8, 1, "FONTNORMAL"));
+                    p1.elements.Add(PageElement.NewText("Screen uid:", 0, 0, 1, FontType.fontnormal8px));
+                    p1.elements.Add(PageElement.NewText(uid.ToString(), 0, 8, 1, FontType.fontnormal8px));
                     _pres.pages.Add(p1);
 
                     Page p2 = new Page(5);
-                    p2.elements.Add(new Text("Time Now:", 0, 0, 1, "FONTFAT"));
-                    p2.elements.Add(new Time(0, 8, 1, "FONTNORMAL"));
-                    p2.elements.Add(new Date(32, 8, 1, "FONTNORMAL"));
+                    p2.elements.Add(PageElement.NewText("Time Now:", 0, 0, 1, FontType.fontnormal8px));
+                    p2.elements.Add(PageElement.NewTime(0, 8, 1, FontType.fontnormal8px));
+                    p2.elements.Add(PageElement.NewDate(32, 8, 1, FontType.fontnormal8px));
                     _pres.pages.Add(p2);
 
                     Page p3 = new Page(5);
-                    p3.elements.Add(new Text("Miłkowo pm2,5:", 0, 0, 1, "FONTFAT"));
-                    p3.elements.Add(new Sensor(444, "pm2_5", 0, 8, 1, "FONTNORMAL"));
+                    p3.elements.Add(PageElement.NewText("Miłkowo pm2,5:", 0, 0, 1, FontType.fontnormal8px));
+                    p3.elements.Add(PageElement.NewSensorPm2_5(444, 0, 8, 1, FontType.fontnormal8px));
                     _pres.pages.Add(p3);
 
                     Page p4 = new Page(5);
-                    p4.elements.Add(new Text("Miłkowo pm10:", 0, 0, 1, "FONTFAT"));
-                    p4.elements.Add(new Sensor(444, "pm10", 0, 8, 1, "FONTNORMAL"));
+                    p4.elements.Add(PageElement.NewText("Miłkowo pm10:", 0, 0, 1, FontType.fontnormal8px));
+                    p4.elements.Add(PageElement.NewSensorPm10(444, 0, 8, 1, FontType.fontnormal8px));
                     _pres.pages.Add(p4);
                 }
                 return _pres;

@@ -7,23 +7,32 @@ namespace WebServiceGilBT.Shared {
         [Parameter]
         public Pres Pres { set; get; }
 
-        public void AddPageClicked() {
+        //element edit
+        public void AddElement(Page p) {
+            PageElement pe = new PageElement("Tekst", 0, 0, 1, FontType.fontnormal8px);
+            p.elements.Add(pe);
+        }
 
-            Page p = new Page(2);
-            Pres.pages.Add(p);
-            Console.WriteLine("AddPageClicked");
+        public void OnIdxChanched(ChangeEventArgs e) {
+            Console.WriteLine("Idxchanged");
+            StateHasChanged();
         }
 
         public void DeletePage(Page p) {
-			Console.WriteLine("removing page");
+            Pres.pages.Remove(p);
         }
 
-        public void AddElement(Page p) {
-			Console.WriteLine("Add element");
+        //page edit
+        public void AddPageClicked() {
+            Page p = new Page(2);
+            Pres.pages.Add(p);
         }
 
-        public void DeleteElement(PageElement pe) {
-			Console.WriteLine("removing element {0}", pe.ToString());
+        public void DeleteElement(Page p, PageElement pe) {
+            p.elements.Remove(pe);
+        }
+        private void HandleValidSubmit() {
+            Console.WriteLine("OnValidSubmit");
         }
     }
 }
