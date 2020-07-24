@@ -49,7 +49,7 @@ namespace WebServiceGilBT.Controller {
 
         [HttpGet("{uid:int}")]
         public Pres GetApiPres(int uid) {
-            Console.WriteLine($"Getting Json Presentation for {uid}");
+            Debuger.PrintLn($"Getting Json Presentation for {uid}");
             Pres ap = new Pres();
             Page page1 = new Page(5000);
             page1.elements.Add(PageElement.NewText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontType.fontnormal8px));
@@ -66,7 +66,7 @@ namespace WebServiceGilBT.Controller {
 
         [HttpGet("{uid:int}")]
         public JsonPage GetJsonPage(int uid) {
-            Console.WriteLine($"Getting Json Page for {uid}");
+            Debuger.PrintLn($"Getting Json Page for {uid}");
             JsonPage p = new JsonPage();
             if (iter % 2 == 0) {
                 Element e1 = new Element {
@@ -128,37 +128,40 @@ namespace WebServiceGilBT.Controller {
 
         [HttpGet("{file_name}")]
         public Firmware GetFile(String file_name) {
-            Console.WriteLine($"Getting file_name {file_name}.");
+            Debuger.PrintLn($"Getting file_name {file_name}.");
             Firmware temp = new Firmware($"Firmwares/{file_name}");
             return temp;
         }
 
         [HttpGet("{uid:int}")]
         public Screen GetScreen(int uid) {
-            Console.WriteLine($"Getting {uid}");
+            Debuger.PrintLn($"Getting {uid}");
             Screen temp = null;
-            foreach (Screen s in screenList) if (s.uid == uid) temp = s;
+            foreach (Screen s in screenList)
+                if (s.uid == uid) temp = s;
             if (temp != null) {
+                Debuger.PrintLn("GetScreen(): have found screen");
 #if DEBUG
                 temp.last_request = DateTime.Now;
 #else
-				//dodajemy 2 h dla serwera gdzies za granica
-                temp.last_request = DateTime.Now.AddHours(2);
+					//dodajemy 2 h dla serwera gdzies za granica
+					temp.last_request = DateTime.Now.AddHours(2);
 #endif
                 //temp data
                 return temp;
             } else {
+                Debuger.PrintLn("GetScreen(): returning new screen");
                 return new Screen { name = "null", uid = 0 };
             }
         }
 
         [HttpDelete("{uid:int}")]
         public IActionResult DeleteScreen(int uid) {
-            Console.WriteLine("Trying to delete existing screen {0}.", uid);
+            Debuger.PrintLn("Trying to delete existing screen {0}.", uid);
             Screen temp = null;
             foreach (Screen s in screenList) if (s.uid == uid) temp = s;
             if (temp != null) {
-                Console.WriteLine("Deleting existing screen {0}.", temp.uid);
+                Debuger.PrintLn("Deleting existing screen {0}.", temp.uid);
                 screenList.Remove(temp);
                 ScreenList.Save(screenList);
                 return Created($"Deleted screen", null);
@@ -169,23 +172,32 @@ namespace WebServiceGilBT.Controller {
 
         [HttpPost]
         public IActionResult PostScreen([FromBody] Screen argScreen) {
-            Console.WriteLine("Posting Screen {0}.", argScreen.uid);
+            Debuger.PrintLn("Posting Screen {0}.", argScreen.uid);
             if (argScreen != null) {
                 Screen temp = null;
-                foreach (Screen s in screenList) if (s.uid == argScreen.uid) temp = s;
+                foreach (Screen s in screenList) {
+                    Debuger.PrintLn(s.uid.ToString());
+                    if (s.uid == argScreen.uid)
+                        temp = s;
+                }
                 if (temp != null) {
-                    Console.WriteLine("Already exists Uid {0}.", argScreen.uid);
-                    screenList.Remove(temp);
-                    screenList.Add(argScreen);
-                    ScreenList.Save(screenList);
+                    Debuger.PrintLn("Already exists Uid {0}.", argScreen.uid);
+                    if (argScreen.pres != null) { //null gdy post pochodzi od tablicy
+						Debuger.PrintLn("Post pochodzi z przegladarki");
+                        screenList.Remove(temp);
+                        screenList.Add(argScreen);
+                        ScreenList.Save(screenList);
+                    }else{
+						Debuger.PrintLn("post pochodzi od tablicy więc czort z nim");
+					}
                     return Created($"Already exists.", null);
                 } else {
+                    Debuger.PrintLn("Adding screen Uid {0}.", argScreen.uid);
 #if DEBUG
-                    temp.last_request = DateTime.Now;
+                    argScreen.last_request = DateTime.Now;
 #else
-					temp.last_request = DateTime.Now.AddHours(2);
+					argScreen.last_request = DateTime.Now.AddHours(2);
 #endif
-                    Console.WriteLine("Adding screen Uid {0}.", argScreen.uid);
                     screenList.Add(argScreen);
                     ScreenList.Save(screenList);
                     return Created($"Success, added Uid {argScreen.uid}.", null);

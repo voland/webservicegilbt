@@ -1,0 +1,16 @@
+﻿@inherits LayoutComponentBase
+
+<div class="sidebar">
+	<NavMenu />
+</div>
+
+<div class="main">
+	<div class="top-row px-4">
+		<button class="btn btn-header" @onclick="ApplyClicked">Save changes</button>
+		<button class="btn btn-header" @onclick="CancelClicked">Exit</button>
+	</div>
+
+	<div class="content px-4">
+		@Body
+	</div>
+</div>

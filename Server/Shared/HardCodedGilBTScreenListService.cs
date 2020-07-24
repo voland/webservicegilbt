@@ -9,18 +9,25 @@ namespace WebServiceGilBT.Shared {
 
         private HttpClient httpClient;
 
-        /* public GilBTScreenListService( HttpClient httpClient ){ */
-        /* this.httpClient = httpClient; */
-        /* } */
+        private static Screen _es;
+
+        public void SetEditedScreen(Screen s){
+			_es = s;
+		}
+
+        public Screen GetEditedScreen(){
+			return _es;
+		}
 
         public GilBTScreenListService(HttpClient httpClient) {
             this.httpClient = httpClient;
+            Debuger.PrintLn("Adding httpClient");
 #if DEBUG
             httpClient.BaseAddress = new Uri("http://localhost:5000/");
 #else
-            httpClient.BaseAddress = new Uri("http://webservicegilbt.azurewebsites.net");
+            httpClient.BaseAddress = new Uri("http://gilbt.azurewebsites.net");
 #endif
-            Console.WriteLine("Added httpClient");
+            Debuger.PrintLn("Added httpClient");
         }
 
         public ScreenList GetGilBTScreenList() {
@@ -28,13 +35,13 @@ namespace WebServiceGilBT.Shared {
         }
 
         public async Task PostScreenAsync(Screen argS) {
-            Console.WriteLine("Posted screen");
+            Debuger.PrintLn("Posted screen");
             await httpClient.PostJsonAsync("/api/screens/postscreen", argS);
         }
 
         public async Task DeleteScreenAsync(Screen argS) {
             int uid = argS.uid;
-            Console.WriteLine("Deleting screen uid {0}", uid);
+            Debuger.PrintLn("Deleting screen uid {0}", uid);
             await httpClient.DeleteAsync($"/api/screens/deletescreen/{uid}");
         }
 

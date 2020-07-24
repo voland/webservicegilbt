@@ -72,7 +72,6 @@ namespace WebServiceGilBT.Shared {
                             d = JsonSerializer.Deserialize<Device>(json);
                             if (d != null) {
                                 _city = d.city;
-                                Console.WriteLine(city);
                             }
                         }
                     } catch {
@@ -88,6 +87,7 @@ namespace WebServiceGilBT.Shared {
         private const string unknowncity = "unknown city";
         private string _city = unknowncity;
         private Device d = null;
+        private DateTime last_read_device;
 
         private string GetUrl() {
             return string.Format(url, idx);
@@ -100,7 +100,7 @@ namespace WebServiceGilBT.Shared {
         }
 
         private string GenerateSensorText(string sensor_name) {
-            Console.Write("Generate sensor {0}... ", sensor_name);
+            if (last_read_device == null) last_read_device = DateTime.Now.AddHours(-100);
             //setting default sensor in case its 0;
             if (idx <= 0) idx = 444;
             if (idx == -1) {
@@ -112,23 +112,24 @@ namespace WebServiceGilBT.Shared {
             }
 
             try {
-                using (WebClient wc = new WebClient()) {
-                    var json = wc.DownloadString(GetUrl());
-                    d = JsonSerializer.Deserialize<Device>(json);
-                    if (d != null) {
-                        /* city = d.city; */
-                        Console.WriteLine(city);
-                        foreach (DeviceSensor ds in d.sensors) {
-                            if (ds.name == sensor_name) {
-                                string output = string.Format("{0} {1}", ds.data[0].value, ds.unit);
-                                Console.WriteLine(output);
-                                return output;
-                            }
+                if ((d == null) | (DateTime.Now > last_read_device.AddHours(1))) {
+                    using (WebClient wc = new WebClient()) {
+                        last_read_device = DateTime.Now;
+                        var json = wc.DownloadString(GetUrl());
+                        d = JsonSerializer.Deserialize<Device>(json);
+                    }
+                }
+                //innitial value of retvalue
+                string retvalue = $"cant find {sensor_name} sensor.";
+                if (d != null) {
+                    /* city = d.city; */
+                    foreach (DeviceSensor ds in d.sensors) {
+                        if (ds.name == sensor_name) {
+                            retvalue = string.Format("{0} {1}", ds.data[0].value, ds.unit);
                         }
                     }
-                    Console.WriteLine($"cant find {sensor_name} sensor.");
-                    return $"cant find {sensor_name} sensor.";
                 }
+                return retvalue;
             } catch {
                 return unknowncity;
             }

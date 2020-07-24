@@ -40,7 +40,7 @@ namespace WebServiceGilBT.Shared {
                     String serialised_list = File.ReadAllText(ScreenListFileName);
                     sl = JsonSerializer.Deserialize<List<Screen>>(serialised_list);
                 } catch {
-                    Console.WriteLine("Reading {0} failed.", ScreenListFileName);
+                    Debuger.PrintLn("Reading {0} failed.", ScreenListFileName);
                 }
             }
             return sl;

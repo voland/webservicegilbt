@@ -8,13 +8,29 @@ namespace WebServiceGilBT.Shared {
         public Pres Pres { set; get; }
 
         //element edit
+        public void MoveUp(Page p) {
+            int idx = Pres.pages.IndexOf(p);
+            if (idx > 0) {
+                Pres.pages.Remove(p);
+                Pres.pages.Insert(idx - 1, p);
+            }
+        }
+
+        public void MoveDown(Page p) {
+            if (Pres.pages[Pres.pages.Count - 1] != p) {
+                int idx = Pres.pages.IndexOf(p);
+                Pres.pages.Remove(p);
+                Pres.pages.Insert(idx + 1, p);
+            }
+        }
+
         public void AddElement(Page p) {
             PageElement pe = new PageElement("Tekst", 0, 0, 1, FontType.fontnormal8px);
             p.elements.Add(pe);
         }
 
         public void OnIdxChanched(ChangeEventArgs e) {
-            Console.WriteLine("Idxchanged");
+            Debuger.PrintLn("Idxchanged");
             StateHasChanged();
         }
 
@@ -32,7 +48,7 @@ namespace WebServiceGilBT.Shared {
             p.elements.Remove(pe);
         }
         private void HandleValidSubmit() {
-            Console.WriteLine("OnValidSubmit");
+            Debuger.PrintLn("OnValidSubmit");
         }
     }
 }

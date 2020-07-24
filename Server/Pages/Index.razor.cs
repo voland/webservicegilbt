@@ -16,20 +16,20 @@ namespace WebServiceGilBT.Pages{
 	NavigationManager NavigationManager {set; get;}
 
 	protected override void OnInitialized(){
-	    Console.WriteLine("Initialising ScreenList");
+	    Debuger.PrintLn("Initialising ScreenList");
 	    //just temp screnlist
 	    screenList = ScreenListService.GetGilBTScreenList();
 	}
 
 	protected async override Task OnInitializedAsync(){
-	    Console.WriteLine("async Initialising ScreenList");
+	    Debuger.PrintLn("async Initialising ScreenList");
 	    
 	    screenList = await ScreenListService.GetGilBTScreenListAsync();
 	}
 
 	protected void NavigateToConfigureScreen( Screen argScreen){
 	    string newurl = $"configure/{argScreen.uid}";
-	    Console.WriteLine($"navigating to {newurl}");
+	    Debuger.PrintLn($"navigating to {newurl}");
 	    NavigationManager.NavigateTo(newurl);
 	}
     }

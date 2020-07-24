@@ -13,7 +13,7 @@ namespace WebServiceGilBT.Shared {
         public Screen Screen { set; get; }
 
         public void UploadFirmwareClicked() {
-            Console.WriteLine("Upload Firmware");
+            Debuger.PrintLn("Upload Firmware");
         }
 
         private void NavigateHome() {
@@ -21,19 +21,14 @@ namespace WebServiceGilBT.Shared {
             NavigationManager.NavigateTo(newurl);
         }
 
-        public void SubmintClicked() {
-            ScreenListService.PostScreenAsync(Screen);
-            NavigateHome();
-        }
-
-        public void CancelClicked() {
-            NavigateHome();
-        }
-
         public void DeleteClicked() {
-            Console.WriteLine("DeleteClicked");
+            Debuger.PrintLn("DeleteClicked");
             ScreenListService.DeleteScreenAsync(Screen);
             NavigateHome();
+        }
+
+        private void HandleValidSubmit() {
+            Debuger.PrintLn("OnValidSubmit");
         }
 
         public bool ShowConfirmDelete = false;

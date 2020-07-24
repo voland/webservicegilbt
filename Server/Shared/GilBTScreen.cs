@@ -11,8 +11,41 @@ namespace WebServiceGilBT.Shared {
         public int contrast_max { set; get; } = 4;
         public DateTime last_request { set; get; }
         public eScreenType screen_type { set; get; }
-        public int width { set; get; }
-        public int height { set; get; }
+
+        private int _width;
+
+        public int width {
+            set {
+                //tylko wielokrotnosc 32
+                value /= 32;
+                value *= 32;
+                if (value > 512) {
+                    value = 512;
+                }
+                _width = value;
+            }
+            get {
+                return _width;
+            }
+        }
+
+        private int _height;
+
+        public int height {
+            set {
+                //tylko wielokrotnosc 32
+                value /= 16;
+                value *= 16;
+                if (value > 256) {
+                    value = 256;
+                }
+                _height = value;
+            }
+            get {
+                return _height;
+            }
+        }
+
         public bool dhcp { set; get; }
         public string ip { set; get; }
         public string ma { set; get; }
@@ -24,6 +57,7 @@ namespace WebServiceGilBT.Shared {
             }
             get {
                 if (_pres == null) {
+                    Debuger.PrintLn("_pres of {0} {1} is null its reininitalasing", uid, name);
                     _pres = new Pres();
 
                     Page p1 = new Page(5);

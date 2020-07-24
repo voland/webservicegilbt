@@ -1,7 +1,7 @@
 @* @using webservicegilbt.shared *@
 <EditForm Model="@Pres" OnInvalidSubmit="@HandleValidSubmit">
 	<h1>
-		<h>Screen slideshow:</h>
+		<h>Screen slide-show:</h>
 	</h1>
 	<p>
 		@foreach ( Page p in Pres.pages){
@@ -53,6 +53,7 @@
 							case ElementType.SENSOR_PM10:
 							case ElementType.SENSOR_PM2_5:
 							case ElementType.SENSOR_TEMPERATURE:
+							case ElementType.SENSOR_PRESSURE:
 							case ElementType.SENSOR_HUMIDITY:
 								<InputNumber TValue="Int32" @bind-Value="pe.idx" @oninput="OnIdxChanched" style="width:70px" min="0" max="1024"/>
 								<label>@pe.city</label>
@@ -69,6 +70,10 @@
 		</table>
 		<button class="btn btn-primary" @onclick="()=>DeletePage(p)">Delete page</button>
 		<button class="btn btn-primary" @onclick="()=>AddElement(p)">Add element</button>
+		<button class="btn btn-primary" @onclick="()=>MoveUp(p)">Move up</button>
+		<button class="btn btn-primary" @onclick="()=>MoveDown(p)">Move down</button>
+		<label>Time in seconds: </label>
+		<InputNumber TValue="Int32" @bind-Value="p.time" style="width:50px" min="1" max="60"/>
 		}
 	</p>
 		<hr style="height:2px;border-width:0;color:gray;background-color:black">

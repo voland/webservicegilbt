@@ -1,8 +1,9 @@
 @* @using webservicegilbt.shared *@
+<EditForm Model="@Screen" OnInvalidSubmit="@HandleValidSubmit">
 <h1>
-    <h>Configuration of screen</h>
-    <label>Uid: </label>
-    <label>@Screen.uid</label>
+	<h>Configuration of screen</h>
+	<label>Uid: </label>
+	<label>@Screen.uid</label>
 </h1>
 <p>
     <label>Firmware Version: </label>
@@ -14,7 +15,9 @@
 </p>
 <p>
     <label>Resolution: </label>
-    <label>@Screen.resolution()</label>
+	<InputNumber TValue="Int32" @bind-Value="Screen.width" style="width:70px" min="32" max="512" step="32"/>
+	X
+	<InputNumber TValue="Int32" @bind-Value="Screen.height" style="width:70px" min="16" max="256" step="16"/>
 </p>
 
 <p>
@@ -46,8 +49,6 @@
     <button class="btn btn-primary" @onclick="UploadFirmwareClicked">Upload firmware</button>
 </p>
 <p>
-    <button class="btn btn-primary" @onclick="SubmintClicked">Submint</button>
-    <button class="btn btn-primary" @onclick="CancelClicked">Cancel</button>
     <button class="btn btn-primary" @onclick="()=>ShowConfirmDelete=true">Delete from Db.</button>
 </p>
 
@@ -61,3 +62,4 @@
     </p>
 </p>
 }
+</EditForm>
