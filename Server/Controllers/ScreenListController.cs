@@ -47,84 +47,7 @@ namespace WebServiceGilBT.Controller {
             return new MemoryStream(byteArray);
         }
 
-        [HttpGet("{uid:int}")]
-        public Pres GetApiPres(int uid) {
-            Debuger.PrintLn($"Getting Json Presentation for {uid}");
-            Pres ap = new Pres();
-            Page page1 = new Page(5000);
-            page1.elements.Add(PageElement.NewText($"Love {DateTime.Now}", 32, 16, 0xffffffff, FontType.fontnormal8px));
-            page1.elements.Add(PageElement.NewText("Forever", 32, 24, 0xffffffff, FontType.fontfat8px));
-            Page page2 = new Page(5000);
-            page2.elements.Add(PageElement.NewSensorPm2_5(455, 32, 16, 0xffffffff, FontType.fontfat8px));
-            page2.elements.Add(PageElement.NewSensorPm10(455, 32, 24, 0xffffffff, FontType.fontfat8px));
-            ap.pages.Add(page1);
-            ap.pages.Add(page2);
-            return ap;
-        }
-
         static int iter = 0;
-
-        [HttpGet("{uid:int}")]
-        public JsonPage GetJsonPage(int uid) {
-            Debuger.PrintLn($"Getting Json Page for {uid}");
-            JsonPage p = new JsonPage();
-            if (iter % 2 == 0) {
-                Element e1 = new Element {
-                    Color = 0x0000ff00,
-                    Width = 0,
-                    Height = 0,
-                    Type = "line",
-                    X = 0,
-                    Y = 0,
-                    Content = "Fuck you",
-                    Fontsize = 12,
-                    Fonttype = 0
-                };
-                Element e2 = new Element {
-                    Color = 0x000000ff,
-                    Width = 128,
-                    Height = 32,
-                    Type = "line",
-                    X = 0,
-                    Y = 8,
-                    Content = "and fuck me",
-                    Fontsize = 12,
-                    Fonttype = 1
-                };
-                p.Elements = new List<Element>();
-                p.Elements.Add(e1);
-                p.Elements.Add(e2);
-            } else {
-                Element e1 = new Element {
-                    Color = 0x0000ffff,
-                    Width = 0,
-                    Height = 0,
-                    Type = "line",
-                    X = 0,
-                    Y = 0,
-                    Content = "Love you",
-                    Fontsize = 12,
-                    Fonttype = 0
-                };
-                Element e2 = new Element {
-                    Color = 0x00ff00ff,
-                    Width = 128,
-                    Height = 32,
-                    Type = "line",
-                    X = 0,
-                    Y = 8,
-                    Content = "and Love me",
-                    Fontsize = 12,
-                    Fonttype = 1
-                };
-                p.Elements = new List<Element>();
-                p.Elements.Add(e1);
-                p.Elements.Add(e2);
-            }
-
-            iter++;
-            return p;
-        }
 
         [HttpGet("{file_name}")]
         public Firmware GetFile(String file_name) {
@@ -139,20 +62,21 @@ namespace WebServiceGilBT.Controller {
             Screen temp = null;
             foreach (Screen s in screenList)
                 if (s.uid == uid) temp = s;
+            Screen retval = null;
             if (temp != null) {
                 Debuger.PrintLn("GetScreen(): have found screen");
-#if DEBUG
-                temp.last_request = DateTime.Now;
-#else
-					//dodajemy 2 h dla serwera gdzies za granica
-					temp.last_request = DateTime.Now.AddHours(2);
-#endif
-                //temp data
-                return temp;
+                retval = temp;
             } else {
                 Debuger.PrintLn("GetScreen(): returning new screen");
-                return new Screen { name = "null", uid = 0 };
+                retval = new Screen { name = "null", uid = 0 };
             }
+#if DEBUG
+            retval.last_request = DateTime.Now;
+#else
+			//dodajemy 2 h dla serwera gdzies za granica
+			retval.last_request = DateTime.Now.AddHours(2);
+#endif
+            return retval;
         }
 
         [HttpDelete("{uid:int}")]
@@ -182,14 +106,16 @@ namespace WebServiceGilBT.Controller {
                 }
                 if (temp != null) {
                     Debuger.PrintLn("Already exists Uid {0}.", argScreen.uid);
-                    if (argScreen.pres != null) { //null gdy post pochodzi od tablicy
-						Debuger.PrintLn("Post pochodzi z przegladarki");
-                        screenList.Remove(temp);
-                        screenList.Add(argScreen);
-                        ScreenList.Save(screenList);
-                    }else{
-						Debuger.PrintLn("post pochodzi od tablicy więc czort z nim");
-					}
+                    if (argScreen.pres != null) {
+                        if (argScreen.pres.ver != -1) {
+                            Debuger.PrintLn("Post pochodzi z przegladarki");
+                            screenList.Remove(temp);
+                            screenList.Add(argScreen);
+                            ScreenList.Save(screenList);
+                        } else {
+                            Debuger.PrintLn("post pochodzi od tablicy bo pres.ver==-1, więc czort z nim aktualizujemy go tylko gdy na serwerze nie ma danej tablicy");
+                        }
+                    }
                     return Created($"Already exists.", null);
                 } else {
                     Debuger.PrintLn("Adding screen Uid {0}.", argScreen.uid);
