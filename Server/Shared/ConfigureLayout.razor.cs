@@ -25,6 +25,7 @@ namespace WebServiceGilBT.Shared {
         }
 
         public void ApplyClicked() {
+			Screen.from_led_screen = false;
             ScreenListService.PostScreenAsync(Screen);
         }
 

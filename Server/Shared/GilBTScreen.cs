@@ -11,6 +11,7 @@ namespace WebServiceGilBT.Shared {
         public int contrast_max { set; get; } = 4;
         public DateTime last_request { set; get; }
         public eScreenType screen_type { set; get; }
+        public bool from_led_screen { set; get; }
 
         private int _width;
 
@@ -85,7 +86,9 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public Screen() { }
+        public Screen() { 
+			from_led_screen = false;
+		}
 
         public string resolution() {
             return $"{width}x{height}";

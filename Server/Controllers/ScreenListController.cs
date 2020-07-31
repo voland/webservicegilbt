@@ -106,15 +106,13 @@ namespace WebServiceGilBT.Controller {
                 }
                 if (temp != null) {
                     Debuger.PrintLn("Already exists Uid {0}.", argScreen.uid);
-                    if (argScreen.pres != null) {
-                        if (argScreen.pres.ver != -1) {
-                            Debuger.PrintLn("Post pochodzi z przegladarki");
-                            screenList.Remove(temp);
-                            screenList.Add(argScreen);
-                            ScreenList.Save(screenList);
-                        } else {
-                            Debuger.PrintLn("post pochodzi od tablicy bo pres.ver==-1, więc czort z nim aktualizujemy go tylko gdy na serwerze nie ma danej tablicy");
-                        }
+                    if (argScreen.from_led_screen == false) {
+                        Debuger.PrintLn("Post pochodzi z przegladarki");
+                        screenList.Remove(temp);
+                        screenList.Add(argScreen);
+                        ScreenList.Save(screenList);
+                    } else {
+                        Debuger.PrintLn("post pochodzi od tablicy bo argScreen.from_led_screen==true");
                     }
                     return Created($"Already exists.", null);
                 } else {
@@ -124,6 +122,7 @@ namespace WebServiceGilBT.Controller {
 #else
 					argScreen.last_request = DateTime.Now.AddHours(2);
 #endif
+					argScreen.from_led_screen = true;
                     screenList.Add(argScreen);
                     ScreenList.Save(screenList);
                     return Created($"Success, added Uid {argScreen.uid}.", null);

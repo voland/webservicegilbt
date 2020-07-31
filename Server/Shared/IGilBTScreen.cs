@@ -25,5 +25,6 @@ namespace WebServiceGilBT.Shared {
         public string ma { set; get; }
         public string gw { set; get; }
         public Pres pres { set; get; }
+        public bool from_led_screen { set; get; }
     }
 }

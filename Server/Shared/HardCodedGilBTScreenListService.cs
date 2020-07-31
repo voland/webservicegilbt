@@ -36,6 +36,7 @@ namespace WebServiceGilBT.Shared {
 
         public async Task PostScreenAsync(Screen argS) {
             Debuger.PrintLn("Posted screen");
+			argS.from_led_screen = false;
             await httpClient.PostJsonAsync("/api/screens/postscreen", argS);
         }
 

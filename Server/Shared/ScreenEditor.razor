@@ -6,8 +6,12 @@
 	<label>@Screen.uid</label>
 </h1>
 <p>
-    <label>Firmware Version: </label>
-    <label>@Screen.firmware_ver</label>
+    <label>Prefered firmware version: </label>
+	<InputSelect TValue="String" @bind-Value="Screen.firmware_ver">
+		@foreach( string s in FirmwareList){
+			<option value="@s">@s</option>
+		}
+	</InputSelect>
 </p>
 <p>
     <label>Last Request:</label>
