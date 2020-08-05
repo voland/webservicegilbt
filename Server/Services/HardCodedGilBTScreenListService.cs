@@ -3,30 +3,37 @@ using System.Threading.Tasks;
 using System.Net.Http;
 using Microsoft.AspNetCore.Components;
 using System;
+using WebServiceGilBT.Shared;
 
-namespace WebServiceGilBT.Shared {
+namespace WebServiceGilBT.Services {
     public class GilBTScreenListService : IScreenListService {
 
         private HttpClient httpClient;
 
         private static Screen _es;
 
-        public void SetEditedScreen(Screen s){
-			_es = s;
-		}
+        public void SetEditedScreen(Screen s) {
+            _es = s;
+        }
 
-        public Screen GetEditedScreen(){
-			return _es;
-		}
+        public Screen GetEditedScreen() {
+            return _es;
+        }
+
+        string BaseAddress {
+            get {
+#if DEBUG
+                return "http://localhost:5000/";
+#else
+				return "http://gilbt.azurewebsites.net";
+#endif
+            }
+        }
 
         public GilBTScreenListService(HttpClient httpClient) {
             this.httpClient = httpClient;
             Debuger.PrintLn("Adding httpClient");
-#if DEBUG
-            httpClient.BaseAddress = new Uri("http://localhost:5000/");
-#else
-            httpClient.BaseAddress = new Uri("http://gilbt.azurewebsites.net");
-#endif
+            httpClient.BaseAddress = new Uri(BaseAddress);
             Debuger.PrintLn("Added httpClient");
         }
 
@@ -36,7 +43,7 @@ namespace WebServiceGilBT.Shared {
 
         public async Task PostScreenAsync(Screen argS) {
             Debuger.PrintLn("Posted screen");
-			argS.from_led_screen = false;
+            argS.from_led_screen = false;
             await httpClient.PostJsonAsync("/api/screens/postscreen", argS);
         }
 

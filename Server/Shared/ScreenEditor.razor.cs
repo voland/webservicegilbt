@@ -2,6 +2,7 @@ using System;
 using Microsoft.AspNetCore.Components;
 using System.IO;
 using System.Collections.Generic;
+using WebServiceGilBT.Services;
 
 namespace WebServiceGilBT.Shared {
     public partial class ScreenEditor : ComponentBase {

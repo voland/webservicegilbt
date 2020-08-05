@@ -7,4 +7,12 @@
 --exclude=Server/obj
 --exclude=Server/out
 --exclude=Server/bin
+--exclude=Server/bin
+--exclude=Server/wwwroot
+--exclude=Server/Firmwares
+--exclude=Server/Microsoft*
+--exclude=*dll
+--exclude=*g.cs
+--exclude=*dll
+--exclude=*swp
 -L .ctagsfiles

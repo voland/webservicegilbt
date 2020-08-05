@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Components;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebServiceGilBT.Shared;
+using WebServiceGilBT.Services;
 
 namespace WebServiceGilBT.Pages{
     public partial class Index:ComponentBase{

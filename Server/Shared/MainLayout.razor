@@ -1,15 +1,38 @@
 ﻿@inherits LayoutComponentBase
+@using WebServiceGilBT.Data;
+@inject AuthenticationStateProvider AuthenticationStateProvider
 
 <div class="sidebar">
     <NavMenu />
 </div>
 
-<div class="main">
-    <div class="top-row px-4">
-        <a href="https://docs.microsoft.com/aspnet/" target="_blank">About</a>
-    </div>
+<AuthorizeView>
+	<Authorized>
+		<div class="main">
+			<div class="top-row px-4">
+				<a href="/" >Welcome @context.User.Identity.Name</a>
+				<a href="/" @onclick="Logout">Logout</a>
+			</div>
 
-    <div class="content px-4">
-        @Body
-    </div>
-</div>
+			<div class="content px-4">
+				@Body
+			</div>
+		</div>
+	</Authorized>
+	<NotAuthorized>
+		<div class="main">
+			<div class="top-row px-4">
+				<a href="/">Login</a>
+			</div>
+			<div class="content px-4">
+				<p> You are not authorized, please login.</p>
+			</div>
+		</div>
+	</NotAuthorized>
+</AuthorizeView>
+
+@code {
+	public void Logout(){
+		((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLogout();
+	}
+}

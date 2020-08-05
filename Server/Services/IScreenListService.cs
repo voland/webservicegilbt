@@ -1,6 +1,7 @@
 using System.Threading.Tasks;
+using WebServiceGilBT.Shared;
 
-namespace WebServiceGilBT.Shared {
+namespace WebServiceGilBT.Services {
     public interface IScreenListService {
         public Task DeleteScreenAsync(Screen argS);
         public void SetEditedScreen(Screen s);

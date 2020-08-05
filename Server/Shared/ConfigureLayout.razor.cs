@@ -1,6 +1,6 @@
-
 using System;
 using Microsoft.AspNetCore.Components;
+using WebServiceGilBT.Services;
 
 namespace WebServiceGilBT.Shared {
     public partial class ConfigureLayout : LayoutComponentBase {
@@ -20,7 +20,7 @@ namespace WebServiceGilBT.Shared {
         }
 
         private void NavigateHome() {
-            string newurl = "";
+            string newurl = "/index";
             NavigationManager.NavigateTo(newurl);
         }
 
