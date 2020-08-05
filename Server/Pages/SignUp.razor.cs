@@ -17,7 +17,7 @@ namespace WebServiceGilBT.Pages {
         AuthenticationStateProvider AuthenticationStateProvider { set; get; }
 
         [Inject]
-        Blazored.SessionStorage.ISessionStorageService sessionStorage { set; get; }
+        Blazored.SessionStorage.ISessionStorageService _sessionStorage { set; get; }
 
         [Inject]
         NavigationManager NavigationManager { set; get; }
@@ -33,7 +33,6 @@ namespace WebServiceGilBT.Pages {
 
         private async Task<bool> RegisterUser() {
             //assume that user is valid
-            user.Source = "APPC";
             var returnedUser = await userService.RegisterUserAsync(user);
 
             if (returnedUser != null) {

@@ -9,7 +9,7 @@ using System.Text.Json.Serialization;
 using System.IO;
 
 namespace WebServiceGilBT.Shared {
-    public class Users {
+    public class UserList {
 
         private static List<User> _users = null;
 

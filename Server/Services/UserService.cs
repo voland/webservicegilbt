@@ -31,7 +31,7 @@ namespace WebServiceGilBT.Services {
 
         public async Task<User> LoginAsync(User user) {
             User returnedUser = null;
-            foreach (User u in Users.users) {
+            foreach (User u in UserList.users) {
                 Console.WriteLine("Checking user {0}", user.EmailAddress);
                 if (u.EmailAddress == user.EmailAddress)
                     if (u.Password == user.Password) {
@@ -49,7 +49,7 @@ namespace WebServiceGilBT.Services {
 
         public async Task<User> RegisterUserAsync(User user) {
             User returnedUser = null;
-            foreach (User u in Users.users) {
+            foreach (User u in UserList.users) {
                 if (u.EmailAddress == user.EmailAddress) {
                     returnedUser = u;
                     returnedUser.AdditionalInfo = $"User name {u.EmailAddress} already exists.";
@@ -58,7 +58,7 @@ namespace WebServiceGilBT.Services {
 
             if (returnedUser == null) {
                 if (user.Password == user.ConfirmPassword) {
-                    Users.Add(user);
+                    UserList.Add(user);
                     Console.WriteLine("Adding user {0} password {1}", user.EmailAddress, user.Password);
                     returnedUser = user;
                     returnedUser.AdditionalInfo = null;

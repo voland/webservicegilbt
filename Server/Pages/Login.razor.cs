@@ -7,6 +7,7 @@ using WebServiceGilBT.Services;
 using WebServiceGilBT.Data;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
+using System.Text.Json;
 
 namespace WebServiceGilBT.Pages {
     public partial class Login : ComponentBase {
@@ -23,7 +24,7 @@ namespace WebServiceGilBT.Pages {
         AuthenticationStateProvider AuthenticationStateProvider { set; get; }
 
         [Inject]
-        Blazored.SessionStorage.ISessionStorageService sessionStorage { set; get; }
+        Blazored.SessionStorage.ISessionStorageService _sessionStorage { set; get; }
 
         [Inject]
         NavigationManager NavigationManager { set; get; }
@@ -38,9 +39,11 @@ namespace WebServiceGilBT.Pages {
         private async Task<bool> ValidateUser() {
             User returnedUser = await userService.LoginAsync(user);
             if (returnedUser != null) {
-                await sessionStorage.SetItemAsync("emailAddress", user.EmailAddress);
+
+                await _sessionStorage.SetItemAsync("loggedUser", JsonSerializer.Serialize(returnedUser));
+
                 ((CustomAuthenticationStateProvider)AuthenticationStateProvider).
-                    MarkUserAsAuthenticated(user.EmailAddress);
+                    MarkUserAsAuthenticated(user);
                 NavigationManager.NavigateTo("/index");
             } else {
                 LoginMesssage = "Invalid username or password";

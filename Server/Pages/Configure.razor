@@ -1,6 +1,14 @@
 @page "/Configure"
-@layout ConfigureLayout
 @page "/Configure/{Uid:int}"
 @using WebServiceGilBT.Shared
 
-<ScreenEditor Screen="@edited_screen"/>
+@if ( user.IsScreenAccessedByUser(Uid)){
+	<div class="top-row2 px-4">
+		<button class="btn btn-header" @onclick="ApplyClicked">Save changes</button>
+		<button class="btn btn-header" @onclick="CancelClicked">Exit</button>
+	</div>
+
+	<div class="content px-4">
+		<ScreenEditor Screen="@Screen"/>
+	</div>
+}

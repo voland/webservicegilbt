@@ -4,6 +4,8 @@ using System.Threading.Tasks;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.SessionStorage;
+using WebServiceGilBT.Data;
+using System.Text.Json;
 
 namespace WebServiceGilBT.Data {
     public class CustomAuthenticationStateProvider : AuthenticationStateProvider {
@@ -15,15 +17,14 @@ namespace WebServiceGilBT.Data {
         }
 
         public override async Task<AuthenticationState> GetAuthenticationStateAsync() {
-            var emailAddress = await _sessionStorageService.GetItemAsync<string>("emailAddress");
+            string serializedUser = await _sessionStorageService.GetItemAsync<string>("loggedUser");
 
             ClaimsIdentity identity = null;
 
-            if (emailAddress != null) {
-                Console.WriteLine(emailAddress);
-                identity = new ClaimsIdentity(new[]{
-                    new Claim( ClaimTypes.Name, emailAddress)
-            }, "apiauth_type");
+            if (serializedUser != null) {
+                User u = JsonSerializer.Deserialize<User>(serializedUser);
+                Console.WriteLine("Loged as" + u.EmailAddress);
+                identity = new ClaimsIdentity(new[] { new Claim(ClaimTypes.Name, u.EmailAddress) }, "apiauth_type");
 
             } else {
                 Console.WriteLine("no email address");
@@ -38,13 +39,13 @@ namespace WebServiceGilBT.Data {
         public void MarkUserAsLogout() {
             var identity = new ClaimsIdentity();
             var user = new ClaimsPrincipal(identity);
-            _sessionStorageService.RemoveItemAsync("emailAddress");
+            _sessionStorageService.RemoveItemAsync("loggedUser");
             NotifyAuthenticationStateChanged(Task.FromResult(new AuthenticationState(user)));
         }
 
-        public void MarkUserAsAuthenticated(string emailAddress) {
+        public void MarkUserAsAuthenticated(User argUser) {
             var identity = new ClaimsIdentity(new[]{
-                    new Claim( ClaimTypes.Name, emailAddress)
+                    new Claim( ClaimTypes.Name, argUser.EmailAddress)
             }, "apiauth_type");
 
             var user = new ClaimsPrincipal(identity);

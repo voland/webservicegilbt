@@ -10,16 +10,6 @@ namespace WebServiceGilBT.Services {
 
         private HttpClient httpClient;
 
-        private static Screen _es;
-
-        public void SetEditedScreen(Screen s) {
-            _es = s;
-        }
-
-        public Screen GetEditedScreen() {
-            return _es;
-        }
-
         string BaseAddress {
             get {
 #if DEBUG
