@@ -42,7 +42,7 @@ namespace WebServiceGilBT.Data {
                         Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
                     }
-                    if (EmailAddress.Contains("@gilbt.com")) {
+                    if (EmailAddress.Contains("patryk.brzozowski@syngeos.pl")) {
                         Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
                     }
