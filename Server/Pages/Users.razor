@@ -1,0 +1,25 @@
+@page "/users"
+@using WebServiceGilBT.Shared
+@using WebServiceGilBT.Data
+
+
+<table class="my_custom_table">
+		<tr class="my_custom_th_verydark">
+			<th>Idx</th>
+			<th>Email</th>
+			<th>Type</th>
+			<th>Configure</th>
+		</tr>
+		<line/>
+		@foreach (User user in _userlist) {
+			@if (loggeduser.UserType == eUserType.admin){
+				<tr class="my_custom_th @item_background">
+					<td>@tab_idx</td>
+					<td>@user.EmailAddress</td>
+					<td>@user.UserType</td>
+					<td><button class="btn btn-primary" 
+								@onclick="(()=>NavigateToConfigureUser(user))">ConfigureUser</button></td>
+				</tr>
+			}
+		}
+</table>

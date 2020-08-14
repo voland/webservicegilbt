@@ -32,7 +32,7 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         IUserService userService { set; get; }
 
-        protected async override Task OnInitializedAsync() {
+        protected override void OnInitialized() {
             user = new User();
         }
 

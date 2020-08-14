@@ -36,7 +36,7 @@ namespace WebServiceGilBT.Shared {
         }
 
         //users file name
-        private const string ufn = "users.json";
+        private const string ufn = "db/users.json";
 
         private static object locker = new object();
 
@@ -52,8 +52,13 @@ namespace WebServiceGilBT.Shared {
                 //saving process
                 try {
                     try {
-                        File.Delete($"{ufn}.back");
-                        File.Copy(ufn, $"{ufn}.back");
+                        DateTime now;
+#if DEBUG
+                        now = DateTime.Now;
+#else
+						now = DateTime.Now.AddHours(2);
+#endif
+                        File.Copy(ufn, $"{ufn}.{now.ToString()}.back");
                     } catch {
                     }
                     string serialised_users = JsonSerializer.Serialize(_users);

@@ -8,6 +8,29 @@ a, .btn-link {
     color: #0366d6;
 }
 
+.my_custom_table{
+	width: 100%;
+	border: 1px solid black;
+	margin-top: 20px;
+	margin-bottom: 20px;
+}
+
+.my_custom_th{
+	height: 60px;
+}
+
+.my_custom_th_light{
+	background-color: #EEE;
+}
+
+.my_custom_th_verydark{
+	background-color: #AAA;
+}
+
+.my_custom_th_dark{
+	background-color: #CCC;
+}
+
 .btn-header {
     color: #fff;
     background-color: #1b6ec2;
@@ -206,3 +229,4 @@ app {
         display: block;
     }
 }
+

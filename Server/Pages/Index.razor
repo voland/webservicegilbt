@@ -3,24 +3,22 @@
 @using WebServiceGilBT.Data
 
 
-<table class="table">
-    <thead>
-	<tr>
-	    <th>Uid</th>
-	    <th>Name</th>
-	    <th>Type</th>
-	    <th>Resolution</th>
-	    <th>Last Request</th>
-	    <th>Version</th>
-	    <th>Contrast</th>
-	    <th>Night contrast</th>
-	    <th>Configure</th>
+<table class="my_custom_table">
+	<tr class="my_custom_th_verydark">
+		<th>Uid</th>
+		<th>Name</th>
+		<th>Type</th>
+		<th>Resolution</th>
+		<th>Last Request</th>
+		<th>Version</th>
+		<th>Contrast</th>
+		<th>Night contrast</th>
+		<th>Configure</th>
 	</tr>
-    </thead>
-    <tbody>
+
 	@foreach (var screen in screenList.Screens) {
 		@if ( user.IsScreenAccessedByUser( screen.uid)){
-			<tr>
+		<tr class="my_custom_th @item_background" >
 			<td>@screen.uid</td>
 			<td>@screen.name</td>
 			<td>@screen.screen_type_str()</td>
@@ -30,10 +28,9 @@
 			<td>@screen.contrast_str()</td>
 			<td>@screen.night_contrast_str()</td>
 			<td><button class="btn btn-primary" 
-				@onclick="(()=>NavigateToConfigureScreen(screen))">Configure</button></td>
-			</tr>
+						@onclick="(()=>NavigateToConfigureScreen(screen))">Configure</button></td>
+		</tr>
 		}
 	}
-    </tbody>
-</table>
 
+</table>

@@ -41,12 +41,6 @@ namespace WebServiceGilBT.Pages {
 
         protected ScreenList screenList;
 
-        protected override void OnInitialized() {
-            Console.WriteLine("Initialising ScreenList for edited screen");
-            //just temp screnlist
-            screenList = ScreenListService.GetGilBTScreenList();
-        }
-
         protected async override Task OnInitializedAsync() {
             Console.WriteLine("async Initialising ScreenList");
             user = await GetLoggedUser();
@@ -78,6 +72,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         private User _u = null;
+
         public User user {
             set { _u = value; }
             get {

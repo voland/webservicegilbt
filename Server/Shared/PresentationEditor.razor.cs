@@ -50,5 +50,18 @@ namespace WebServiceGilBT.Shared {
         private void HandleValidSubmit() {
             Debuger.PrintLn("OnValidSubmit");
         }
+
+        private int bi = 0;
+        protected string item_background {
+            get {
+                bi++;
+                if ((bi %= 2) == 1) {
+                    return "my_custom_th_light";
+                } else {
+                    return "my_custom_th_dark";
+                }
+            }
+        }
+
     }
 }

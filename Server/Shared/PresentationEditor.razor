@@ -6,19 +6,16 @@
 	<p>
 		@foreach ( Page p in Pres.pages){
 		<hr style="height:2px;border-width:0;color:gray;background-color:gray">
-		<table style="widht:80%" class="table">
-			<thead>
-			<tr>
-				<th>Type</th>
-				<th>Position</th>
-				<th>Parameters</th>
-				<th>Result</th>
-				<th>Delete</th>
-			</tr>
-			</thead>
-			<tbody>
+		<table class="my_custom_table" style="widht:80%">
+				<tr class="my_custom_th_verydark">
+					<th>Type</th>
+					<th>Position</th>
+					<th>Parameters</th>
+					<th>Result</th>
+					<th>Delete</th>
+				</tr>
 			@foreach( PageElement pe in p.elements){
-				<tr>
+				<tr class="my_custom_th @item_background">
 					<td>
 						<InputSelect TValue="ElementType" @bind-Value="pe.type">
 							<option value="@ElementType.TEXT">Text</option>
@@ -66,8 +63,8 @@
 					<td> <button class="btn btn-primary" @onclick="()=>DeleteElement(p, pe)">Delete</button> </td>
 				</tr>
 			}
-			</tbody>
 		</table>
+
 		<button class="btn btn-primary" @onclick="()=>DeletePage(p)">Delete page</button>
 		<button class="btn btn-primary" @onclick="()=>AddElement(p)">Add element</button>
 		<button class="btn btn-primary" @onclick="()=>MoveUp(p)">Move up</button>

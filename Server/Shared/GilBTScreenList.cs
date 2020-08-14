@@ -18,7 +18,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        private static string ScreenListFileName = "ScreenList.json";
+        private static string ScreenListFileName = "db/ScreenList.json";
 
         private static object locker = new object();
 
@@ -26,8 +26,16 @@ namespace WebServiceGilBT.Shared {
             if (argScreens != null) {
                 lock (locker) {
                     string serialised_list = JsonSerializer.Serialize(argScreens);
-                    File.Delete($"{ScreenListFileName}.back");
-                    File.Copy(ScreenListFileName, $"{ScreenListFileName}.back");
+                    try {
+                        DateTime now;
+#if DEBUG
+                        now = DateTime.Now;
+#else
+						now = DateTime.Now.AddHours(2);
+#endif
+                        File.Copy(ScreenListFileName, $"{ScreenListFileName}.{now.ToString()}.back");
+                    } catch {
+                    }
                     File.WriteAllText(ScreenListFileName, serialised_list);
                 }
             }

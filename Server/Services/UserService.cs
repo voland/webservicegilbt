@@ -47,6 +47,10 @@ namespace WebServiceGilBT.Services {
 
         }
 
+		public async Task<List<User>> GetUserListAsync(){
+			return UserList.users;
+		}
+
         public async Task<User> RegisterUserAsync(User user) {
             User returnedUser = null;
             foreach (User u in UserList.users) {

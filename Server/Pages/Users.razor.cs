@@ -8,12 +8,8 @@ using WebServiceGilBT.Data;
 using System.Text.Json;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Index : ComponentBase {
-
-        protected ScreenList screenList;
-
-        [Inject]
-        protected IScreenListService ScreenListService { set; get; }
+    public partial class Users : ComponentBase {
+        public List<User> _userlist;
 
         [Inject]
         NavigationManager NavigationManager { set; get; }
@@ -21,21 +17,16 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         Blazored.SessionStorage.ISessionStorageService _sessionStorageService { set; get; }
 
-        protected override void OnInitialized() {
-            Debuger.PrintLn("Initialising ScreenList");
-            //just temp screnlist
-            screenList = ScreenListService.GetGilBTScreenList();
-        }
+        [Inject]
+        IUserService userService { set; get; }
 
         protected async override Task OnInitializedAsync() {
-            Debuger.PrintLn("async Initialising ScreenList");
-
-            screenList = await ScreenListService.GetGilBTScreenListAsync();
-            user = await GetLoggedUser();
+            _userlist = await userService.GetUserListAsync();
+            loggeduser = await GetLoggedUser();
         }
 
-        protected void NavigateToConfigureScreen(Screen argScreen) {
-            string newurl = $"configure/{argScreen.uid}";
+        protected void NavigateToConfigureUser(User argUser) {
+            string newurl = $"configureuser/{argUser.EmailAddress}";
             Debuger.PrintLn($"navigating to {newurl}");
             NavigationManager.NavigateTo(newurl);
         }
@@ -51,13 +42,22 @@ namespace WebServiceGilBT.Pages {
             return u;
         }
 
+        private User _u = null;
+        public User loggeduser {
+            set { _u = value; }
+            get {
+                if (_u == null) _u = new User();
+                return _u;
+            }
+        }
+
 		protected int _tab_idx=1;
 		protected int tab_idx{
 			get {
 				return _tab_idx++;
 			}
 		}
-		
+
         private int bi = 0;
         protected string item_background {
             get {
@@ -70,13 +70,5 @@ namespace WebServiceGilBT.Pages {
             }
         }
 
-        private User _u = null;
-        public User user {
-            set { _u = value; }
-            get {
-                if (_u == null) _u = new User();
-                return _u;
-            }
-        }
     }
 }
