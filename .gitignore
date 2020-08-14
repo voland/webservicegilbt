@@ -8,3 +8,5 @@ Server/Firmwares
 Server/Microsoft
 .vscode
 
+
+Server/db/*
