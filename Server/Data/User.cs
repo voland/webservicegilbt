@@ -26,7 +26,21 @@ namespace WebServiceGilBT.Data {
     }
 
     public partial class User {
-        public int UserId { get; set; }
+
+        private int _userid;
+        public int UserId {
+            get {
+                if (_userid == 0) {
+                    Random r = new Random();
+                    _userid = r.Next();
+                }
+                return _userid;
+            }
+            set {
+                _userid = value;
+            }
+        }
+
         public string EmailAddress { get; set; }
         public string Password { get; set; }
         public string FirstName { get; set; }
@@ -53,6 +67,20 @@ namespace WebServiceGilBT.Data {
         public List<ScreenAccessDescriber> ScreenAccessList { set; get; }
         public string ConfirmPassword { get; set; }
         public string AdditionalInfo { get; set; }
+
+        public bool IsUserAccessedByThisUser(User argEditedUser) {
+            if (UserType == eUserType.admin) {
+                Console.WriteLine("Youre admin, youre the boss. you can edit user {0}.", argEditedUser.EmailAddress);
+                return true;
+            }
+            if (argEditedUser.UserId == UserId) {
+                Console.WriteLine($"Ok I allow to acces myself");
+                return true;
+            } else {
+                Console.WriteLine($"Oh no, you {EmailAddress}, cant access {argEditedUser.EmailAddress}.");
+            }
+            return false;
+        }
 
         public bool IsScreenAccessedByUser(int uid) {
             if (UserType == eUserType.admin) {

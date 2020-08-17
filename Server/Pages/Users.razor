@@ -10,7 +10,6 @@
 			<th>Type</th>
 			<th>Configure</th>
 		</tr>
-		<line/>
 		@foreach (User user in _userlist) {
 			@if (loggeduser.UserType == eUserType.admin){
 				<tr class="my_custom_th @item_background">
