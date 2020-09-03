@@ -4,7 +4,7 @@ using System;
 using System.Text.Json;
 
 namespace WebServiceGilBT.Shared {
-
+    [Serializable]
     public enum ElementType {
         TEXT,
         RECTANGLE,
@@ -19,17 +19,18 @@ namespace WebServiceGilBT.Shared {
         SENSOR_PM1,
         UID
     }
-
+    [Serializable]
     public enum FontType {
         fontnormal8px,
         fontfat8px
     }
-
+    [Serializable]
     static public class FontNames {
         public const string fontfat = "FONTFAT";
         public const string fontnormal = "FONTNORMAL";
     }
 
+    [Serializable]
     public class PageElement {
         //sensornames
         const string temperature = "temperature";
@@ -255,6 +256,7 @@ namespace WebServiceGilBT.Shared {
         }
     }
 
+    [Serializable]
     public class Page {
         public int ver { get { return 2; } }
         public int time { set; get; }
@@ -271,6 +273,7 @@ namespace WebServiceGilBT.Shared {
         }
     }
 
+    [Serializable]
     public class Pres {
         public int ver { get { return 2; } }
         public int pages_count {

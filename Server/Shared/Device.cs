@@ -2,18 +2,19 @@ using System;
 using System.Collections.Generic;
 
 namespace WebServiceGilBT.Shared {
+    [Serializable]
     public class Datum {
         public DateTime read_at { get; set; }
         public double value { get; set; }
         public string current_norm { get; set; }
         public int? threshold_level { get; set; }
     }
-
+    [Serializable]
     public class Grade {
         public int gte { get; set; }
         public int lt { get; set; }
     }
-
+    [Serializable]
     public class Norm {
         public int threshold { get; set; }
         public Grade grade_a { get; set; }
@@ -23,7 +24,7 @@ namespace WebServiceGilBT.Shared {
         public Grade grade_e { get; set; }
         public Grade grade_f { get; set; }
     }
-
+    [Serializable]
     public class DeviceSensor {
         public string unit { get; set; }
         public string name { get; set; }
@@ -31,6 +32,8 @@ namespace WebServiceGilBT.Shared {
         public string display_type { get; set; }
         public Norm norm { get; set; }
     }
+
+    [Serializable]
 
     public class Device {
         public IList<double> coordinates { get; set; }

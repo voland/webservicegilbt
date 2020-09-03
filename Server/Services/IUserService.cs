@@ -9,6 +9,10 @@ namespace WebServiceGilBT.Services {
     public interface IUserService {
         public Task<User> LoginAsync(User user);
         public Task<User> RegisterUserAsync(User user);
-		public Task<List<User>> GetUserListAsync();
+        public Task<List<User>> GetUserListAsync();
+        Task AddUserAsync(User argS);
+        Task<User> GetSpecificUser(int uid);
+        Task<User> GetUserWithSpecificNameAndPassword(string email, string password);
+        Task<User> GetSpecificUser(string email);
     }
 }

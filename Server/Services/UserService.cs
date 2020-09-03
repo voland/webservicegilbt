@@ -47,9 +47,9 @@ namespace WebServiceGilBT.Services {
 
         }
 
-		public async Task<List<User>> GetUserListAsync(){
-			return UserList.users;
-		}
+        public async Task<List<User>> GetUserListAsync() {
+            return UserList.users;
+        }
 
         public async Task<User> RegisterUserAsync(User user) {
             User returnedUser = null;
@@ -67,7 +67,7 @@ namespace WebServiceGilBT.Services {
                     returnedUser = user;
                     returnedUser.AdditionalInfo = null;
                 } else {
-					returnedUser = user;
+                    returnedUser = user;
                     user.AdditionalInfo = "Passwords are not equal!";
                 }
 
@@ -76,5 +76,20 @@ namespace WebServiceGilBT.Services {
             return await Task.FromResult(returnedUser);
         }
 
+        public Task AddUserAsync(User argS) {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetSpecificUser(int uid) {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetUserWithSpecificNameAndPassword(string email, string password) {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetSpecificUser(string email) {
+            throw new NotImplementedException();
+        }
     }
 }

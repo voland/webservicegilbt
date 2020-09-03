@@ -49,5 +49,13 @@ namespace WebServiceGilBT.Services {
             screenList.Add(sl);
             return screenList;
         }
+
+        public Task<Screen> GetGilBTSpecificScreenAsync(int uid) {
+            throw new NotImplementedException();
+        }
+
+        public Task UpdateScreenAsync(Screen argS) {
+            throw new NotImplementedException();
+        }
     }
 }

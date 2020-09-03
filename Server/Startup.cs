@@ -35,7 +35,10 @@ namespace WebServiceGilBT {
             services.AddHttpClient<IUserService, UserService>();
 
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-			services.AddBlazoredSessionStorage();
+            services.AddBlazoredSessionStorage();
+            services.AddTransient<SqlDataAccess>();
+            services.AddTransient<ScreenListMySQLService>();
+            services.AddTransient<UserMySQLService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
