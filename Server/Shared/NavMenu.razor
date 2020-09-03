@@ -1,4 +1,8 @@
-﻿<div class="top-row pl-4 navbar navbar-dark">
+﻿@using WebServiceGilBT.Data
+@using System.Text.Json
+@inject Blazored.SessionStorage.ISessionStorageService _sessionStorageService
+
+<div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">WebServiceGilBT</a>
     <button class="navbar-toggler" @onclick="ToggleNavMenu">
         <span class="navbar-toggler-icon"></span>
@@ -10,8 +14,10 @@
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/index" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> Screen List </NavLink>
-            <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
-                <span class="oi oi-people" aria-hidden="true"></span> Users List </NavLink>
+			@if ( loggeduser.UserType == eUserType.admin){
+				<NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
+					<span class="oi oi-people" aria-hidden="true"></span> Users List </NavLink>
+			}
         </li>
     </ul>
 </div>
@@ -24,4 +30,31 @@
     private void ToggleNavMenu() {
         collapseNavMenu = !collapseNavMenu;
     }
+
+	protected async Task<User> GetLoggedUser() {
+		string serializedUser = await _sessionStorageService.GetItemAsync<string>("loggedUser");
+		User u = null;
+		if (serializedUser != null)
+			u = JsonSerializer.Deserialize<User>(serializedUser);
+		if (u == null) {
+			u = new User();
+		}
+		return u;
+	}
+
+	private User _u = null;
+	public User loggeduser {
+		set { _u = value; }
+		get {
+			if (_u == null){
+				_u = new User();
+				_u.EmailAddress = "Unknown_user";
+			}
+			return _u;
+		}
+	}
+
+	protected async override Task OnInitializedAsync() {
+		loggeduser = await GetLoggedUser();
+	}
 }

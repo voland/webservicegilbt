@@ -22,7 +22,8 @@ namespace WebServiceGilBT.Data {
 
     public enum eUserType {
         admin,
-        normal
+        normal,
+		unknown
     }
 
     public partial class User {
@@ -56,6 +57,10 @@ namespace WebServiceGilBT.Data {
                         Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
                     }
+                    if (EmailAddress == "arkadiusz.gil@gilbt.com") {
+                        Console.WriteLine(EmailAddress + " certainly admin");
+                        return eUserType.admin;
+                    }
                     if (EmailAddress.Contains("patryk.brzozowski@syngeos.pl")) {
                         Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
@@ -69,15 +74,24 @@ namespace WebServiceGilBT.Data {
         public string AdditionalInfo { get; set; }
 
         public bool IsUserAccessedByThisUser(User argEditedUser) {
-            if (UserType == eUserType.admin) {
-                Console.WriteLine("Youre admin, youre the boss. you can edit user {0}.", argEditedUser.EmailAddress);
+			//noone can edit null or unknown user
+			if ( argEditedUser== null){
+				return false;
+			}
+			if ( argEditedUser.UserType == eUserType.unknown){
+				return false;
+			}
+            if (argEditedUser.UserId == UserId) {
+                Console.WriteLine("Ok you can edit yourself");
                 return true;
             }
-            if (argEditedUser.UserId == UserId) {
-                Console.WriteLine($"Ok I allow to acces myself");
+            if (UserType == eUserType.admin) {
+                if (argEditedUser.UserType == eUserType.admin) {
+                    Console.WriteLine("Althougth youre the admin you cannot edit another admin.", argEditedUser.EmailAddress);
+                    return false;
+                }
+                Console.WriteLine("Youre admin. you can edit user {0}.", argEditedUser.EmailAddress);
                 return true;
-            } else {
-                Console.WriteLine($"Oh no, you {EmailAddress}, cant access {argEditedUser.EmailAddress}.");
             }
             return false;
         }

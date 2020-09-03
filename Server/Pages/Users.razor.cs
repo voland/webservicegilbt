@@ -26,7 +26,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         protected void NavigateToConfigureUser(User argUser) {
-            string newurl = $"configureuser/{argUser.EmailAddress}";
+            string newurl = $"changeuserpassword/{argUser.UserId}";
             Debuger.PrintLn($"navigating to {newurl}");
             NavigationManager.NavigateTo(newurl);
         }
@@ -50,13 +50,6 @@ namespace WebServiceGilBT.Pages {
                 return _u;
             }
         }
-
-		protected int _tab_idx=1;
-		protected int tab_idx{
-			get {
-				return _tab_idx++;
-			}
-		}
 
         private int bi = 0;
         protected string item_background {

@@ -5,7 +5,7 @@
 
 <table class="my_custom_table">
 		<tr class="my_custom_th_verydark">
-			<th>Idx</th>
+			<th>User Id</th>
 			<th>Email</th>
 			<th>Type</th>
 			<th>Configure</th>
@@ -13,7 +13,7 @@
 		@foreach (User user in _userlist) {
 			@if (loggeduser.UserType == eUserType.admin){
 				<tr class="my_custom_th @item_background">
-					<td>@tab_idx</td>
+					<td>@user.UserId</td>
 					<td>@user.EmailAddress</td>
 					<td>@user.UserType</td>
 					<td><button class="btn btn-primary" 

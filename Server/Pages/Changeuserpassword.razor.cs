@@ -19,6 +19,8 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         NavigationManager NavigationManager { set; get; }
 
+        [Inject]
+        IUserService userService { set; get; }
 
         protected string OldPasswd { set; get; }
         protected string NewPasswd { set; get; }
@@ -27,6 +29,12 @@ namespace WebServiceGilBT.Pages {
         private void NavigateHome() {
             string newurl = "/index";
             NavigationManager.NavigateTo(newurl);
+        }
+
+
+        protected async Task<User> GetEditedUser(int argUserId) {
+            User editeduser = await userService.GetUserAsync(argUserId);
+            return editeduser;
         }
 
         protected async Task<User> GetLoggedUser() {
@@ -40,48 +48,73 @@ namespace WebServiceGilBT.Pages {
             return u;
         }
 
-        protected async override Task OnInitializedAsync() {
-            logged_user = await GetLoggedUser();
-            if (UserIdParameter > 0) {
-				//TODO: add searching for edited user
-				//TODO: uniknac powielania userid
-				Console.WriteLine("new user");
-				edited_user = new User();
-			}else{
-				Console.WriteLine("logged_user is edited_user");
-				edited_user = logged_user;
-			}
-        }
-
+        protected bool OldPasswdInputDisabled { set; get; }
+        protected string NoNeedPasswordMessage { set; get; }
         protected string LoginMesssage { set; get; }
 
+        protected async override Task OnInitializedAsync() {
+            OldPasswdInputDisabled = false;
+            logged_user = await GetLoggedUser();
+
+            if (UserIdParameter > 0) {
+                //TODO: uniknac powielania userid
+                edited_user = await GetEditedUser(UserIdParameter);
+                if (edited_user == null) {
+                    edited_user = new User();
+                    edited_user.EmailAddress = "unknown_user";
+					_edited_user.UserType = eUserType.unknown;
+                    LoginMesssage = "Unknown user.";
+                }
+            } else {
+                Console.WriteLine("logged_user is edited_user");
+                edited_user = logged_user;
+            }
+        }
+
         private async Task<bool> ValidateUser() {
-            if (edited_user.Password != OldPasswd) {
-                LoginMesssage = "Provide proper old password.";
+            if (logged_user.Password != OldPasswd) {
+				/* Console.WriteLine("passwd is{0}", logged_user.Password); */
+                LoginMesssage = "Provide proper current password of logged user.";
                 return await Task.FromResult(true);
-            }
-            if (NewPasswd != NewPasswd2) {
-                LoginMesssage = "Invalid password or new passwords are diffrent.";
-                return await Task.FromResult(true);
-            }
-            if (NewPasswd.Length < 6) {
-                LoginMesssage = "New password is to short.";
-				return await Task.FromResult(true);
             }
 
-            LoginMesssage = "Password changed successfuly.";
+            if ((NewPasswd != null) & (NewPasswd2 != null)) {
+                if (NewPasswd != NewPasswd2) {
+                    LoginMesssage = "Invalid password or new passwords are diffrent.";
+                    return await Task.FromResult(true);
+                }
+                if (NewPasswd.Length < 6) {
+                    LoginMesssage = "New password is to short.";
+                    return await Task.FromResult(true);
+                }
+
+				edited_user.Password = NewPasswd;
+				userService.UpdateUserAsync(edited_user);
+				if ( edited_user.UserId == logged_user.UserId){
+					_sessionStorageService.RemoveItemAsync("loggedUser");
+					await _sessionStorageService.SetItemAsync("loggedUser", JsonSerializer.Serialize(edited_user));
+				}
+                LoginMesssage = "Password changed successfuly.";
+            }else{
+                LoginMesssage = "Provide some new password at least 6 characters.";
+			}
+			NavigationManager.NavigateTo($"changeuserpassword/{edited_user.UserId}");
             return await Task.FromResult(true);
         }
 
         private User _edited_user = null;
 
-		public User edited_user{
+        public User edited_user {
             set { _edited_user = value; }
             get {
-                if (_edited_user == null) _edited_user = new User();
+                if (_edited_user == null) {
+					_edited_user = new User();
+					_edited_user.EmailAddress = "unknown_user";
+					_edited_user.UserType = eUserType.unknown;
+				}
                 return _edited_user;
             }
-		}
+        }
 
         private User _logged_user = null;
 

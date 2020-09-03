@@ -47,9 +47,31 @@ namespace WebServiceGilBT.Services {
 
         }
 
-		public async Task<List<User>> GetUserListAsync(){
-			return UserList.users;
-		}
+        public async Task<User> GetUserAsync(int argUserId) {
+            foreach (User user in UserList.users) {
+                if (user.UserId == argUserId) {
+                    return user;
+                }
+            }
+            return null;
+        }
+
+        public async Task UpdateUserAsync(User argUser) {
+            User user_to_remove = null;
+            foreach (User user in UserList.users) {
+                if (user.UserId == argUser.UserId) {
+                    user_to_remove = user;
+                }
+            }
+            if (user_to_remove != null) {
+                UserList.users.Remove(user_to_remove);
+            }
+            UserList.Add(argUser);
+        }
+
+        public async Task<List<User>> GetUserListAsync() {
+            return UserList.users;
+        }
 
         public async Task<User> RegisterUserAsync(User user) {
             User returnedUser = null;
@@ -67,7 +89,7 @@ namespace WebServiceGilBT.Services {
                     returnedUser = user;
                     returnedUser.AdditionalInfo = null;
                 } else {
-					returnedUser = user;
+                    returnedUser = user;
                     user.AdditionalInfo = "Passwords are not equal!";
                 }
 
