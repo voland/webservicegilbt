@@ -2,7 +2,7 @@ using System;
 using System.Text;
 using System.Security.Cryptography;
 using System.IO;
-using System.Linq;
+/* using System.Linq; */
 
 namespace EncryptString {
     public static class StringCipher {
@@ -55,7 +55,7 @@ namespace EncryptString {
                     ToReturn = encoding.GetString(ms.ToArray());
                 }
                 return ToReturn;
-            } catch (Exception ae) {
+            } catch () {
 				Console.Write("Warrning: this password cannot be decrypded, returning original value");
 				return text;
             }
