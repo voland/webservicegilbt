@@ -47,6 +47,10 @@ namespace WebServiceGilBT.Services {
 
         }
 
+        public async Task<User> GetUserAsync(string emailAddress) {
+            throw new NotImplementedException();
+        }
+
         public async Task<User> GetUserAsync(int argUserId) {
             foreach (User user in UserList.users) {
                 if (user.UserId == argUserId) {
@@ -98,5 +102,12 @@ namespace WebServiceGilBT.Services {
             return await Task.FromResult(returnedUser);
         }
 
+        public Task AddUserAsync(User argS) {
+            throw new NotImplementedException();
+        }
+
+        public Task<User> GetUserWithNameAndPasswordAsync(string email, string password) {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -2,11 +2,13 @@ Server/bin
 Server/obj
 Session.vim
 *swp
+*swo
 *~
 tags
 Server/Firmwares
 Server/Microsoft
 .vscode
+.vs/*
 
 
 Server/db/*

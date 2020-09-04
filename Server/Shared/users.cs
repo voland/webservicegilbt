@@ -47,7 +47,7 @@ namespace WebServiceGilBT.Shared {
                 }
                 //encrypt
                 foreach (User u in _users) {
-                    u.Password = EncryptStringSample.StringCipher.Encrypt(u.Password);
+                    u.Password = EncryptString.StringCipher.Encrypt(u.Password);
 					if ( u.UserId==0 ){
 						Random r = new Random();
 						u.UserId = r.Next();
@@ -72,7 +72,7 @@ namespace WebServiceGilBT.Shared {
                 }
                 //decrypt
                 foreach (User u in _users) {
-                    u.Password = EncryptStringSample.StringCipher.Decrypt(u.Password);
+                    u.Password = EncryptString.StringCipher.Decrypt(u.Password);
                 }
             }
         }
@@ -83,7 +83,7 @@ namespace WebServiceGilBT.Shared {
                     String serialised_users = File.ReadAllText(ufn);
                     _users = JsonSerializer.Deserialize<List<User>>(serialised_users);
                     foreach (User u in _users) {
-                        u.Password = EncryptStringSample.StringCipher.Decrypt(u.Password);
+                        u.Password = EncryptString.StringCipher.Decrypt(u.Password);
                     }
                 } catch {
                     Debuger.PrintLn("Reading {0} failed.", ufn);

@@ -18,7 +18,7 @@ namespace WebServiceGilBT.Pages {
         Blazored.SessionStorage.ISessionStorageService _sessionStorageService { set; get; }
 
         [Inject]
-        IUserService userService { set; get; }
+        UserMySQLService userService { set; get; }
 
         protected async override Task OnInitializedAsync() {
             _userlist = await userService.GetUserListAsync();

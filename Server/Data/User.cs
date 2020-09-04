@@ -8,6 +8,7 @@ using WebServiceGilBT.Data;
 
 namespace WebServiceGilBT.Data {
 
+    [Serializable]
     public class ScreenAccessDescriber {
         public string Name { set; get; }
         public int uid { set; get; }

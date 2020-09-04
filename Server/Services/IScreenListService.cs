@@ -8,5 +8,7 @@ namespace WebServiceGilBT.Services {
         public Task PostScreenAsync(Screen argS);
         public Task<ScreenList> GetGilBTScreenListAsync();
         public ScreenList GetGilBTScreenList();
+        Task<Screen> GetGilBTScreenAsync(int uid);
+        Task UpdateScreenAsync(Screen argS);
     }
 }

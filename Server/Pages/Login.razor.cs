@@ -30,7 +30,7 @@ namespace WebServiceGilBT.Pages {
         NavigationManager NavigationManager { set; get; }
 
         [Inject]
-        IUserService userService { set; get; }
+        UserMySQLService userService { set; get; }
 
         protected override void OnInitialized() {
             user = new User();

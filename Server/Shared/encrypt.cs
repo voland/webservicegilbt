@@ -4,7 +4,7 @@ using System.Security.Cryptography;
 using System.IO;
 using System.Linq;
 
-namespace EncryptStringSample {
+namespace EncryptString {
     public static class StringCipher {
 
         const string publickey = "Moszna43";
@@ -56,7 +56,8 @@ namespace EncryptStringSample {
                 }
                 return ToReturn;
             } catch (Exception ae) {
-                throw new Exception(ae.Message, ae.InnerException);
+				Console.Write("Warrning: this password cannot be decrypded, returning original value");
+				return text;
             }
         }
     }

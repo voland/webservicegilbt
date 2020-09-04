@@ -20,7 +20,7 @@ namespace WebServiceGilBT.Pages {
         NavigationManager NavigationManager { set; get; }
 
         [Inject]
-        IUserService userService { set; get; }
+        UserMySQLService userService { set; get; }
 
         protected string OldPasswd { set; get; }
         protected string NewPasswd { set; get; }
@@ -89,7 +89,7 @@ namespace WebServiceGilBT.Pages {
                 }
 
 				edited_user.Password = NewPasswd;
-				userService.UpdateUserAsync(edited_user);
+				await userService.UpdateUserAsync(edited_user);
 				if ( edited_user.UserId == logged_user.UserId){
 					_sessionStorageService.RemoveItemAsync("loggedUser");
 					await _sessionStorageService.SetItemAsync("loggedUser", JsonSerializer.Serialize(edited_user));

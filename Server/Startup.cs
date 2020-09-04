@@ -32,10 +32,12 @@ namespace WebServiceGilBT {
             services.AddRazorPages();
             services.AddServerSideBlazor();
             services.AddHttpClient<IScreenListService, GilBTScreenListService>();
-            services.AddHttpClient<IUserService, UserService>();
 
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
-			services.AddBlazoredSessionStorage();
+            services.AddBlazoredSessionStorage();
+            services.AddTransient<SqlDataAccess>();
+            services.AddTransient<ScreenListMySQLService>();
+            services.AddTransient<UserMySQLService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,12 +52,9 @@ namespace WebServiceGilBT {
 
             /* app.UseHttpsRedirection(); */
             app.UseStaticFiles();
-
             app.UseRouting();
-
             app.UseAuthentication();
             app.UseAuthorization();
-
             app.UseEndpoints(endpoints => {
                 endpoints.MapDefaultControllerRoute();
                 endpoints.MapBlazorHub();
