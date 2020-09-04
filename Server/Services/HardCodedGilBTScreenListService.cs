@@ -22,9 +22,7 @@ namespace WebServiceGilBT.Services {
 
         public GilBTScreenListService(HttpClient httpClient) {
             this.httpClient = httpClient;
-            Debuger.PrintLn("Adding httpClient");
             httpClient.BaseAddress = new Uri(BaseAddress);
-            Debuger.PrintLn("Added httpClient");
         }
 
         public ScreenList GetGilBTScreenList() {
@@ -32,14 +30,12 @@ namespace WebServiceGilBT.Services {
         }
 
         public async Task PostScreenAsync(Screen argS) {
-            Debuger.PrintLn("Posted screen");
             argS.from_led_screen = false;
             await httpClient.PostJsonAsync("/api/screens/postscreen", argS);
         }
 
         public async Task DeleteScreenAsync(Screen argS) {
             int uid = argS.uid;
-            Debuger.PrintLn("Deleting screen uid {0}", uid);
             await httpClient.DeleteAsync($"/api/screens/deletescreen/{uid}");
         }
 
@@ -50,11 +46,11 @@ namespace WebServiceGilBT.Services {
             return screenList;
         }
 
-        public Task<Screen> GetGilBTScreenAsync(int uid) {
+        public async Task<Screen> GetGilBTScreenAsync(int uid) {
             throw new NotImplementedException();
         }
 
-        public Task UpdateScreenAsync(Screen argS) {
+        public async Task UpdateScreenAsync(Screen argS) {
             throw new NotImplementedException();
         }
     }
