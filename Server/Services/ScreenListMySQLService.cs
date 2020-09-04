@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+/* using System.Linq; */
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using WebServiceGilBT.Shared;
@@ -12,7 +12,6 @@ namespace WebServiceGilBT.Services {
         public int uid { set; get; }
         public string name { set; get; }
         public string firmware_ver { set; get; }
-        /* public byte[] firmware_bin { set; get; } */
         public int contrast { set; get; }
         public int contrast_night { set; get; }
         public int contrast_max { set; get; } = 4;
@@ -25,7 +24,6 @@ namespace WebServiceGilBT.Services {
         public string ip { set; get; }
         public string ma { set; get; }
         public string gw { set; get; }
-
         public byte[] pres { get; set; }
 
         public ScreenInDB() { }
@@ -48,16 +46,15 @@ namespace WebServiceGilBT.Services {
             gw = s.gw;
             pres = objectToByteArray(s.pres);
         }
-        public Screen oddajScreen() {
-            Screen s = new Screen();
 
+        public Screen GetScreen() {
+            Screen s = new Screen();
             s.uid = uid;
             s.name = name;
             s.firmware_ver = firmware_ver;
             s.contrast = contrast;
             s.contrast_max = contrast_max;
             s.contrast_night = contrast_night;
-
             s.last_request = DateTime.ParseExact(last_request, "MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
             s.screen_type = screen_type;
             s.from_led_screen = from_led_screen;
@@ -71,8 +68,6 @@ namespace WebServiceGilBT.Services {
 
             return s;
         }
-
-
 
         byte[] objectToByteArray(object obj) {
             if (obj != null) {
@@ -96,74 +91,60 @@ namespace WebServiceGilBT.Services {
             }
             return null;
         }
-
-
     }
-
 
     public class ScreenListMySQLService : IScreenListService {
 
         readonly SqlDataAccess _db;
+
         public ScreenListMySQLService(SqlDataAccess db) {
             _db = db;
         }
 
-        public Task DeleteScreenAsync(Screen argS) {
+        public async Task DeleteScreenAsync(Screen argS) {
             string sql = @" DELETE FROM screens
                             WHERE Id = @Id ";
-
-
-            return _db.SaveDataAsync(sql, new ScreenInDB(argS));
+            await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
 
         public ScreenList GetGilBTScreenList() {
             return GetGilBTScreenListAsync().Result;
         }
 
-        public Task<ScreenList> GetGilBTScreenListAsync() {
+        public async Task<ScreenList> GetGilBTScreenListAsync() {
             string sql = "select * from screens";
-
-            List<ScreenInDB> listaPrzejsciowa = _db.LoadData<ScreenInDB, dynamic>(sql, new { }).Result;
-
+            List<ScreenInDB> listaPrzejsciowa = await _db.LoadData<ScreenInDB, dynamic>(sql, new { });
             ScreenList sl = new ScreenList();
             sl.Screens = new List<Screen>();
             foreach (ScreenInDB sidb in listaPrzejsciowa) {
-                sl.Screens.Add(sidb.oddajScreen());
+                sl.Screens.Add(sidb.GetScreen());
             }
-
-            return Task.FromResult(sl);
+            return null;
         }
 
-        public Task<Screen> GetGilBTScreenAsync(int uid) {
+        public async Task<Screen> GetGilBTScreenAsync(int uid) {
             string sql = "select * from screens where uid=" + uid;
-
-            List<ScreenInDB> listaPrzejsciowa = _db.LoadData<ScreenInDB, dynamic>(sql, new { }).Result;
-
+            List<ScreenInDB> listaPrzejsciowa = await _db.LoadData<ScreenInDB, dynamic>(sql, new { });
             if (listaPrzejsciowa != null) {
                 if (listaPrzejsciowa.Count > 0) {
-                    Screen scr = listaPrzejsciowa[0].oddajScreen();
-                    return Task.FromResult(scr);
+                    Screen scr = listaPrzejsciowa[0].GetScreen();
+                    return scr;
                 }
             }
             return null;
         }
 
-        public Task PostScreenAsync(Screen argS) {
+        public async Task PostScreenAsync(Screen argS) {
             string sql = @"insert into screens (uid , name,  firmware_ver , contrast, contrast_max, contrast_night, last_request, screen_type, from_led_screen, width, height, dhcp, ip, ma, gw, pres)
                            values (@uid, @name,  @firmware_ver , @contrast, @contrast_max, @contrast_night, @last_request, @screen_type, @from_led_screen, @width, @height, @dhcp, @ip, @ma, @gw, @pres);";
-
-
-            return _db.SaveDataAsync(sql, new ScreenInDB(argS));
+            await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
 
-        public Task UpdateScreenAsync(Screen argS) {
-
+        public async Task UpdateScreenAsync(Screen argS) {
             string sql = @" UPDATE screens
                         SET name = @name,  firmware_ver = @firmware_ver , contrast = @contrast, contrast_max = @contrast_max, contrast_night = @contrast_night, last_request = @last_request, screen_type = @screen_type, from_led_screen = @from_led_screen, width = @width, height = @height, dhcp = @dhcp, ip = @ip, ma = @ma, gw = @gw, pres=@pres
                         WHERE uid = @uid ";
-
-
-            return _db.SaveDataAsync(sql, new ScreenInDB(argS));
+            await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
     }
 }
