@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
+/* using System.Linq; */
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using WebServiceGilBT.Data;
@@ -42,7 +42,6 @@ namespace WebServiceGilBT.Services {
             u.UserId = UserId;
             u.EmailAddress = EmailAddress;
             u.Password = EncryptString.StringCipher.Decrypt(Password);
-			Console.WriteLine("decrypted password {0}, {1}", Password, u.Password);
             u.FirstName = FirstName;
             u.LastName = LastName;
             u.UserType = (eUserType)Enum.Parse(typeof(eUserType), UserType);
@@ -90,53 +89,55 @@ namespace WebServiceGilBT.Services {
         public async Task AddUserAsync(User argS) {
             string sql = @"insert into users (UserId , EmailAddress,  Password , FirstName, LastName, UserType, ScreenAccessList, ConfirmPassword, AdditionalInfo)
                            values (@UserId, @EmailAddress,  @Password , @FirstName, @LastName, @UserType, @ScreenAccessList, @ConfirmPassword, @AdditionalInfo);";
-            _db.SaveDataAsync(sql, new UserInDB(argS));
+            await _db.SaveDataAsync(sql, new UserInDB(argS));
         }
 
-        public Task<List<User>> GetUserListAsync() {
+        public async Task<List<User>> GetUserListAsync() {
             string sql = @"select * from users";
-            List<UserInDB> listaPrzejsciowa = _db.LoadData<UserInDB, dynamic>(sql, new { }).Result;
+            /* List<UserInDB> listaPrzejsciowa = _db.LoadData<UserInDB, dynamic>(sql, new { }).Result; */
+            /* List<UserInDB> listaPrzejsciowa = await _db.LoadData<UserInDB, dynamic>(sql, new { }); */
+            List<UserInDB> listaPrzejsciowa = await _db.LoadData<UserInDB, dynamic>(sql, new { });
             List<User> ul = new List<User>();
             foreach (UserInDB uidb in listaPrzejsciowa) {
                 ul.Add(uidb.ToUser());
             }
-            return Task.FromResult(ul);
+            return await Task.FromResult(ul);
         }
 
         public async Task<User> GetUserAsync(int uid) {
             string sql = "select * from users where UserId=" + uid.ToString();
-            List<UserInDB> listaPrzejsciowa = _db.LoadData<UserInDB, dynamic>(sql, new { }).Result;
+            List<UserInDB> listaPrzejsciowa = await _db.LoadData<UserInDB, dynamic>(sql, new { });
             if (listaPrzejsciowa != null) {
                 if (listaPrzejsciowa.Count > 0) {
                     User usr = listaPrzejsciowa[0].ToUser();
                     return usr;
                 }
             }
-            return null;
+            return await Task.FromResult<User>(null);
         }
 
         public async Task<User> GetUserWithNameAndPasswordAsync(string email, string password) {
             string sql = string.Format("select * from users where EmailAddress=\"{0}\" and Password=\"{1}\"", email, password);
-            List<UserInDB> listaPrzejsciowa = _db.LoadData<UserInDB, dynamic>(sql, new { }).Result;
+            List<UserInDB> listaPrzejsciowa = await _db.LoadData<UserInDB, dynamic>(sql, new { });
             if (listaPrzejsciowa != null) {
                 if (listaPrzejsciowa.Count > 0) {
                     User usr = listaPrzejsciowa[0].ToUser();
                     return usr;
                 }
             }
-            return null;
+            return await Task.FromResult<User>(null);
         }
 
         public async Task<User> GetUserAsync(string argEmail) {
             string sql = string.Format("select * from users where EmailAddress=\"{0}\"", argEmail);
-            List<UserInDB> listaPrzejsciowa = _db.LoadData<UserInDB, dynamic>(sql, new { }).Result;
+            List<UserInDB> listaPrzejsciowa = await _db.LoadData<UserInDB, dynamic>(sql, new { });
             if (listaPrzejsciowa != null) {
                 if (listaPrzejsciowa.Count > 0) {
                     User usr = listaPrzejsciowa[0].ToUser();
                     return usr;
                 }
             }
-            return null;
+            return await Task.FromResult<User>(null);
         }
 
         public async Task<User> LoginAsync(User argUser) {
@@ -160,7 +161,7 @@ namespace WebServiceGilBT.Services {
             }
             if (returnedUser == null) {
                 if (argUser.Password == argUser.ConfirmPassword) {
-                    AddUserAsync(argUser);
+                    await AddUserAsync(argUser);
                     returnedUser = argUser;
                     returnedUser.AdditionalInfo = null;
                 } else {
@@ -177,7 +178,7 @@ namespace WebServiceGilBT.Services {
                         SET EmailAddress = @EmailAddress,  Password = @Password , FirstName = @FirstName, LastName = @LastName, UserType = @UserType, ScreenAccessList = @ScreenAccessList, ConfirmPassword = @ConfirmPassword, AdditionalInfo = @AdditionalInfo
                         WHERE UserId = @UserId ";
 
-            _db.SaveDataAsync(sql, new UserInDB(argS));
+            await _db.SaveDataAsync(sql, new UserInDB(argS));
         }
     }
 }
