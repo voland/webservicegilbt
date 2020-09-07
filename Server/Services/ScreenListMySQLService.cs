@@ -103,7 +103,7 @@ namespace WebServiceGilBT.Services {
 
         public async Task DeleteScreenAsync(Screen argS) {
             string sql = @" DELETE FROM screens
-                            WHERE Id = @Id ";
+                            WHERE uid = @uid ";
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
 

@@ -47,13 +47,13 @@ namespace WebServiceGilBT.Shared {
         }
 
         private void NavigateHome() {
-            string newurl = "";
+            string newurl = "/index";
             NavigationManager.NavigateTo(newurl);
         }
 
         public void DeleteClicked() {
             Debuger.PrintLn("DeleteClicked");
-            ScreenListService.DeleteScreenAsync(Screen);
+            ScreenListService.DeleteScreenAsync(Screen).Wait();
             NavigateHome();
         }
 
