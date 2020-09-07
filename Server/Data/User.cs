@@ -55,15 +55,12 @@ namespace WebServiceGilBT.Data {
             get {
                 if (EmailAddress != null) {
                     if (EmailAddress == "voland83@gmail.com") {
-                        Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
                     }
                     if (EmailAddress == "arkadiusz.gil@gilbt.com") {
-                        Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
                     }
                     if (EmailAddress.Contains("patryk.brzozowski@syngeos.pl")) {
-                        Console.WriteLine(EmailAddress + " certainly admin");
                         return eUserType.admin;
                     }
                 }
