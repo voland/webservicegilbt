@@ -10,7 +10,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebServiceGilBT.Data;
-using WebServiceGilBT.Shared;
+/* using WebServiceGilBT.Shared; */
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.SessionStorage;
 /* using Microsoft.JSInterop; */
