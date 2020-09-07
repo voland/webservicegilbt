@@ -119,7 +119,7 @@ namespace WebServiceGilBT.Services {
             foreach (ScreenInDB sidb in listaPrzejsciowa) {
                 sl.Screens.Add(sidb.GetScreen());
             }
-            return null;
+            return sl;
         }
 
         public async Task<Screen> GetGilBTScreenAsync(int uid) {
@@ -148,3 +148,4 @@ namespace WebServiceGilBT.Services {
         }
     }
 }
+
