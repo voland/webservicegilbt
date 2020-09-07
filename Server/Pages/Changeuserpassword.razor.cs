@@ -91,7 +91,7 @@ namespace WebServiceGilBT.Pages {
 				edited_user.Password = NewPasswd;
 				await userService.UpdateUserAsync(edited_user);
 				if ( edited_user.UserId == logged_user.UserId){
-					_sessionStorageService.RemoveItemAsync("loggedUser");
+					await _sessionStorageService.RemoveItemAsync("loggedUser");
 					await _sessionStorageService.SetItemAsync("loggedUser", JsonSerializer.Serialize(edited_user));
 				}
                 LoginMesssage = "Password changed successfuly.";
