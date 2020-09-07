@@ -3,7 +3,6 @@ using System.Collections.Generic;
 
 //serializatoin
 using System.Text.Json;
-using System.Text.Json.Serialization;
 using System.IO;
 
 namespace WebServiceGilBT.Shared {

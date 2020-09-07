@@ -13,7 +13,7 @@ namespace WebServiceGilBT.Pages {
         protected ScreenList screenList;
 
         [Inject]
-        protected IScreenListService ScreenListService { set; get; }
+        protected ScreenListMySQLService ScreenListService { set; get; }
 
         [Inject]
         NavigationManager NavigationManager { set; get; }

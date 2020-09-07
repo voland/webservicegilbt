@@ -11,7 +11,7 @@ namespace WebServiceGilBT.Pages {
     public partial class Configure : ComponentBase {
 
         [Inject]
-        protected IScreenListService ScreenListService { set; get; }
+        protected ScreenListMySQLService ScreenListService { set; get; }
 
         [Inject]
         Blazored.SessionStorage.ISessionStorageService _sessionStorageService { set; get; }
@@ -32,7 +32,7 @@ namespace WebServiceGilBT.Pages {
 
         public void ApplyClicked() {
             Screen.from_led_screen = false;
-            ScreenListService.PostScreenAsync(Screen);
+            ScreenListService.UpdateScreenAsync(Screen).Wait();
         }
 
         public void CancelClicked() {
@@ -58,6 +58,7 @@ namespace WebServiceGilBT.Pages {
                 Screen.name = "NULL";
                 Screen.screen_type = eScreenType.unknown;
             }
+			Console.WriteLine("endof OnInitializedAsync");
         }
 
         protected async Task<User> GetLoggedUser() {

@@ -7,7 +7,7 @@ using WebServiceGilBT.Services;
 namespace WebServiceGilBT.Shared {
     public partial class ScreenEditor : ComponentBase {
         [Inject]
-        protected IScreenListService ScreenListService { set; get; }
+        protected ScreenListMySQLService ScreenListService { set; get; }
 
         [Inject]
         NavigationManager NavigationManager { set; get; }

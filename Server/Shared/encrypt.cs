@@ -55,8 +55,9 @@ namespace EncryptString {
                     ToReturn = encoding.GetString(ms.ToArray());
                 }
                 return ToReturn;
-            } catch () {
-				Console.Write("Warrning: this password cannot be decrypded, returning original value");
+            } catch (Exception e) {
+				if ( e!=null)
+					Console.Write("Warrning: this password cannot be decrypded, returning original value");
 				return text;
             }
         }

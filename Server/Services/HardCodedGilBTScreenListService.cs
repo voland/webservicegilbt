@@ -48,12 +48,11 @@ namespace WebServiceGilBT.Services {
 
         public async Task<Screen> GetGilBTScreenAsync(int uid) {
             //throw new NotImplementedException();
-			return await Task.FromResult<Screen>(null);
+            return await Task.FromResult<Screen>(null);
         }
 
         public async Task UpdateScreenAsync(Screen argS) {
-            throw new NotImplementedException();
-			/* return await Task(); */
+            await PostScreenAsync(argS);
         }
     }
 }

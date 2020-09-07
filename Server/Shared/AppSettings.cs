@@ -32,17 +32,18 @@ namespace WebServiceGilBT.Shared {
 
         private static AppSettings _as;
 
-        public static AppSettings ReadAppSettings() {
-            if (_as == null) {
-                try {
-                    string serialised_app_settings = File.ReadAllText(filename);
-					Console.WriteLine(serialised_app_settings);
-                    _as = JsonSerializer.Deserialize<AppSettings>(serialised_app_settings);
-                } catch {
-                    Debuger.PrintLn("ReadAppSettings: Reading {0} failed.", filename);
+        public static AppSettings appSettings {
+            get {
+                if (_as == null) {
+                    try {
+                        string serialised_app_settings = File.ReadAllText(filename);
+                        _as = JsonSerializer.Deserialize<AppSettings>(serialised_app_settings);
+                    } catch {
+                        Debuger.PrintLn("ReadAppSettings: Reading {0} failed.", filename);
+                    }
                 }
+                return _as;
             }
-            return _as;
         }
     }
 }

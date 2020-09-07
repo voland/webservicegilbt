@@ -1,11 +1,11 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+/* using System; */
+/* using System.Collections.Generic; */
+/* using System.Linq; */
+/* using System.Threading.Tasks; */
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Components;
+/* using Microsoft.AspNetCore.Components; */
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
+/* using Microsoft.AspNetCore.HttpsPolicy; */
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,8 +13,9 @@ using WebServiceGilBT.Data;
 using WebServiceGilBT.Shared;
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.SessionStorage;
-using Microsoft.JSInterop;
+/* using Microsoft.JSInterop; */
 using WebServiceGilBT.Services;
+/* using System.Configuration; */
 
 namespace WebServiceGilBT {
     public class Startup {
@@ -31,7 +32,6 @@ namespace WebServiceGilBT {
         public void ConfigureServices(IServiceCollection services) {
             services.AddRazorPages();
             services.AddServerSideBlazor();
-            services.AddHttpClient<IScreenListService, GilBTScreenListService>();
 
             services.AddScoped<AuthenticationStateProvider, CustomAuthenticationStateProvider>();
             services.AddBlazoredSessionStorage();
