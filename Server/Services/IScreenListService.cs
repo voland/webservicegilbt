@@ -1,3 +1,4 @@
+using System;
 using System.Threading.Tasks;
 using WebServiceGilBT.Shared;
 
@@ -10,5 +11,6 @@ namespace WebServiceGilBT.Services {
         public ScreenList GetGilBTScreenList();
         Task<Screen> GetGilBTScreenAsync(int uid);
         Task UpdateScreenAsync(Screen argS);
+        Task UpdateLastRequestTime(Screen argS);
     }
 }

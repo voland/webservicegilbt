@@ -5,6 +5,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using WebServiceGilBT.Shared;
+using System.Text.Json;
 
 namespace WebServiceGilBT.Services {
 
@@ -35,7 +36,7 @@ namespace WebServiceGilBT.Services {
             contrast = s.contrast;
             contrast_max = s.contrast_max;
             contrast_night = s.contrast_night;
-            last_request = s.last_request.ToString("yyyy-MM-dd HH:mm:ss");
+            last_request = JsonSerializer.Serialize(s.last_request);
             screen_type = s.screen_type;
             from_led_screen = s.from_led_screen;
             width = s.width;
@@ -55,7 +56,11 @@ namespace WebServiceGilBT.Services {
             s.contrast = contrast;
             s.contrast_max = contrast_max;
             s.contrast_night = contrast_night;
-            s.last_request = DateTime.ParseExact(last_request, "MM/dd/yyyy HH:mm:ss", System.Globalization.CultureInfo.InvariantCulture);
+            try {
+                s.last_request = JsonSerializer.Deserialize<DateTime>(last_request);
+            } catch {
+                s.last_request = DateTime.Now;
+            }
             s.screen_type = screen_type;
             s.from_led_screen = from_led_screen;
             s.width = width;
@@ -135,6 +140,7 @@ namespace WebServiceGilBT.Services {
         }
 
         public async Task PostScreenAsync(Screen argS) {
+            argS.ActualiseLastRequestTime();
             string sql = @"insert into screens (uid , name,  firmware_ver , contrast, contrast_max, contrast_night, last_request, screen_type, from_led_screen, width, height, dhcp, ip, ma, gw, pres)
                            values (@uid, @name,  @firmware_ver , @contrast, @contrast_max, @contrast_night, @last_request, @screen_type, @from_led_screen, @width, @height, @dhcp, @ip, @ma, @gw, @pres);";
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
@@ -143,6 +149,14 @@ namespace WebServiceGilBT.Services {
         public async Task UpdateScreenAsync(Screen argS) {
             string sql = @" UPDATE screens
                         SET name = @name,  firmware_ver = @firmware_ver , contrast = @contrast, contrast_max = @contrast_max, contrast_night = @contrast_night, last_request = @last_request, screen_type = @screen_type, from_led_screen = @from_led_screen, width = @width, height = @height, dhcp = @dhcp, ip = @ip, ma = @ma, gw = @gw, pres=@pres
+                        WHERE uid = @uid ";
+            await _db.SaveDataAsync(sql, new ScreenInDB(argS));
+        }
+
+        public async Task UpdateLastRequestTime(Screen argS) {
+            argS.ActualiseLastRequestTime();
+            string sql = @" UPDATE screens
+                        SET last_request = @last_request
                         WHERE uid = @uid ";
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
