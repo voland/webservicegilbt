@@ -89,5 +89,36 @@ namespace WebServiceGilBT.Controller {
                 return Created($"Fail.", null);
             }
         }
+
+        static public void CopyDataToDb() {
+            IScreenListService sls = new ScreenListMySQLService(new SqlDataAccess(null));
+            //ekrany
+            List<Screen> ss = ScreenList.Load();
+            foreach (Screen argScreen in ss) {
+                Debuger.PrintLn("Posting Screen {0}.", argScreen.uid);
+                if (argScreen != null) {
+                    Screen temp = sls.GetGilBTScreenAsync(argScreen.uid).Result;
+                    if (temp != null) {
+                        Debuger.PrintLn("Already exists Uid {0}.", argScreen.uid);
+                    } else {
+                        Debuger.PrintLn("Adding screen Uid {0}.", argScreen.uid);
+                        argScreen.from_led_screen = true;
+                        sls.PostScreenAsync(argScreen);
+                    }
+                } else {
+                }
+            }
+            //usery
+            WebServiceGilBT.Services.UserMySQLService uls = new WebServiceGilBT.Services.UserMySQLService(new SqlDataAccess(null));
+            foreach (WebServiceGilBT.Data.User user in UserList.users) {
+				Console.WriteLine("adding: " +user.EmailAddress);
+                if (user != null) {
+                    WebServiceGilBT.Data.User userindb = uls.GetUserAsync(user.UserId).Result;
+                    if (userindb == null) {
+                        uls.AddUserAsync(user).Wait();
+                    }
+                }
+            }
+        }
     }
 }

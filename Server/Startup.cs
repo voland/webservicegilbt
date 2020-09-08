@@ -38,6 +38,8 @@ namespace WebServiceGilBT {
             services.AddTransient<SqlDataAccess>();
             services.AddTransient<ScreenListMySQLService>();
             services.AddTransient<UserMySQLService>();
+
+			/* WebServiceGilBT.Controller.ScreensController.CopyDataToDb(); */
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
