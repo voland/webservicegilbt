@@ -42,7 +42,6 @@ namespace WebServiceGilBT.Pages {
         protected ScreenList screenList;
 
         protected async override Task OnInitializedAsync() {
-            Console.WriteLine("async Initialising ScreenList");
             user = await GetLoggedUser();
 
             screenList = await ScreenListService.GetGilBTScreenListAsync();
@@ -58,7 +57,6 @@ namespace WebServiceGilBT.Pages {
                 Screen.name = "NULL";
                 Screen.screen_type = eScreenType.unknown;
             }
-			Console.WriteLine("endof OnInitializedAsync");
         }
 
         protected async Task<User> GetLoggedUser() {
