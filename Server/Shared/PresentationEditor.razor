@@ -41,6 +41,10 @@
 						<InputSelect TValue="FontType" @bind-Value="pe.font">
 							<option value="@FontType.fontnormal8px">Font normal 8px</option>
 							<option value="@FontType.fontfat8px">Font fat 8px</option>
+							<option value="@FontType.arial14">Arial 14px</option>
+							<option value="@FontType.arial16">Arial 16px</option>
+							<option value="@FontType.impact14">Impact 14px</option>
+							<option value="@FontType.impact16">Impact 16px</option>
 						</InputSelect>
 						@switch ( pe.type ){
 							case ElementType.TEXT:

@@ -22,8 +22,13 @@ namespace WebServiceGilBT.Shared {
     [Serializable]
     public enum FontType {
         fontnormal8px,
-        fontfat8px
+        fontfat8px,
+		arial14,
+		arial16,
+		impact14,
+		impact16
     }
+
     [Serializable]
     static public class FontNames {
         public const string fontfat = "FONTFAT";
