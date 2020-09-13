@@ -26,9 +26,18 @@
 							<option value="@ElementType.SENSOR_TEMPERATURE">Sensor temperature</option>
 							<option value="@ElementType.SENSOR_HUMIDITY">Sensor humidity</option>
 							<option value="@ElementType.SENSOR_PRESSURE">Sensor pressure</option>
+							@* just number *@
 							<option value="@ElementType.SENSOR_PM2_5">Sensor pm2,5</option>
 							<option value="@ElementType.SENSOR_PM10">Sensor pm10</option>
 							<option value="@ElementType.SENSOR_PM1">Sensor pm1</option>
+							@* data in percent value *@
+							<option value="@ElementType.SENSOR_PM2_5_PERCENT">Sensor pm2,5 %</option>
+							<option value="@ElementType.SENSOR_PM10_PERCENT">Sensor pm10 %</option>
+							<option value="@ElementType.SENSOR_PM1_PERCENT">Sensor pm1 %</option>
+							@* user firendly status *@
+							<option value="@ElementType.SENSOR_PM2_5_STATUS">Sensor pm2,5 status</option>
+							<option value="@ElementType.SENSOR_PM10_STATUS">Sensor pm10 status</option>
+							<option value="@ElementType.SENSOR_PM1_STATUS">Sensor pm1 status</option>
 							<option value="@ElementType.UID">Screen id</option>
 						</InputSelect>
 					</td>
@@ -56,6 +65,12 @@
 							case ElementType.SENSOR_TEMPERATURE:
 							case ElementType.SENSOR_PRESSURE:
 							case ElementType.SENSOR_HUMIDITY:
+							case ElementType.SENSOR_PM2_5_PERCENT:
+							case ElementType.SENSOR_PM10_PERCENT:
+							case ElementType.SENSOR_PM1_PERCENT:
+							case ElementType.SENSOR_PM2_5_STATUS:
+							case ElementType.SENSOR_PM10_STATUS:
+							case ElementType.SENSOR_PM1_STATUS:
 								<InputNumber TValue="Int32" @bind-Value="pe.idx" @oninput="OnIdxChanched" style="width:70px" min="0" max="1024"/>
 								<label>@pe.city</label>
 							break;

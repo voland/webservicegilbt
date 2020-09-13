@@ -31,6 +31,32 @@ namespace WebServiceGilBT.Shared {
         public IList<Datum> data { get; set; }
         public string display_type { get; set; }
         public Norm norm { get; set; }
+
+        public string GetPercentageValue() {
+            if (norm != null) {
+                int value = (int)data[0].value;
+                int threshold = norm.threshold;
+                int percent_value = (100 * value) / threshold;
+                return string.Format("{0}%", percent_value);
+            } else {
+                return "Unknown percent.";
+            }
+        }
+
+        public string GetStatusValue() {
+            if (norm != null) {
+                string retvalue = "Bardzo Zły";
+                int value = (int)data[0].value;
+                if (value <= norm.grade_e.lt) retvalue = "Zły";
+                if (value <= norm.grade_d.lt) retvalue = "Dostateczny";
+                if (value <= norm.grade_c.lt) retvalue = "Umiarkowany";
+                if (value <= norm.grade_b.lt) retvalue = "Dobry";
+                if (value <= norm.grade_a.lt) retvalue = "Bardzo dobry";
+                return retvalue;
+            } else {
+                return "Unknown status.";
+            }
+        }
     }
 
     [Serializable]

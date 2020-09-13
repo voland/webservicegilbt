@@ -17,16 +17,22 @@ namespace WebServiceGilBT.Shared {
         SENSOR_PM2_5,
         SENSOR_PM10,
         SENSOR_PM1,
+        SENSOR_PM2_5_PERCENT,
+        SENSOR_PM10_PERCENT,
+        SENSOR_PM1_PERCENT,
+        SENSOR_PM2_5_STATUS,
+        SENSOR_PM10_STATUS,
+        SENSOR_PM1_STATUS,
         UID
     }
     [Serializable]
     public enum FontType {
         fontnormal8px,
         fontfat8px,
-		arial14,
-		arial16,
-		impact14,
-		impact16
+        arial14,
+        arial16,
+        impact14,
+        impact16
     }
 
     [Serializable]
@@ -108,7 +114,7 @@ namespace WebServiceGilBT.Shared {
         private string GenerateSensorText(string sensor_name) {
             if (last_read_device == null) last_read_device = DateTime.Now.AddHours(-100);
             //setting default sensor in case its 0;
-            if (idx <= 0) idx = 444;
+            if (idx < 0) idx = 444;
             if (idx == -1) {
                 //find idx based on city
                 if (city == "") {
@@ -166,6 +172,54 @@ namespace WebServiceGilBT.Shared {
                     case ElementType.IMAGE: {
                             return "Image not supported";
                         }
+                    case ElementType.SENSOR_PM2_5_PERCENT: {
+                            foreach (DeviceSensor s in d.sensors) {
+                                if (s.name == pm2_5) {
+                                    return s.GetPercentageValue();
+                                }
+                            }
+                            return "Not Found " + pm2_5;
+                        }
+                    case ElementType.SENSOR_PM10_PERCENT: {
+                            foreach (DeviceSensor s in d.sensors) {
+                                if (s.name == pm10) {
+                                    return s.GetPercentageValue();
+                                }
+                            }
+                            return "Not Found " + pm10;
+                        }
+                    case ElementType.SENSOR_PM2_5_STATUS: {
+                            foreach (DeviceSensor s in d.sensors) {
+                                if (s.name == pm2_5) {
+                                    return s.GetStatusValue();
+                                }
+                            }
+                            return "Not Found " + pm2_5;
+                        }
+                    case ElementType.SENSOR_PM10_STATUS: {
+                            foreach (DeviceSensor s in d.sensors) {
+                                if (s.name == pm10) {
+                                    return s.GetStatusValue();
+                                }
+                            }
+                            return "Not Found " + pm10;
+                        }
+                    case ElementType.SENSOR_PM1_PERCENT: {
+                            foreach (DeviceSensor s in d.sensors) {
+                                if (s.name == pm1) {
+                                    return s.GetPercentageValue();
+                                }
+                            }
+                            return "Not Found " + pm1;
+                        }
+                    case ElementType.SENSOR_PM1_STATUS: {
+                            foreach (DeviceSensor s in d.sensors) {
+                                if (s.name == pm1) {
+                                    return s.GetStatusValue();
+                                }
+                            }
+                            return "Not Found " + pm1;
+                        }
                     case ElementType.SENSOR_PM2_5: {
                             return GenerateSensorText(pm2_5);
                         }
@@ -188,7 +242,7 @@ namespace WebServiceGilBT.Shared {
                             return "Screen id number.";
                         }
                 }
-                return "element not supported";
+                return "element not supported!";
             }
         }
 
