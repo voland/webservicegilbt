@@ -30,7 +30,6 @@ namespace WebServiceGilBT.Shared {
         }
 
         public void OnIdxChanched(ChangeEventArgs e) {
-            Debuger.PrintLn("Idxchanged");
             StateHasChanged();
         }
 
