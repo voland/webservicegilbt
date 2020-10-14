@@ -1,4 +1,4 @@
-/* using System; */
+using System;
 /* using System.Collections.Generic; */
 /* using System.Linq; */
 /* using System.Threading.Tasks; */
@@ -38,7 +38,6 @@ namespace WebServiceGilBT {
             services.AddTransient<SqlDataAccess>();
             services.AddTransient<ScreenListMySQLService>();
             services.AddTransient<UserMySQLService>();
-
 			/* WebServiceGilBT.Controller.ScreensController.CopyDataToDb(); */
         }
 

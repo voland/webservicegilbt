@@ -6,24 +6,24 @@ using System.Text.Json;
 namespace WebServiceGilBT.Shared {
     [Serializable]
     public enum ElementType {
-        TEXT,
-        RECTANGLE,
-        IMAGE,
-        TIME,
-        DATE,
-        SENSOR_TEMPERATURE,
-        SENSOR_HUMIDITY,
-        SENSOR_PRESSURE,
-        SENSOR_PM2_5,
-        SENSOR_PM10,
-        SENSOR_PM1,
+        TEXT = 0,
+        RECTANGLE = 1,
+        IMAGE = 2,
+        TIME = 3,
+        DATE = 4,
+        SENSOR_TEMPERATURE = 5,
+        SENSOR_HUMIDITY = 6,
+        SENSOR_PRESSURE = 7,
+        SENSOR_PM2_5 = 8,
+        SENSOR_PM10 = 9,
+        SENSOR_PM1 = 10,
+        UID = 11,
         SENSOR_PM2_5_PERCENT,
         SENSOR_PM10_PERCENT,
         SENSOR_PM1_PERCENT,
         SENSOR_PM2_5_STATUS,
         SENSOR_PM10_STATUS,
-        SENSOR_PM1_STATUS,
-        UID
+        SENSOR_PM1_STATUS
     }
     [Serializable]
     public enum FontType {
@@ -86,8 +86,10 @@ namespace WebServiceGilBT.Shared {
                                 _city = d.city;
                             }
                         }
-                    } catch {
+                    } catch (Exception e) {
+                        Console.WriteLine(e.Message);
                         _city = unknowncity;
+                        text = "unknown device";
                     }
                 }
             }
@@ -153,8 +155,8 @@ namespace WebServiceGilBT.Shared {
             }
             get {
                 switch (type) {
-                    case ElementType.TEXT:
-                        return _text;
+                    case ElementType.TEXT: return _text;
+                    case ElementType.UID: return "Screen id number.";
                     case ElementType.TIME: {
                             int h = Now.Hour;
                             int m = Now.Minute;
@@ -172,75 +174,82 @@ namespace WebServiceGilBT.Shared {
                     case ElementType.IMAGE: {
                             return "Image not supported";
                         }
-                    case ElementType.SENSOR_PM2_5_PERCENT: {
-                            foreach (DeviceSensor s in d.sensors) {
-                                if (s.name == pm2_5) {
-                                    return s.GetPercentageValue();
+                }
+                try {
+                    if (d != null) {
+                        switch (type) {
+                            case ElementType.SENSOR_PM2_5_PERCENT: {
+                                    foreach (DeviceSensor s in d.sensors) {
+                                        if (s.name == pm2_5) {
+                                            return s.GetPercentageValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm2_5;
                                 }
-                            }
-                            return "Not Found " + pm2_5;
-                        }
-                    case ElementType.SENSOR_PM10_PERCENT: {
-                            foreach (DeviceSensor s in d.sensors) {
-                                if (s.name == pm10) {
-                                    return s.GetPercentageValue();
+                            case ElementType.SENSOR_PM10_PERCENT: {
+                                    foreach (DeviceSensor s in d.sensors) {
+                                        if (s.name == pm10) {
+                                            return s.GetPercentageValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm10;
                                 }
-                            }
-                            return "Not Found " + pm10;
-                        }
-                    case ElementType.SENSOR_PM2_5_STATUS: {
-                            foreach (DeviceSensor s in d.sensors) {
-                                if (s.name == pm2_5) {
-                                    return s.GetStatusValue();
+                            case ElementType.SENSOR_PM2_5_STATUS: {
+                                    foreach (DeviceSensor s in d.sensors) {
+                                        if (s.name == pm2_5) {
+                                            return s.GetStatusValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm2_5;
                                 }
-                            }
-                            return "Not Found " + pm2_5;
-                        }
-                    case ElementType.SENSOR_PM10_STATUS: {
-                            foreach (DeviceSensor s in d.sensors) {
-                                if (s.name == pm10) {
-                                    return s.GetStatusValue();
+                            case ElementType.SENSOR_PM10_STATUS: {
+                                    foreach (DeviceSensor s in d.sensors) {
+                                        if (s.name == pm10) {
+                                            return s.GetStatusValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm10;
                                 }
-                            }
-                            return "Not Found " + pm10;
-                        }
-                    case ElementType.SENSOR_PM1_PERCENT: {
-                            foreach (DeviceSensor s in d.sensors) {
-                                if (s.name == pm1) {
-                                    return s.GetPercentageValue();
+                            case ElementType.SENSOR_PM1_PERCENT: {
+                                    foreach (DeviceSensor s in d.sensors) {
+                                        if (s.name == pm1) {
+                                            return s.GetPercentageValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm1;
                                 }
-                            }
-                            return "Not Found " + pm1;
-                        }
-                    case ElementType.SENSOR_PM1_STATUS: {
-                            foreach (DeviceSensor s in d.sensors) {
-                                if (s.name == pm1) {
-                                    return s.GetStatusValue();
+                            case ElementType.SENSOR_PM1_STATUS: {
+                                    foreach (DeviceSensor s in d.sensors) {
+                                        if (s.name == pm1) {
+                                            return s.GetStatusValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm1;
                                 }
-                            }
-                            return "Not Found " + pm1;
+                            case ElementType.SENSOR_PM2_5: {
+                                    return GenerateSensorText(pm2_5);
+                                }
+                            case ElementType.SENSOR_PM10: {
+                                    return GenerateSensorText(pm10);
+                                }
+                            case ElementType.SENSOR_TEMPERATURE: {
+                                    return GenerateSensorText(temperature);
+                                }
+                            case ElementType.SENSOR_PRESSURE: {
+                                    return GenerateSensorText(air_pressure);
+                                }
+                            case ElementType.SENSOR_HUMIDITY: {
+                                    return GenerateSensorText(humidity);
+                                }
+                            case ElementType.SENSOR_PM1: {
+                                    return GenerateSensorText(pm1);
+                                }
                         }
-                    case ElementType.SENSOR_PM2_5: {
-                            return GenerateSensorText(pm2_5);
-                        }
-                    case ElementType.SENSOR_PM10: {
-                            return GenerateSensorText(pm10);
-                        }
-                    case ElementType.SENSOR_TEMPERATURE: {
-                            return GenerateSensorText(temperature);
-                        }
-                    case ElementType.SENSOR_PRESSURE: {
-                            return GenerateSensorText(air_pressure);
-                        }
-                    case ElementType.SENSOR_HUMIDITY: {
-                            return GenerateSensorText(humidity);
-                        }
-                    case ElementType.SENSOR_PM1: {
-                            return GenerateSensorText(pm1);
-                        }
-                    case ElementType.UID: {
-                            return "Screen id number.";
-                        }
+                    } else {
+                        return "unknown device";
+                    }
+                } catch {
+                    return "exception during download sensor";
                 }
                 return "element not supported!";
             }
