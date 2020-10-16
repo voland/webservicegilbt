@@ -1,3 +1,4 @@
+# kazde wykonane zadanie oznaczamy przedrostkiem done: i przesówamy na koniec listy
 ## rzeczy do zrobienia P.G.
 	Sortowanie listy tablic po nazwach, uid, ostatniej aktualizacji itp
 	w edycji ekranu opcja: ustaw idx dla czujnika wszystkich slajdow
