@@ -9,14 +9,13 @@ namespace WebServiceGilBT.Shared {
         static object wf_locker = new object();
 
         static private void p(string txt) {
+            now = MyClock.Now;
 #if DEBUG
-            now = DateTime.Now;
             Console.Write(now.ToString());
             Console.Write("-> ");
             Console.WriteLine(txt);
 #else
 				//dodajemy 2 h dla serwera gdzies za granica
-                now = DateTime.Now.AddHours(2);
 				lock(wf_locker){
 					using (FileStream fs = new FileStream(debugfilename, FileMode.Append)) {
 						using (BinaryWriter bw = new BinaryWriter(fs)) {

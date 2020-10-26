@@ -56,12 +56,7 @@ namespace WebServiceGilBT.Shared {
                 //saving process
                 try {
                     try {
-                        DateTime now;
-#if DEBUG
-                        now = DateTime.Now;
-#else
-						now = DateTime.Now.AddHours(2);
-#endif
+                        DateTime now = MyClock.Now;
                         File.Copy(ufn, $"{ufn}.{now.ToString()}.back");
                     } catch {
                     }

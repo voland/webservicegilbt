@@ -113,12 +113,7 @@ namespace WebServiceGilBT.Shared {
         }
 		
 		public void ActualiseLastRequestTime(){
-#if DEBUG
-            last_request = DateTime.Now;
-#else
-			//dodajemy 2 h dla serwera gdzies za granica
-			last_request = DateTime.Now.AddHours(2);
-#endif
+            last_request = MyClock.Now;
 		}
     }
 }

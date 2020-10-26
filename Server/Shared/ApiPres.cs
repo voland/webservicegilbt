@@ -58,18 +58,7 @@ namespace WebServiceGilBT.Shared {
         public uint color { set; get; }
         public FontType font { set; get; }
         private string _text = "Text...";
-        /*******************************/
-        /*  Date Time                  */
-        /*******************************/
-        private DateTime Now {
-            get {
-#if DEBUG
-                return DateTime.Now;
-#else
-				return DateTime.Now.AddHours(2);
-#endif
-            }
-        }
+
         /*******************************/
         /*  Sensor                     */
         /*******************************/
@@ -114,7 +103,7 @@ namespace WebServiceGilBT.Shared {
         }
 
         private string GenerateSensorText(string sensor_name) {
-            if (last_read_device == null) last_read_device = DateTime.Now.AddHours(-100);
+            if (last_read_device == null) last_read_device = MyClock.Now.AddHours(-100);
             //setting default sensor in case its 0;
             if (idx < 0) idx = 444;
             if (idx == -1) {
@@ -126,9 +115,9 @@ namespace WebServiceGilBT.Shared {
             }
 
             try {
-                if ((d == null) | (DateTime.Now > last_read_device.AddHours(1))) {
+                if ((d == null) | (MyClock.Now > last_read_device.AddHours(1))) {
                     using (WebClient wc = new WebClient()) {
-                        last_read_device = DateTime.Now;
+                        last_read_device = MyClock.Now;
                         var json = wc.DownloadString(GetUrl());
                         d = JsonSerializer.Deserialize<Device>(json);
                     }
@@ -158,14 +147,14 @@ namespace WebServiceGilBT.Shared {
                     case ElementType.TEXT: return _text;
                     case ElementType.UID: return "Screen id number.";
                     case ElementType.TIME: {
-                            int h = Now.Hour;
-                            int m = Now.Minute;
+                            int h = MyClock.Now.Hour;
+                            int m = MyClock.Now.Minute;
                             return string.Format("{0}{1}:{2}{3}", h < 10 ? "0" : "", h, m < 10 ? "0" : "", m);
                         }
                     case ElementType.DATE: {
-                            int d = Now.Day;
-                            int m = Now.Month;
-                            int y = Now.Year;
+                            int d = MyClock.Now.Day;
+                            int m = MyClock.Now.Month;
+                            int y = MyClock.Now.Year;
                             return string.Format("{0}-{1}-{2}", d, m, y);
                         }
                     case ElementType.RECTANGLE: {

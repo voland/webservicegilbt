@@ -59,7 +59,7 @@ namespace WebServiceGilBT.Services {
             try {
                 s.last_request = JsonSerializer.Deserialize<DateTime>(last_request);
             } catch {
-                s.last_request = DateTime.Now;
+                s.last_request = MyClock.Now;
             }
             s.screen_type = screen_type;
             s.from_led_screen = from_led_screen;
