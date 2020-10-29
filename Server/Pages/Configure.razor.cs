@@ -8,7 +8,7 @@ using WebServiceGilBT.Data;
 using System.Text.Json;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Configure : ComponentBase {
+    public partial class Configure : ComponentBase , IDisposable {
 
         [Inject]
         protected ScreenListMySQLService ScreenListService { set; get; }
@@ -57,6 +57,8 @@ namespace WebServiceGilBT.Pages {
                 Screen.name = "NULL";
                 Screen.screen_type = eScreenType.unknown;
             }
+
+            Lang.LangChanged += StateHasChanged;
         }
 
         protected async Task<User> GetLoggedUser() {
@@ -68,6 +70,10 @@ namespace WebServiceGilBT.Pages {
                 u = new User();
             }
             return u;
+        }
+
+        public void Dispose() {
+            Lang.LangChanged -= StateHasChanged;
         }
 
         private User _u = null;
