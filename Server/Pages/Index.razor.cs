@@ -56,13 +56,13 @@ namespace WebServiceGilBT.Pages {
             return u;
         }
 
-		protected int _tab_idx=1;
-		protected int tab_idx{
-			get {
-				return _tab_idx++;
-			}
-		}
-		
+        protected int _tab_idx = 1;
+        protected int tab_idx {
+            get {
+                return _tab_idx++;
+            }
+        }
+
         private int bi = 0;
         protected string item_background {
             get {
