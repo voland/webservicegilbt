@@ -63,6 +63,9 @@ namespace WebServiceGilBT.Data {
                     if (EmailAddress.Contains("patryk.brzozowski@syngeos.pl")) {
                         return eUserType.admin;
                     }
+                    if (EmailAddress.Contains("gilpiotr13@gmail.com")) {
+                        return eUserType.admin;
+                    }
                 }
                 return _ut;
             }
