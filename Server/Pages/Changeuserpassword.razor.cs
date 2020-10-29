@@ -8,7 +8,7 @@ using WebServiceGilBT.Data;
 using System.Text.Json;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Changeuserpassword : ComponentBase {
+    public partial class Changeuserpassword : ComponentBase, IDisposable {
         [Inject]
         Blazored.SessionStorage.ISessionStorageService _sessionStorageService { set; get; }
 
@@ -53,6 +53,7 @@ namespace WebServiceGilBT.Pages {
         protected string LoginMesssage { set; get; }
 
         protected async override Task OnInitializedAsync() {
+            Lang.LangChanged += StateHasChanged;
             OldPasswdInputDisabled = false;
             logged_user = await GetLoggedUser();
 
@@ -100,6 +101,10 @@ namespace WebServiceGilBT.Pages {
 			}
 			NavigationManager.NavigateTo($"changeuserpassword/{edited_user.UserId}");
             return await Task.FromResult(true);
+        }
+
+        public void Dispose() {
+            Lang.LangChanged -= StateHasChanged;
         }
 
         private User _edited_user = null;
