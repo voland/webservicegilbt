@@ -1,0 +1,31 @@
+﻿body {
+}
+
+.hintLabel {
+    color:darkblue;
+    font-size: 12px;
+}
+
+.hintLabel:hover{
+    color:darkcyan
+}
+
+.buttonStyle{
+    padding: 5px;
+    background-color:dodgerblue;
+    color:#eee;
+    border-radius:8px;
+    border:none
+}
+
+.ClickableLabel{
+    
+}
+
+.ClickableLabel:hover{
+    color:darkcyan;
+    cursor:pointer
+        
+}
+
+
