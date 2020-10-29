@@ -15,6 +15,8 @@ namespace WebServiceGilBT.Data {
         public int uid { set; get; }
         public bool allowed { set; get; }
 
+        public ScreenAccessDescriber() { }
+
         public ScreenAccessDescriber(string name, int uid, bool allowed) {
             this.Name = name;
             this.uid = uid;
