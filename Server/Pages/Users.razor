@@ -5,10 +5,10 @@
 
 <table class="my_custom_table">
 		<tr class="my_custom_th_verydark">
-			<th>User Id</th>
+			<th>@Lang.userId </th>
 			<th>Email</th>
-			<th>Type</th>
-			<th>Configure</th>
+			<th>@Lang.type</th>
+			<th>@Lang.configure</th>
 		</tr>
 		@foreach (User user in _userlist) {
 			@if (loggeduser.UserType == eUserType.admin){
@@ -17,7 +17,12 @@
 					<td>@user.EmailAddress</td>
 					<td>@user.UserType</td>
 					<td><button class="btn btn-primary" 
-								@onclick="(()=>NavigateToConfigureUser(user))">ConfigureUser</button></td>
+								@onclick="(()=>NavigateToConfigureUser(user))">@Lang.configure</button>
+					@if (user.UserType != eUserType.admin)
+                    {
+						<button class="btn btn-primary" style="background-color:darkred" @onclick="(()=>deleteSelectedUser(user))">@Lang.delete</button>
+                    }
+					</td>
 				</tr>
 			}
 		}

@@ -6,9 +6,10 @@ using WebServiceGilBT.Shared;
 using WebServiceGilBT.Services;
 using WebServiceGilBT.Data;
 using System.Text.Json;
+using Microsoft.JSInterop;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Users : ComponentBase {
+    public partial class Users : ComponentBase , IDisposable {
         public List<User> _userlist;
 
         [Inject]
@@ -20,13 +21,17 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         UserMySQLService userService { set; get; }
 
+        [Inject]
+        IJSRuntime js { get; set; }
+
         protected async override Task OnInitializedAsync() {
+            Lang.LangChanged += StateHasChanged;
             _userlist = await userService.GetUserListAsync();
             loggeduser = await GetLoggedUser();
         }
 
         protected void NavigateToConfigureUser(User argUser) {
-            string newurl = $"changeuserpassword/{argUser.UserId}";
+            string newurl = $"ConfigureUser/{argUser.UserId}";
             Debuger.PrintLn($"navigating to {newurl}");
             NavigationManager.NavigateTo(newurl);
         }
@@ -63,5 +68,21 @@ namespace WebServiceGilBT.Pages {
             }
         }
 
+        async Task deleteSelectedUser(User user) {
+            bool confirmed = await js.InvokeAsync<bool>("confirm", $"{Lang.rUSureUWantDeleteUser} {user.EmailAddress}?");
+            if (confirmed) {
+               await DeleteUser(user);
+            }
+
+        }
+
+        async Task DeleteUser(User user) {
+            _userlist.Remove(user);
+            await userService.DeleteUserAsync(user);
+        }
+
+        public void Dispose() {
+            Lang.LangChanged -= StateHasChanged;
+        }
     }
 }
