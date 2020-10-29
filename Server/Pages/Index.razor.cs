@@ -9,7 +9,7 @@ using System.Text.Json;
 using System.Linq;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Index : ComponentBase {
+    public partial class Index : ComponentBase, IDisposable {
 
         protected ScreenList screenList;
 
@@ -28,6 +28,7 @@ namespace WebServiceGilBT.Pages {
             Debuger.PrintLn("Initialising ScreenList");
             //just temp screnlist
             screenList = ScreenListService.GetGilBTScreenList();
+            Lang.LangChanged += StateHasChanged;
         }
 
         protected async override Task OnInitializedAsync() {
@@ -159,6 +160,9 @@ namespace WebServiceGilBT.Pages {
                     break;
             }
         }
+
+        public void Dispose() {
+            Lang.LangChanged -= StateHasChanged;
 
     }
 }
