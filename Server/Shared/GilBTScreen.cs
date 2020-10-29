@@ -1,4 +1,5 @@
 using System;
+using WebServiceGilBT.Data;
 
 namespace WebServiceGilBT.Shared {
     public class Screen : IScreen {
@@ -51,6 +52,8 @@ namespace WebServiceGilBT.Shared {
         public string ip { set; get; }
         public string ma { set; get; }
         public string gw { set; get; }
+        public int IdGminy;
+        public Gmina gmina = new Gmina();
 
         private Pres _pres = null;
         public void InitPres() {
