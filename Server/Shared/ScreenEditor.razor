@@ -54,6 +54,14 @@
 </p>
 <p>
     <button class="btn btn-primary" @onclick="()=>ShowConfirmDelete=true">Delete from Db.</button>
+	<button class="btn btn-primary" @onclick="(()=>pokaPreview=!pokaPreview)">@Lang.preview </button>
+	@if (pokaPreview)
+	{
+<div style="margin:15px">
+	<Blazor.Extensions.Canvas.BECanvas Width="Screen.width*skalaCanvasWzgledemEkranu" Height="Screen.height*skalaCanvasWzgledemEkranu" @ref="_canvasReference" />
+
+</div>
+	}
 </p>
 
 @if ( ShowConfirmDelete ) {

@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Components;
 using System.IO;
 using System.Collections.Generic;
 using WebServiceGilBT.Services;
+using Blazor.Extensions;
+using Blazor.Extensions.Canvas.Canvas2D;
 
 namespace WebServiceGilBT.Shared {
     public partial class ScreenEditor : ComponentBase {
@@ -62,5 +64,41 @@ namespace WebServiceGilBT.Shared {
         }
 
         public bool ShowConfirmDelete = false;
+        bool _pokaPreview = false;
+        bool pokaPreview {
+            get => _pokaPreview; set {
+                _pokaPreview = value;
+                if (pokaPreview) {
+                } else {
+                    if (ps != null) ps.rysowanieWToku = false;
+                }
+            }
+        }
+
+        BECanvasComponent _canvasReference = null;
+        Canvas2DContext _outputCanvasContext;
+        PreviewService ps;
+        int skalaCanvasWzgledemEkranu = 4;
+
+        async void onPokaPreview() {
+            if (_outputCanvasContext != null) {
+                try {
+                    ps = new PreviewService(_outputCanvasContext, Screen.pres, _canvasReference, skalaCanvasWzgledemEkranu);
+                    await ps.drawAllPages();
+                } catch { }
+            }
+        }
+
+        protected override async Task OnAfterRenderAsync(bool firstRender) {
+            if (pokaPreview) {
+                if (true) {
+                    _outputCanvasContext = await _canvasReference.CreateCanvas2DAsync();
+                    await _outputCanvasContext.SetTextBaselineAsync(TextBaseline.Top);
+                }
+                if (_outputCanvasContext != null) {
+                    onPokaPreview();
+                }
+            }
+        }
     }
 }
