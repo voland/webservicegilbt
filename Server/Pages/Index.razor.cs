@@ -24,6 +24,9 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         Blazored.SessionStorage.ISessionStorageService _sessionStorageService { set; get; }
 
+        [Inject]
+        GminaMySqlService gs { set; get; }
+
         protected override void OnInitialized() {
             Debuger.PrintLn("Initialising ScreenList");
             //just temp screnlist
@@ -33,10 +36,21 @@ namespace WebServiceGilBT.Pages {
 
         protected async override Task OnInitializedAsync() {
             Debuger.PrintLn("async Initialising ScreenList");
-
             screenList = await ScreenListService.GetGilBTScreenListAsync();
+            await fillScreenListWithComunes(screenList);
             listaDoWyswietlania = screenList.Screens;
             user = await GetLoggedUser();
+        }
+
+        async Task<ScreenList> fillScreenListWithComunes(ScreenList sl) {
+            List<Gmina> listaWszystkichGminEver = await gs.GetGminaListAsync();
+            foreach (Screen s in sl.Screens) {
+                if (s.IdGminy != 0) {
+                    Gmina gm = listaWszystkichGminEver.FirstOrDefault(x => x.Id == s.IdGminy);
+                    if (gm != null) s.gmina = gm;
+                }
+            }
+            return sl;
         }
 
         protected void NavigateToConfigureScreen(Screen argScreen) {
@@ -164,5 +178,6 @@ namespace WebServiceGilBT.Pages {
         public void Dispose() {
             Lang.LangChanged -= StateHasChanged;
 
+        }
     }
 }

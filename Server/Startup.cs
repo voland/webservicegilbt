@@ -38,6 +38,7 @@ namespace WebServiceGilBT {
             services.AddTransient<SqlDataAccess>();
             services.AddTransient<ScreenListMySQLService>();
             services.AddTransient<UserMySQLService>();
+			services.AddTransient<GminaMySqlService>();
 			/* WebServiceGilBT.Controller.ScreensController.CopyDataToDb(); */
         }
 
