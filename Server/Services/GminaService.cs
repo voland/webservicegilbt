@@ -5,11 +5,11 @@ using System.Threading.Tasks;
 using WebServiceGilBT.Data;
 
 namespace WebServiceGilBT.Services {
-    public class GminaService {
+    public class GminaMySqlService {
 
         readonly SqlDataAccess _db;
 
-        public GminaService(SqlDataAccess db) {
+        public GminaMySqlService(SqlDataAccess db) {
             _db = db;
         }
 
