@@ -344,6 +344,7 @@ namespace WebServiceGilBT.Shared {
     [Serializable]
     public class Pres {
         public int ver { get { return 2; } }
+        public int UnifiedIdx { get; set; }
         public int pages_count {
             get { return pages.Count; }
         }
