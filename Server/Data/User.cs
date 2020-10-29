@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebServiceGilBT.Data;
+using WebServiceGilBT.Shared;
 
 namespace WebServiceGilBT.Data {
 
@@ -14,7 +15,7 @@ namespace WebServiceGilBT.Data {
         public int uid { set; get; }
         public bool allowed { set; get; }
 
-        ScreenAccessDescriber(string name, int uid, bool allowed) {
+        public ScreenAccessDescriber(string name, int uid, bool allowed) {
             this.Name = name;
             this.uid = uid;
             this.allowed = allowed;
@@ -70,9 +71,13 @@ namespace WebServiceGilBT.Data {
                 return _ut;
             }
         }
-        public List<ScreenAccessDescriber> ScreenAccessList { set; get; }
+        public List<ScreenAccessDescriber> ScreenAccessList { set; get; } = new List<ScreenAccessDescriber>();
         public string ConfirmPassword { get; set; }
         public string AdditionalInfo { get; set; }
+
+        public List<int> IdGmin = new List<int>();
+
+        public Languages language = Languages.ENG;
 
         public bool IsUserAccessedByThisUser(User argEditedUser) {
 			//noone can edit null or unknown user
