@@ -103,11 +103,9 @@ namespace WebServiceGilBT.Pages {
         bool gminaWybrana = false;
 
         Gmina wybranaGm;
-        Screen ekran;
-        //string _addGminaName;
-        //string addGminaName { get => _addGminaName; set { _addGminaName=value; if(juzjestLabel)juzjestLabel = false; } }
 
         List<Gmina> filteredList = new List<Gmina>();
+
         List<Gmina> pelnaListaGmin = new List<Gmina>();
 
         void wybranoGmine(Gmina gm) {
