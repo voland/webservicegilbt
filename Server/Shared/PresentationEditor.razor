@@ -1,128 +1,126 @@
 @* @using webservicegilbt.shared *@
 <EditForm Model="@Pres" OnInvalidSubmit="@HandleValidSubmit">
-	<h1>
-		<h>@Lang.slideShow:</h>
-	</h1>
-	<p>
-		@foreach (Page p in Pres.pages) {
-			<hr style="height:2px;border-width:0;color:gray;background-color:gray">
-			<table class="my_custom_table" style="width:80%">
-				<tr class="my_custom_th_verydark">
-					<th>@Lang.type</th>
-					<th>@Lang.position</th>
-					<th>@Lang.parameters</th>
-					<th>@Lang.result</th>
-					<th>@Lang.delete</th>
-				</tr>
-				@foreach (PageElement pe in p.elements) {
-					<tr class="my_custom_th @item_background">
-						<td>
-							<InputSelect TValue="ElementType" @bind-Value="pe.type">
-								<option value="@ElementType.TEXT">Text</option>
-								<option value="@ElementType.RECTANGLE">Rectangle</option>
-								<option value="@ElementType.IMAGE">Image</option>
-								<option value="@ElementType.TIME">Time</option>
-								<option value="@ElementType.DATE">Date</option>
-								<option value="@ElementType.SENSOR_TEMPERATURE">Sensor temperature</option>
-								<option value="@ElementType.SENSOR_HUMIDITY">Sensor humidity</option>
-								<option value="@ElementType.SENSOR_PRESSURE">Sensor pressure</option>
-								@* just number *@
-								<option value="@ElementType.SENSOR_PM2_5">Sensor pm2,5</option>
-								<option value="@ElementType.SENSOR_PM10">Sensor pm10</option>
-								<option value="@ElementType.SENSOR_PM1">Sensor pm1</option>
-								@* data in percent value *@
-								<option value="@ElementType.SENSOR_PM2_5_PERCENT">Sensor pm2,5 %</option>
-								<option value="@ElementType.SENSOR_PM10_PERCENT">Sensor pm10 %</option>
-								<option value="@ElementType.SENSOR_PM1_PERCENT">Sensor pm1 %</option>
-								@* user firendly status *@
-								<option value="@ElementType.SENSOR_PM2_5_STATUS">Sensor pm2,5 status</option>
-								<option value="@ElementType.SENSOR_PM10_STATUS">Sensor pm10 status</option>
-								<option value="@ElementType.SENSOR_PM1_STATUS">Sensor pm1 status</option>
-								<option value="@ElementType.UID">Screen id</option>
-							</InputSelect>
-						</td>
-						<td>
-							<InputNumber TValue="Int32" @bind-Value="pe.x" style="width:70px" min="0" max="1024" />
-							X
-							<InputNumber TValue="Int32" @bind-Value="pe.y" style="width:70px" min="0" max="1024" />
-						</td>
-						<td>
-							<InputSelect TValue="FontType" @bind-Value="pe.font">
-								<option value="@FontType.fontnormal8px">Font normal 8px</option>
-								<option value="@FontType.fontfat8px">Font fat 8px</option>
-								<option value="@FontType.arial14">Arial 14px</option>
-								<option value="@FontType.arial16">Arial 16px</option>
-								<option value="@FontType.impact14">Impact 14px</option>
-								<option value="@FontType.impact16">Impact 16px</option>
-							</InputSelect>
-							@switch (pe.type) {
-								case ElementType.TEXT:
-									<InputText TValue="string" @bind-Value="pe.text" />
-									break;
-								case ElementType.SENSOR_PM1:
-								case ElementType.SENSOR_PM10:
-								case ElementType.SENSOR_PM2_5:
-								case ElementType.SENSOR_TEMPERATURE:
-								case ElementType.SENSOR_PRESSURE:
-								case ElementType.SENSOR_HUMIDITY:
-								case ElementType.SENSOR_PM2_5_PERCENT:
-								case ElementType.SENSOR_PM10_PERCENT:
-								case ElementType.SENSOR_PM1_PERCENT:
-								case ElementType.SENSOR_PM2_5_STATUS:
-								case ElementType.SENSOR_PM10_STATUS:
-								case ElementType.SENSOR_PM1_STATUS:
-									@if (Pres.UnifiedIdx > 0)
-									{<label style="margin-left:5px ; margin-right:5px">Id: @Pres.UnifiedIdx</label> }
-								else
-								{<InputNumber TValue="Int32" @bind-Value="pe.idx" @oninput="OnIdxChanched" style="width:70px" min="0" max="1024" />}
+    <h1>
+        <h>@Lang.slideShow:</h>
+    </h1>
+    <p>
+        @foreach (Page p in Pres.pages) {
+            <hr style="height:2px;border-width:0;color:gray;background-color:gray">
+            <table class="my_custom_table" style="width:80%">
+                <tr class="my_custom_th_verydark">
+                    <th>@Lang.type</th>
+                    <th>@Lang.position</th>
+                    <th>@Lang.parameters</th>
+                    <th>@Lang.result</th>
+                    <th>@Lang.delete</th>
+                </tr>
+                @foreach (PageElement pe in p.elements) {
+                    <tr class="my_custom_th @item_background">
+                        <td>
+                            <InputSelect TValue="ElementType" @bind-Value="pe.type">
+                                <option value="@ElementType.TEXT">Text</option>
+                                <option value="@ElementType.RECTANGLE">Rectangle</option>
+                                <option value="@ElementType.IMAGE">Image</option>
+                                <option value="@ElementType.TIME">Time</option>
+                                <option value="@ElementType.DATE">Date</option>
+                                <option value="@ElementType.SENSOR_TEMPERATURE">Sensor temperature</option>
+                                <option value="@ElementType.SENSOR_HUMIDITY">Sensor humidity</option>
+                                <option value="@ElementType.SENSOR_PRESSURE">Sensor pressure</option>
+                                @* just number *@
+                                <option value="@ElementType.SENSOR_PM2_5">Sensor pm2,5</option>
+                                <option value="@ElementType.SENSOR_PM10">Sensor pm10</option>
+                                <option value="@ElementType.SENSOR_PM1">Sensor pm1</option>
+                                @* data in percent value *@
+                                <option value="@ElementType.SENSOR_PM2_5_PERCENT">Sensor pm2,5 %</option>
+                                <option value="@ElementType.SENSOR_PM10_PERCENT">Sensor pm10 %</option>
+                                <option value="@ElementType.SENSOR_PM1_PERCENT">Sensor pm1 %</option>
+                                @* user firendly status *@
+                                <option value="@ElementType.SENSOR_PM2_5_STATUS">Sensor pm2,5 status</option>
+                                <option value="@ElementType.SENSOR_PM10_STATUS">Sensor pm10 status</option>
+                                <option value="@ElementType.SENSOR_PM1_STATUS">Sensor pm1 status</option>
+                                <option value="@ElementType.UID">Screen id</option>
+                            </InputSelect>
+                        </td>
+                        <td>
+                            <InputNumber TValue="Int32" @bind-Value="pe.x" style="width:70px" min="0" max="1024" />
+                            X
+                            <InputNumber TValue="Int32" @bind-Value="pe.y" style="width:70px" min="0" max="1024" />
+                        </td>
+                        <td>
+                            <InputSelect TValue="FontType" @bind-Value="pe.font">
+                                <option value="@FontType.fontnormal8px">Font normal 8px</option>
+                                <option value="@FontType.fontfat8px">Font fat 8px</option>
+                                <option value="@FontType.arial14">Arial 14px</option>
+                                <option value="@FontType.arial16">Arial 16px</option>
+                                <option value="@FontType.impact14">Impact 14px</option>
+                                <option value="@FontType.impact16">Impact 16px</option>
+                            </InputSelect>
+                            @switch (pe.type) {
+                                case ElementType.TEXT:
+                                    <InputText TValue="string" @bind-Value="pe.text" />
+                                    break;
+                                case ElementType.SENSOR_PM1:
+                                case ElementType.SENSOR_PM10:
+                                case ElementType.SENSOR_PM2_5:
+                                case ElementType.SENSOR_TEMPERATURE:
+                                case ElementType.SENSOR_PRESSURE:
+                                case ElementType.SENSOR_HUMIDITY:
+                                case ElementType.SENSOR_PM2_5_PERCENT:
+                                case ElementType.SENSOR_PM10_PERCENT:
+                                case ElementType.SENSOR_PM1_PERCENT:
+                                case ElementType.SENSOR_PM2_5_STATUS:
+                                case ElementType.SENSOR_PM10_STATUS:
+                                case ElementType.SENSOR_PM1_STATUS:
+                                    @if (Pres.UnifiedIdx > 0) {<label style="margin-left:5px ; margin-right:5px">Id: @Pres.UnifiedIdx</label> } else {<InputNumber TValue="Int32" @bind-Value="pe.idx" @oninput="OnIdxChanched" style="width:70px" min="0" max="1024" />}
 
-									<label>@pe.city</label>
-									break;
-								default:
-									break;
-							}
-						</td>
-						<td><label>@pe.text</label></td>
-						<td> <button class="btn btn-primary" @onclick="()=>DeleteElement(p, pe)">@Lang.delete</button> </td>
-					</tr>
-				}
-			</table>
+                                    <label>@pe.city</label>
+                                    break;
+                                default:
+                                    break;
+                            }
+                        </td>
+                        <td><label>@pe.text</label></td>
+                        <td> <button class="btn btn-primary" @onclick="()=>DeleteElement(p, pe)">@Lang.delete</button> </td>
+                    </tr>
+                }
+            </table>
 
-			<button class="btn btn-primary" @onclick="()=>DeletePage(p)">@Lang.deletePage</button>
-			<button class="btn btn-primary" @onclick="()=>AddElement(p)">@Lang.addElement</button>
-			<button class="btn btn-primary" @onclick="()=>MoveUp(p)">@Lang.moveUp</button>
-			<button class="btn btn-primary" @onclick="()=>MoveDown(p)">@Lang.moveDown</button>
-			<label>@Lang.timeInSec: </label>
-			<InputNumber TValue="Int32" @bind-Value="p.time" style="width:50px" min="1" max="60" />
-		}
-	</p>
-	<hr style="height:2px;border-width:0;color:gray;background-color:black">
-	@if (chooseTeamplate) {
-		<div style="display:flex ; flex-direction:row">
-			<button class="btn btn-primary" style="margin:10px" @onclick="AddNameTemplateClicked">@Lang.name</button>
-			<button class="btn btn-primary" style="margin:10px" @onclick="AddDateTimeTemplateClicked">@Lang.dateTime</button>
-			<button class="btn btn-primary" style="margin:10px" @onclick="AddPM10TemplateClicked">PM 10</button>
-			<button class="btn btn-primary" style="margin:10px" @onclick="AddPM2_5TemplateClicked">PM 2.5</button>
-			<button class="btn btn-primary" style="margin:10px" @onclick="AddPreassureTempTemplateClicked">@Lang.pressureTemp</button>
-			<button class="btn btn-primary" style="margin:10px" @onclick="AddAirQualityTemplateClicked"> @Lang.airQuality</button>
-			<button class="btn btn-primary" style="margin:10px" @onclick="(()=>chooseTeamplate = false)"> @Lang.cancel</button>
-		</div>
-		<hr style="height:2px;border-width:0;color:gray;background-color:black">
+            <button class="btn btn-primary" @onclick="()=>DeletePage(p)">@Lang.deletePage</button>
+            <button class="btn btn-primary" @onclick="()=>AddElement(p)">@Lang.addElement</button>
+            <button class="btn btn-primary" @onclick="()=>MoveUp(p)">@Lang.moveUp</button>
+            <button class="btn btn-primary" @onclick="()=>MoveDown(p)">@Lang.moveDown</button>
+            <label>@Lang.timeInSec: </label>
+            <InputNumber TValue="Int32" @bind-Value="p.time" style="width:50px" min="1" max="60" />
+        }
+    </p>
+    <hr style="height:2px;border-width:0;color:gray;background-color:black">
+    @if (chooseTeamplate) {
+        <div style="display:flex ; flex-direction:row">
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddNameTemplateClicked">@Lang.name</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddDateTimeTemplateClicked">@Lang.dateTime</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddPM10TemplateClicked">PM 10</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddPM2_5TemplateClicked">PM 2.5</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddPreassureTempTemplateClicked">@Lang.pressureTemp</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddAirQualityTemplateClicked"> @Lang.airQuality</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="(()=>chooseTeamplate = false)"> @Lang.cancel</button>
+        </div>
+        <hr style="height:2px;border-width:0;color:gray;background-color:black">
 
-	}
-	<p>
-		<button class="btn btn-primary" @onclick="AddPageClicked">@Lang.addBlankPage</button>
-	</p>
-	<p>
-		<button class="btn btn-primary" @onclick="(()=>chooseTeamplate = !chooseTeamplate)">@Lang.addTemplatePage</button>
-	</p>
-	<p>
-		<button class="btn btn-primary" @onclick="(()=>showTypeTemplateName=!showTypeTemplateName)">@Lang.savePresAsTemplate</button>
-		@if (showTypeTemplateName) {
-			<input type="text" @bind-value="templateName" />
-			<button class ="btn btn-primary" @onclick="SaveAsTemplateClicked">
-				@Lang.save</button>
-		}
-		@if (!string.IsNullOrEmpty(templateKomunikat)) {<br /><label>@templateKomunikat</label> }
-	</p>
+    }
+    <p>
+        <button class="btn btn-primary" @onclick="AddPageClicked">@Lang.addBlankPage</button>
+    </p>
+    <p>
+        <button class="btn btn-primary" @onclick="(()=>chooseTeamplate = !chooseTeamplate)">@Lang.addTemplatePage</button>
+    </p>
+    <p>
+        <button class="btn btn-primary" @onclick="(()=>showTypeTemplateName=!showTypeTemplateName)">@Lang.savePresAsTemplate</button>
+        @if (showTypeTemplateName) {
+            <input type="text" @bind-value="templateName" />
+            <button class="btn btn-primary" @onclick="SaveAsTemplateClicked">
+                @Lang.save
+            </button>
+        }
+        @if (!string.IsNullOrEmpty(templateKomunikat)) {<br /><label>@templateKomunikat</label>}
+    </p>
 </EditForm>

@@ -1,4 +1,4 @@
-﻿@using WebServiceGilBT.Data
+@using WebServiceGilBT.Data
 @using System.Text.Json
 @using WebServiceGilBT.Services
 @inject Blazored.SessionStorage.ISessionStorageService _sessionStorageService
@@ -18,8 +18,7 @@
             <NavLink class="nav-link" href="/index" Match="NavLinkMatch.All">
                 <span class="oi oi-home" aria-hidden="true"></span> @Lang.screenList
             </NavLink>
-            @if (loggeduser.UserType == eUserType.admin)
-            {
+            @if (loggeduser.UserType == eUserType.admin) {
                 <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
                     <span class="oi oi-people" aria-hidden="true"></span> @Lang.usersList
                 </NavLink>
@@ -43,8 +42,7 @@
     protected async Task<User> GetLoggedUser() {
         string serializedUser = await _sessionStorageService.GetItemAsync<string>("loggedUser");
         User u = null;
-        if (serializedUser != null)
-        {
+        if (serializedUser != null) {
             u = JsonSerializer.Deserialize<User>(serializedUser);
             u.language = (Languages)(await us.GetUserLangAsync(u.UserId));
         }
@@ -58,9 +56,10 @@
     public User loggeduser {
         set {
             _u = value;
-            paireUser.InvokeAsync(value); }
+            paireUser.InvokeAsync(value);
+        }
         get {
-            if (_u == null){
+            if (_u == null) {
                 _u = new User();
                 _u.EmailAddress = "Unknown_user";
             }

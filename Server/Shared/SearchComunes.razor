@@ -1,4 +1,4 @@
-﻿@using WebServiceGilBT.Services;
+@using WebServiceGilBT.Services;
 @using WebServiceGilBT.Data;
 @inject GminaMySqlService gs;
 
@@ -7,7 +7,8 @@
 <div style="background-color:azure; border:solid ; border-width:1px ; border-radius:10px ; width:50%">
     @foreach (Gmina gm in filteredListaGmin) {
         <label @onclick="(()=>screenSelectedEvent.InvokeAsync(gm))" class="hintLabel" style="margin:3px">
-            @gm.stringPodpowiedzi </label> <br />
+            @gm.stringPodpowiedzi
+        </label> <br />
     }
 </div>
 

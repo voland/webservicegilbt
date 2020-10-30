@@ -2,15 +2,15 @@
 @page "/Configure/{Uid:int}"
 @using WebServiceGilBT.Shared
 
-@if ( user.IsScreenAccessedByUser(Uid)){
-	<div class="top-row2 px-4">
-		<button class="btn btn-header" @onclick="ApplyClicked">@Lang.saveChanges</button>
-		<button class="btn btn-header" @onclick="CancelClicked">@Lang.exit</button>
-	</div>
+@if (user.IsScreenAccessedByUser(Uid)) {
+    <div class="top-row2 px-4">
+        <button class="btn btn-header" @onclick="ApplyClicked">@Lang.saveChanges</button>
+        <button class="btn btn-header" @onclick="CancelClicked">@Lang.exit</button>
+    </div>
 
-	<div class="content px-4">
-		<ScreenEditor Screen="@Screen" loggeduser="user"/>
-	</div>
+    <div class="content px-4">
+        <ScreenEditor Screen="@Screen" loggeduser="user" />
+    </div>
 }
 
 

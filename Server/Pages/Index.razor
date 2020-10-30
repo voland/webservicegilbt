@@ -1,4 +1,4 @@
-﻿@page "/index"
+@page "/index"
 @using WebServiceGilBT.Shared
 @using WebServiceGilBT.Data
 
@@ -16,13 +16,12 @@
         <th>@Lang.configure</th>
     </tr>
 
-    @foreach (var screen in listaDoWyswietlania)
-    {
-        @if (user.IsScreenAccessedByUser(screen.uid))
-        {
+    @foreach (var screen in listaDoWyswietlania) {
+        @if (user.IsScreenAccessedByUser(screen.uid)) {
             <tr class="my_custom_th @item_background">
-                <td> @if (screen.gmina != null)
-                {@screen.gmina.NazwaGminy}</td>
+                <td>
+                    @if (screen.gmina != null) {@screen.gmina.NazwaGminy}
+                </td>
                 <td>@screen.uid</td>
                 <td>@screen.name</td>
                 <td>@screen.screen_type_str()</td>
