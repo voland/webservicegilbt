@@ -63,7 +63,7 @@ namespace WebServiceGilBT.Pages {
                 if (edited_user == null) {
                     edited_user = new User();
                     edited_user.EmailAddress = "unknown_user";
-					_edited_user.UserType = eUserType.unknown;
+                    _edited_user.UserType = eUserType.unknown;
                     LoginMesssage = "Unknown user.";
                 }
             } else {
@@ -74,7 +74,7 @@ namespace WebServiceGilBT.Pages {
 
         private async Task<bool> ValidateUser() {
             if (logged_user.Password != OldPasswd) {
-				/* Console.WriteLine("passwd is{0}", logged_user.Password); */
+                /* Console.WriteLine("passwd is{0}", logged_user.Password); */
                 LoginMesssage = "Provide proper current password of logged user.";
                 return await Task.FromResult(true);
             }
@@ -89,17 +89,17 @@ namespace WebServiceGilBT.Pages {
                     return await Task.FromResult(true);
                 }
 
-				edited_user.Password = NewPasswd;
-				await userService.UpdateUserAsync(edited_user);
-				if ( edited_user.UserId == logged_user.UserId){
-					await _sessionStorageService.RemoveItemAsync("loggedUser");
-					await _sessionStorageService.SetItemAsync("loggedUser", JsonSerializer.Serialize(edited_user));
-				}
+                edited_user.Password = NewPasswd;
+                await userService.UpdateUserAsync(edited_user);
+                if (edited_user.UserId == logged_user.UserId) {
+                    await _sessionStorageService.RemoveItemAsync("loggedUser");
+                    await _sessionStorageService.SetItemAsync("loggedUser", JsonSerializer.Serialize(edited_user));
+                }
                 LoginMesssage = "Password changed successfuly.";
-            }else{
+            } else {
                 LoginMesssage = "Provide some new password at least 6 characters.";
-			}
-			NavigationManager.NavigateTo($"changeuserpassword/{edited_user.UserId}");
+            }
+            NavigationManager.NavigateTo($"changeuserpassword/{edited_user.UserId}");
             return await Task.FromResult(true);
         }
 
@@ -113,10 +113,10 @@ namespace WebServiceGilBT.Pages {
             set { _edited_user = value; }
             get {
                 if (_edited_user == null) {
-					_edited_user = new User();
-					_edited_user.EmailAddress = "unknown_user";
-					_edited_user.UserType = eUserType.unknown;
-				}
+                    _edited_user = new User();
+                    _edited_user.EmailAddress = "unknown_user";
+                    _edited_user.UserType = eUserType.unknown;
+                }
                 return _edited_user;
             }
         }

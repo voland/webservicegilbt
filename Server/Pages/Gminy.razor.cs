@@ -24,8 +24,8 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         GminaMySqlService gs { set; get; }
 
-		[Inject]
-        ScreenListMySQLService screenService {set; get;}
+        [Inject]
+        ScreenListMySQLService screenService { set; get; }
 
         protected async override Task OnInitializedAsync() {
             Lang.LangChanged += StateHasChanged;

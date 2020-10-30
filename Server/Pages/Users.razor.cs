@@ -9,7 +9,7 @@ using System.Text.Json;
 using Microsoft.JSInterop;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Users : ComponentBase , IDisposable {
+    public partial class Users : ComponentBase, IDisposable {
         public List<User> _userlist;
 
         [Inject]
@@ -71,7 +71,7 @@ namespace WebServiceGilBT.Pages {
         async Task deleteSelectedUser(User user) {
             bool confirmed = await js.InvokeAsync<bool>("confirm", $"{Lang.rUSureUWantDeleteUser} {user.EmailAddress}?");
             if (confirmed) {
-               await DeleteUser(user);
+                await DeleteUser(user);
             }
 
         }

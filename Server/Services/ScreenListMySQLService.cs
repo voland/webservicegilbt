@@ -163,7 +163,7 @@ namespace WebServiceGilBT.Services {
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
 
-        public async Task UpdateCertainProperty(Screen argS, string propertyName) {           
+        public async Task UpdateCertainProperty(Screen argS, string propertyName) {
             string sql = @$" UPDATE screens
                         SET {propertyName} = @{propertyName}
                         WHERE uid = @uid ";

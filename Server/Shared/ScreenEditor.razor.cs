@@ -22,8 +22,8 @@ namespace WebServiceGilBT.Shared {
         [Inject]
         IJSRuntime js { set; get; }
 
-		[Inject]
-		GminaMySqlService gs {set; get;}
+        [Inject]
+        GminaMySqlService gs { set; get; }
 
         [Parameter]
         public Screen Screen { set; get; }

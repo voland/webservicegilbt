@@ -27,7 +27,7 @@ namespace WebServiceGilBT.Data {
     public enum eUserType {
         admin,
         normal,
-		unknown
+        unknown
     }
 
     public partial class User {
@@ -82,13 +82,13 @@ namespace WebServiceGilBT.Data {
         public Languages language = Languages.ENG;
 
         public bool IsUserAccessedByThisUser(User argEditedUser) {
-			//noone can edit null or unknown user
-			if ( argEditedUser== null){
-				return false;
-			}
-			if ( argEditedUser.UserType == eUserType.unknown){
-				return false;
-			}
+            //noone can edit null or unknown user
+            if (argEditedUser == null) {
+                return false;
+            }
+            if (argEditedUser.UserType == eUserType.unknown) {
+                return false;
+            }
             if (argEditedUser.UserId == UserId) {
                 Console.WriteLine("Ok you can edit yourself");
                 return true;

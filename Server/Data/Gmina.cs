@@ -16,17 +16,17 @@ namespace WebServiceGilBT.Data {
         [Required]
         public string NazwaWojewodztwa { get; set; }
 
-        public string stringPodpowiedzi { get => string.Format("{0} , {1} , {2}" , NazwaGminy, NazwaPowiatu, NazwaWojewodztwa); }
+        public string stringPodpowiedzi { get => string.Format("{0} , {1} , {2}", NazwaGminy, NazwaPowiatu, NazwaWojewodztwa); }
 
-        public Gmina Copy(){
+        public Gmina Copy() {
             return new Gmina() {
-                Id=Id,
-                NazwaGminy=NazwaGminy,
-                NazwaPowiatu=NazwaPowiatu,
-                NazwaWojewodztwa=NazwaWojewodztwa,
+                Id = Id,
+                NazwaGminy = NazwaGminy,
+                NazwaPowiatu = NazwaPowiatu,
+                NazwaWojewodztwa = NazwaWojewodztwa,
                 uzytkownicy = new List<User>(uzytkownicy),
                 ekrany = new List<Screen>(ekrany)
-			};
+            };
         }
 
         public List<User> uzytkownicy = new List<User>();

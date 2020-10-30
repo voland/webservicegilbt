@@ -89,10 +89,10 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public Screen() { 
-			from_led_screen = false;
-			ActualiseLastRequestTime();
-		}
+        public Screen() {
+            from_led_screen = false;
+            ActualiseLastRequestTime();
+        }
 
         public string resolution() {
             return $"{width}x{height}";
@@ -114,14 +114,14 @@ namespace WebServiceGilBT.Shared {
             }
             return "unknonw";
         }
-		
-		public void ActualiseLastRequestTime(){
+
+        public void ActualiseLastRequestTime() {
 #if DEBUG
             last_request = DateTime.Now;
 #else
 			//dodajemy 2 h dla serwera gdzies za granica
 			last_request = DateTime.Now.AddHours(2);
 #endif
-		}
+        }
     }
 }

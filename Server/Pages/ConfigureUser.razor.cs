@@ -32,10 +32,10 @@ namespace WebServiceGilBT.Pages {
         AuthenticationStateProvider asp { get; set; }
 
         [Parameter]
-        public int UserIdParam { 
-			get => _UserIdParam; 
-			set { _UserIdParam = value; przypiszUser().Wait(); } 
-		}
+        public int UserIdParam {
+            get => _UserIdParam;
+            set { _UserIdParam = value; przypiszUser().Wait(); }
+        }
 
         int _UserIdParam;
         User edited_user;
