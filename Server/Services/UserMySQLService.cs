@@ -1,10 +1,11 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 /* using System.Linq; */
 using System.Runtime.Serialization.Formatters.Binary;
 using System.Threading.Tasks;
 using WebServiceGilBT.Data;
+using WebServiceGilBT.Shared;
 
 namespace WebServiceGilBT.Services {
 
@@ -18,6 +19,8 @@ namespace WebServiceGilBT.Services {
         public byte[] ScreenAccessList { set; get; }
         public string ConfirmPassword { get; set; }
         public string AdditionalInfo { get; set; }
+        public byte[] IdGmin { get; set; }
+        public Languages language { get; set; }
 
         public UserInDB() { }
 
@@ -30,11 +33,13 @@ namespace WebServiceGilBT.Services {
             UserType = u.UserType.ToString();
             ConfirmPassword = u.ConfirmPassword;
             AdditionalInfo = u.AdditionalInfo;
+            IdGmin = BASerialization.objectToByteArray(u.IdGmin);
             if (u.ScreenAccessList != null) {
                 ScreenAccessList = objectToByteArray(u.ScreenAccessList);
             } else {
                 ScreenAccessList = null;
             }
+            language = u.language;
         }
 
         public User ToUser() {
@@ -47,11 +52,13 @@ namespace WebServiceGilBT.Services {
             u.UserType = (eUserType)Enum.Parse(typeof(eUserType), UserType);
             u.ConfirmPassword = ConfirmPassword;
             u.AdditionalInfo = AdditionalInfo;
+            u.IdGmin = BASerialization.ByteArrayToObject<List<int>>(IdGmin);
             if (ScreenAccessList != null) {
                 u.ScreenAccessList = ByteArrayToObject(ScreenAccessList);
             } else {
                 u.ScreenAccessList = null;
             }
+            u.language = language;
             return u;
         }
 
@@ -81,14 +88,16 @@ namespace WebServiceGilBT.Services {
 
 
     public class UserMySQLService : IUserService {
+
         readonly SqlDataAccess _db;
+
         public UserMySQLService(SqlDataAccess db) {
             _db = db;
         }
 
         public async Task AddUserAsync(User argS) {
-            string sql = @"insert into users (UserId , EmailAddress,  Password , FirstName, LastName, UserType, ScreenAccessList, ConfirmPassword, AdditionalInfo)
-                           values (@UserId, @EmailAddress,  @Password , @FirstName, @LastName, @UserType, @ScreenAccessList, @ConfirmPassword, @AdditionalInfo);";
+            string sql = @"insert into users (UserId , EmailAddress,  Password , FirstName, LastName, UserType, ScreenAccessList, ConfirmPassword, AdditionalInfo, IdGmin, language)
+                           values (@UserId, @EmailAddress,  @Password , @FirstName, @LastName, @UserType, @ScreenAccessList, @ConfirmPassword, @AdditionalInfo , @IdGmin, @language);";
             await _db.SaveDataAsync(sql, new UserInDB(argS));
         }
 
@@ -114,6 +123,20 @@ namespace WebServiceGilBT.Services {
                 }
             }
             return await Task.FromResult<User>(null);
+        }
+
+        public async Task<int> GetUserLangAsync(int uid) {
+            try {
+                string sql = "select language from users where UserId=" + uid.ToString();
+                List<int> listaPrzejsciowa = await _db.LoadData<int, dynamic>(sql, new { });
+                if (listaPrzejsciowa != null) {
+                    if (listaPrzejsciowa.Count > 0) {
+                        return listaPrzejsciowa[0];
+                    }
+                }
+            } catch {
+            }
+            return default;
         }
 
         public async Task<User> GetUserWithNameAndPasswordAsync(string email, string password) {
@@ -142,7 +165,7 @@ namespace WebServiceGilBT.Services {
 
         public async Task<User> LoginAsync(User argUser) {
             User returnedUser = null;
-			string psswd_encrypded = EncryptString.StringCipher.Encrypt(argUser.Password);
+            string psswd_encrypded = EncryptString.StringCipher.Encrypt(argUser.Password);
             returnedUser = await GetUserWithNameAndPasswordAsync(argUser.EmailAddress, psswd_encrypded);
             if (returnedUser != null) {
                 Console.WriteLine("returned user is {0}", returnedUser.EmailAddress);
@@ -175,10 +198,24 @@ namespace WebServiceGilBT.Services {
 
         public async Task UpdateUserAsync(User argS) {
             string sql = @" UPDATE users
-                        SET EmailAddress = @EmailAddress,  Password = @Password , FirstName = @FirstName, LastName = @LastName, UserType = @UserType, ScreenAccessList = @ScreenAccessList, ConfirmPassword = @ConfirmPassword, AdditionalInfo = @AdditionalInfo
+                        SET EmailAddress = @EmailAddress,  Password = @Password , FirstName = @FirstName, LastName = @LastName, UserType = @UserType, ScreenAccessList = @ScreenAccessList, ConfirmPassword = @ConfirmPassword, AdditionalInfo = @AdditionalInfo, IdGmin=@IdGmin, language=@language
                         WHERE UserId = @UserId ";
 
             await _db.SaveDataAsync(sql, new UserInDB(argS));
         }
+
+        public async Task DeleteUserAsync(User argS) {
+            string sql = @" Delete from users                        
+                        WHERE UserId = @UserId ";
+            await _db.SaveDataAsync(sql, new UserInDB(argS));
+        }
+
+        public async Task UpdateCertainProperty(User argS, string propertyName) {
+            string sql = @$" UPDATE users
+                        SET {propertyName} = @{propertyName}
+                        WHERE UserId = @UserId ";
+            await _db.SaveDataAsync(sql, new UserInDB(argS));
+        }
+
     }
 }

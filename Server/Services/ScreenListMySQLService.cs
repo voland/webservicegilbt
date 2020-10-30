@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.IO;
 /* using System.Linq; */
@@ -25,6 +25,7 @@ namespace WebServiceGilBT.Services {
         public string ip { set; get; }
         public string ma { set; get; }
         public string gw { set; get; }
+        public int IdGminy { get; set; }
         public byte[] pres { get; set; }
 
         public ScreenInDB() { }
@@ -46,6 +47,7 @@ namespace WebServiceGilBT.Services {
             ma = s.ma;
             gw = s.gw;
             pres = objectToByteArray(s.pres);
+            IdGminy = s.IdGminy;
         }
 
         public Screen GetScreen() {
@@ -70,7 +72,7 @@ namespace WebServiceGilBT.Services {
             s.ma = ma;
             s.gw = gw;
             s.pres = ByteArrayToObject(pres);
-
+            s.IdGminy = IdGminy;
             return s;
         }
 
@@ -141,14 +143,14 @@ namespace WebServiceGilBT.Services {
 
         public async Task PostScreenAsync(Screen argS) {
             argS.ActualiseLastRequestTime();
-            string sql = @"insert into screens (uid , name,  firmware_ver , contrast, contrast_max, contrast_night, last_request, screen_type, from_led_screen, width, height, dhcp, ip, ma, gw, pres)
-                           values (@uid, @name,  @firmware_ver , @contrast, @contrast_max, @contrast_night, @last_request, @screen_type, @from_led_screen, @width, @height, @dhcp, @ip, @ma, @gw, @pres);";
+            string sql = @"insert into screens (uid , name,  firmware_ver , contrast, contrast_max, contrast_night, last_request, screen_type, from_led_screen, width, height, dhcp, ip, ma, gw, pres, IdGminy)
+                           values (@uid, @name,  @firmware_ver , @contrast, @contrast_max, @contrast_night, @last_request, @screen_type, @from_led_screen, @width, @height, @dhcp, @ip, @ma, @gw, @pres, @IdGminy);";
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
 
         public async Task UpdateScreenAsync(Screen argS) {
             string sql = @" UPDATE screens
-                        SET name = @name,  firmware_ver = @firmware_ver , contrast = @contrast, contrast_max = @contrast_max, contrast_night = @contrast_night, last_request = @last_request, screen_type = @screen_type, from_led_screen = @from_led_screen, width = @width, height = @height, dhcp = @dhcp, ip = @ip, ma = @ma, gw = @gw, pres=@pres
+                        SET name = @name,  firmware_ver = @firmware_ver , contrast = @contrast, contrast_max = @contrast_max, contrast_night = @contrast_night, last_request = @last_request, screen_type = @screen_type, from_led_screen = @from_led_screen, width = @width, height = @height, dhcp = @dhcp, ip = @ip, ma = @ma, gw = @gw, pres=@pres, IdGminy=@IdGminy
                         WHERE uid = @uid ";
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
         }
@@ -159,6 +161,25 @@ namespace WebServiceGilBT.Services {
                         SET last_request = @last_request
                         WHERE uid = @uid ";
             await _db.SaveDataAsync(sql, new ScreenInDB(argS));
+        }
+
+        public async Task UpdateCertainProperty(Screen argS, string propertyName) {           
+            string sql = @$" UPDATE screens
+                        SET {propertyName} = @{propertyName}
+                        WHERE uid = @uid ";
+            await _db.SaveDataAsync(sql, new ScreenInDB(argS));
+        }
+
+        //na razie nie działa...
+        private async Task<ScreenList> GetGilBTScreenListWithoutPresentationsAsync() {
+            string sql = "select uid , name,  firmware_ver , contrast, contrast_max, contrast_night, last_request, screen_type, from_led_screen, width, height, dhcp, ip, ma, gw, IdGminy from screens";
+            List<ScreenInDB> listaPrzejsciowa = await _db.LoadData<ScreenInDB, dynamic>(sql, new { });
+            ScreenList sl = new ScreenList();
+            sl.Screens = new List<Screen>();
+            foreach (ScreenInDB sidb in listaPrzejsciowa) {
+                sl.Screens.Add(sidb.GetScreen());
+            }
+            return sl;
         }
     }
 }
