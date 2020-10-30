@@ -3,19 +3,33 @@ using Microsoft.AspNetCore.Components;
 using System.IO;
 using System.Collections.Generic;
 using WebServiceGilBT.Services;
+using System.Net;
+using System.Text.Json;
+using WebServiceGilBT.Data;
+using Microsoft.JSInterop;
+using System.Threading.Tasks;
 using Blazor.Extensions;
 using Blazor.Extensions.Canvas.Canvas2D;
 
 namespace WebServiceGilBT.Shared {
-    public partial class ScreenEditor : ComponentBase {
+    public partial class ScreenEditor : ComponentBase, IDisposable {
         [Inject]
         protected ScreenListMySQLService ScreenListService { set; get; }
 
         [Inject]
         NavigationManager NavigationManager { set; get; }
 
+        [Inject]
+        IJSRuntime js { set; get; }
+
+		[Inject]
+		GminaMySqlService gs {set; get;}
+
         [Parameter]
         public Screen Screen { set; get; }
+
+        [Parameter]
+        public User loggeduser { set; get; }
 
         public List<string> FirmwareList {
             get {
@@ -53,10 +67,12 @@ namespace WebServiceGilBT.Shared {
             NavigationManager.NavigateTo(newurl);
         }
 
-        public void DeleteClicked() {
-            Debuger.PrintLn("DeleteClicked");
-            ScreenListService.DeleteScreenAsync(Screen).Wait();
-            NavigateHome();
+        public async Task DeleteClicked() {
+            bool confirmed = await js.InvokeAsync<bool>("confirm", Lang.confirmDeleteFromDB);
+            if (confirmed) {
+                ScreenListService.DeleteScreenAsync(Screen).Wait();
+                NavigateHome();
+            }
         }
 
         private void HandleValidSubmit() {
@@ -64,6 +80,63 @@ namespace WebServiceGilBT.Shared {
         }
 
         public bool ShowConfirmDelete = false;
+
+        private string url = "https://api.syngeos.pl/api/public/data/device/{0}";
+        private const string unknowncity = "unknown city";
+        private string _city = unknowncity;
+        private Device d = null;
+        int _UnifySensorId;
+        int UnifySensorId {
+            get => _UnifySensorId; set {
+                if (value != 0 && value != _UnifySensorId) {
+
+                    _UnifySensorId = value;
+                    try {
+                        using (WebClient wc = new WebClient()) {
+                            var json = wc.DownloadString(string.Format(url, value));
+                            d = JsonSerializer.Deserialize<Device>(json);
+                            if (d != null) {
+                                _city = d.city;
+                            }
+                        }
+                    } catch (Exception e) {
+                        Console.WriteLine(e.Message);
+                        _city = Lang.unkownCity;
+                        //  text = "unknown device";
+                    }
+                } else { _UnifySensorId = 0; }
+            }
+        }
+
+        void confirmUnifiedIdx() {
+            Screen.pres.UnifiedIdx = _UnifySensorId;
+            if (_UnifySensorId > 0) {
+                foreach (Page p in Screen.pres.pages) {
+                    foreach (PageElement pe in p.elements) {
+                        if (pe.type.ToString().ToLower().Contains("sensor")) {
+                            pe.idx = _UnifySensorId;
+                        }
+                    }
+                }
+            }
+        }
+
+        Gmina gmina;
+
+        string nazwaGminyEkranu { get { if (gmina != null) return gmina.stringPodpowiedzi; return ""; } }
+
+        bool pokaWyborGminy = false;
+        protected override void OnInitialized() {
+            Lang.LangChanged += StateHasChanged;
+            base.OnInitialized();
+            if (Screen != null) gmina = gs.GetGminaAsync(Screen.IdGminy).Result;
+        }
+
+        public void Dispose() {
+            Lang.LangChanged -= StateHasChanged;
+        }
+
+        bool pokaWczytywanieTamplatow = false;
         bool _pokaPreview = false;
         bool pokaPreview {
             get => _pokaPreview; set {
@@ -100,5 +173,11 @@ namespace WebServiceGilBT.Shared {
                 }
             }
         }
+
+        public void templatZostalWybrany(PresTemplate tm) {
+            pokaWczytywanieTamplatow = false;
+            Screen.pres = tm.prezentacja;
+        }
+
     }
 }
