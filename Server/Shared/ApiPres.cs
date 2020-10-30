@@ -149,6 +149,11 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
+        private string uid_for_preview = null;
+		public void set_uid_for_preview(string argUid){
+			uid_for_preview = argUid;
+		}
+
         public string text {
             set {
                 _text = value;
@@ -156,7 +161,11 @@ namespace WebServiceGilBT.Shared {
             get {
                 switch (type) {
                     case ElementType.TEXT: return _text;
-                    case ElementType.UID: return "Screen id number.";
+                    case ElementType.UID:
+                        if (uid_for_preview != null)
+                            return uid_for_preview.ToString();
+                        else
+                            return "Screen id number.";
                     case ElementType.TIME: {
                             int h = Now.Hour;
                             int m = Now.Minute;
@@ -300,6 +309,12 @@ namespace WebServiceGilBT.Shared {
             temp.type = ElementType.UID;
             return temp;
         }
+
+        public static PageElement NewText(string text, int x, int y, uint color, FontType font, string uid) {
+			PageElement pe = NewText(text, x, y, color, font);
+			pe.set_uid_for_preview(uid);
+			return pe;
+		}
 
         public static PageElement NewText(string text, int x, int y, uint color, FontType font) {
             PageElement temp = new PageElement();

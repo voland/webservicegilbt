@@ -81,8 +81,16 @@ namespace WebServiceGilBT.Shared {
             p4.elements.Add(PageElement.NewSensorPm10(444, 0, 8, 1, FontType.fontnormal8px));
             _pres.pages.Add(p4);
         }
+
         public Pres pres {
-            set { _pres = value; }
+            set {
+                _pres = value;
+                foreach (Page p in _pres.pages) {
+                    foreach (PageElement pe in p.elements) {
+                        pe.set_uid_for_preview(uid.ToString());
+                    }
+                }
+            }
             get {
                 if (_pres == null) InitPres();
                 return _pres;
