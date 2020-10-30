@@ -1,6 +1,9 @@
 ﻿@using WebServiceGilBT.Data
 @using System.Text.Json
+@using WebServiceGilBT.Services
 @inject Blazored.SessionStorage.ISessionStorageService _sessionStorageService
+@inject UserMySQLService us;
+@implements IDisposable
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">WebServiceGilBT</a>
@@ -13,16 +16,22 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/index" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> Screen List </NavLink>
-			@if ( loggeduser.UserType == eUserType.admin){
-				<NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
-					<span class="oi oi-people" aria-hidden="true"></span> Users List </NavLink>
-			}
+                <span class="oi oi-home" aria-hidden="true"></span> @Lang.screenList
+            </NavLink>
+            @if (loggeduser.UserType == eUserType.admin)
+            {
+                <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
+                    <span class="oi oi-people" aria-hidden="true"></span> @Lang.usersList
+                </NavLink>
+                <NavLink class="nav-link" href="/gminy" Match="NavLinkMatch.All">
+                    <span class="oi oi-home" aria-hidden="true"></span> @Lang.comunes
+                </NavLink>
+            }
         </li>
     </ul>
 </div>
 
-@code {
+@code{
     private bool collapseNavMenu = true;
 
     private string NavMenuCssClass => collapseNavMenu ? "collapse" : null;
@@ -31,30 +40,46 @@
         collapseNavMenu = !collapseNavMenu;
     }
 
-	protected async Task<User> GetLoggedUser() {
-		string serializedUser = await _sessionStorageService.GetItemAsync<string>("loggedUser");
-		User u = null;
-		if (serializedUser != null)
-			u = JsonSerializer.Deserialize<User>(serializedUser);
-		if (u == null) {
-			u = new User();
-		}
-		return u;
-	}
+    protected async Task<User> GetLoggedUser() {
+        string serializedUser = await _sessionStorageService.GetItemAsync<string>("loggedUser");
+        User u = null;
+        if (serializedUser != null)
+        {
+            u = JsonSerializer.Deserialize<User>(serializedUser);
+            u.language = (Languages)(await us.GetUserLangAsync(u.UserId));
+        }
+        if (u == null) {
+            u = new User();
+        }
+        return u;
+    }
 
-	private User _u = null;
-	public User loggeduser {
-		set { _u = value; }
-		get {
-			if (_u == null){
-				_u = new User();
-				_u.EmailAddress = "Unknown_user";
-			}
-			return _u;
-		}
-	}
+    private User _u = null;
+    public User loggeduser {
+        set {
+            _u = value;
+            paireUser.InvokeAsync(value); }
+        get {
+            if (_u == null){
+                _u = new User();
+                _u.EmailAddress = "Unknown_user";
+            }
+            return _u;
+        }
+    }
 
-	protected async override Task OnInitializedAsync() {
-		loggeduser = await GetLoggedUser();
-	}
+    [Parameter] public EventCallback<User> paireUser { get; set; }
+
+    protected async override Task OnInitializedAsync() {
+        loggeduser = await GetLoggedUser();
+    }
+
+    protected override void OnInitialized() {
+        Lang.LangChanged += StateHasChanged;
+    }
+
+    public void Dispose() {
+        Lang.LangChanged -= StateHasChanged;
+    }
+
 }
