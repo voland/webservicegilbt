@@ -138,7 +138,7 @@ namespace WebServiceGilBT.Pages {
             }
         }
 
-        int rowNo;
+        int rowNo { set; get; }
         int si;
         int ui;
 

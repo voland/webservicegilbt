@@ -125,7 +125,7 @@ namespace WebServiceGilBT.Shared {
 
         string nazwaGminyEkranu { get { if (gmina != null) return gmina.stringPodpowiedzi; return ""; } }
 
-        bool pokaWyborGminy = false;
+        bool pokaWyborGminy { set; get; } = false;
         protected override void OnInitialized() {
             Lang.LangChanged += StateHasChanged;
             base.OnInitialized();
@@ -136,7 +136,7 @@ namespace WebServiceGilBT.Shared {
             Lang.LangChanged -= StateHasChanged;
         }
 
-        bool pokaWczytywanieTamplatow = false;
+        bool pokaWczytywanieTamplatow { set; get; } = false;
         bool _pokaPreview = false;
         bool pokaPreview {
             get => _pokaPreview; set {

@@ -84,8 +84,8 @@ namespace WebServiceGilBT.Pages {
             }
         }
 
-        bool showScreens = false;
-        bool showComunes = false;
+        bool showScreens { set; get; } = false;
+        bool showComunes { set; get; } = false;
 
         void screenSelected(Screen scr) {
             showScreens = false;

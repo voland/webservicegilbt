@@ -72,7 +72,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        bool chooseTeamplate = false;
+        bool chooseTeamplate { set; get; } = false;
         public void AddNameTemplateClicked() {
             chooseTeamplate = false;
             Page p = new Page(10);
@@ -141,11 +141,12 @@ namespace WebServiceGilBT.Shared {
             Lang.LangChanged += StateHasChanged;
             base.OnInitialized();
         }
+
         public void Dispose() {
             Lang.LangChanged -= StateHasChanged;
         }
 
-        bool showTypeTemplateName = false;
+        bool showTypeTemplateName { set; get; } = false;
         string templateName = "";
         string templateKomunikat = "";
         public async Task SaveAsTemplateClicked() {

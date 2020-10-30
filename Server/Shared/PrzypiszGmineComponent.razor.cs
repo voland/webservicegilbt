@@ -9,7 +9,7 @@ using WebServiceGilBT.Services;
 namespace WebServiceGilBT.Shared {
     public partial class PrzypiszGmineComponent : ComponentBase, IDisposable {
 
-        bool loading = false;
+        bool loading { set; get; } = false;
 
         [Inject]
         GminaMySqlService gs { set; get; }
