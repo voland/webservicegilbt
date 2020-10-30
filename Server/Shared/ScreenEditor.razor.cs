@@ -142,7 +142,7 @@ namespace WebServiceGilBT.Shared {
         PreviewService ps;
         int skalaCanvasWzgledemEkranu = 4;
 
-        async void onPokaPreview() {
+        async void PokaPreview() {
             if (_outputCanvasContext != null) {
                 try {
                     ps = new PreviewService(_outputCanvasContext, Screen.pres, _canvasReference, skalaCanvasWzgledemEkranu);
@@ -155,7 +155,8 @@ namespace WebServiceGilBT.Shared {
             _outputCanvasContext = await _canvasReference.CreateCanvas2DAsync();
             await _outputCanvasContext.SetTextBaselineAsync(TextBaseline.Top);
             if (_outputCanvasContext != null) {
-                onPokaPreview();
+                if (firstRender)
+                    PokaPreview();
             }
         }
 
