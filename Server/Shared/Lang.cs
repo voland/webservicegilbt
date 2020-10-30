@@ -282,18 +282,6 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string content {
-            get {
-                switch (SiteLanguage) {
-                    case Languages.ENG:
-                        return "Content";
-                    case Languages.PL:
-                        return "Zawartość";
-                }
-                return "";
-            }
-        }
-
         public static string ekran {
             get {
                 switch (SiteLanguage) {

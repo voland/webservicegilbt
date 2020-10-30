@@ -66,25 +66,21 @@
 
 
     </p>
+
     <p>
         <button class="btn btn-primary" @onclick="(()=>pokaWczytywanieTamplatow=!pokaWczytywanieTamplatow)">@Lang.loadTemplate </button>
         @if (pokaWczytywanieTamplatow) {
             <SearchTemplates templateSelectedEvent="templatZostalWybrany" loggeduser="loggeduser" ekran="Screen" />
         }
     </p>
-    <p>
-        <button class="btn btn-primary" @onclick="(()=>pokaPreview=!pokaPreview)">@Lang.preview </button>
-        @if (pokaPreview) {
-            <div style="margin:15px">
-                <Blazor.Extensions.Canvas.BECanvas Width="Screen.width*skalaCanvasWzgledemEkranu" Height="Screen.height*skalaCanvasWzgledemEkranu" @ref="_canvasReference" />
 
-            </div>
-        }
+    <p>
+		<div style="margin:15px">
+			<Blazor.Extensions.Canvas.BECanvas Width="Screen.width*skalaCanvasWzgledemEkranu" Height="Screen.height*skalaCanvasWzgledemEkranu" @ref="_canvasReference" />
+		</div>
     </p>
 
-
     <p>
-        <label>@Lang.content: </label>
         <PresentationEditor Pres="@Screen.pres" scr="Screen" loggeduser="loggeduser" />
     </p>
 
@@ -92,6 +88,5 @@
     <p>
         <button class="btn btn-primary" @onclick="DeleteClicked">@Lang.deleteFromDB</button>
     </p>
-
 
 </EditForm>

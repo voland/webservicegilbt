@@ -20,12 +20,12 @@
                     <button class="btn btn-primary"
                             @onclick="(()=>NavigateToConfigureUser(user))">
                         @Lang.configure
-                        </button>
-                        @if (user.UserType != eUserType.admin) {
-                            <button class="btn btn-primary" style="background-color:darkred" @onclick="(()=>deleteSelectedUser(user))">@Lang.delete</button>
-                        }
-                    </td>
-                </tr>
-            }
+                    </button>
+                    @if (user.UserType != eUserType.admin) {
+                        <button class="btn btn-primary" style="background-color:darkred" @onclick="(()=>deleteSelectedUser(user))">@Lang.delete</button>
+                    }
+                </td>
+            </tr>
+        }
     }
 </table>

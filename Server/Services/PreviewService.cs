@@ -25,9 +25,9 @@ namespace WebServiceGilBT.Services {
         string fontCode(FontType f) {
             switch (f) {
                 case FontType.arial14:
-                    return $"{skala * 14}px arial";
+                    return $"bold {skala * 14}px arial";
                 case FontType.arial16:
-                    return $"{skala * 16}px arial";
+                    return $"bold {skala * 16}px arial";
                 case FontType.impact14:
                     return $"{skala * 14}px impact";
                 case FontType.impact16:
@@ -44,7 +44,8 @@ namespace WebServiceGilBT.Services {
             await _outputCanvasContext.ClearRectAsync(0, 0, _canvasReference.Width, _canvasReference.Height);
             await _outputCanvasContext.SetFillStyleAsync("black");
             await _outputCanvasContext.FillRectAsync(0, 0, _canvasReference.Width, _canvasReference.Height);
-            foreach (PageElement e in p.elements) {
+            for (int i = 0; i < p.elements.Count; i++) {
+                PageElement e = p.elements[i];
                 await _outputCanvasContext.SetFontAsync(fontCode(e.font));
                 await _outputCanvasContext.SetFillStyleAsync("#ffffff");
                 await _outputCanvasContext.FillTextAsync(e.text, e.x * skala, e.y * skala);
@@ -54,7 +55,8 @@ namespace WebServiceGilBT.Services {
 
         public async Task drawAllPages() {
             while (rysowanieWToku) {
-                foreach (Page p in prezentacja.pages) {
+                for (int i = 0; i < prezentacja.pages.Count; i++) {
+                    Page p = prezentacja.pages[i];
                     await drawPage(p);
                 }
             }

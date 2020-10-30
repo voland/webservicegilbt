@@ -137,17 +137,6 @@ namespace WebServiceGilBT.Shared {
         }
 
         bool pokaWczytywanieTamplatow { set; get; } = false;
-        bool _pokaPreview = false;
-        bool pokaPreview {
-            get => _pokaPreview; set {
-                _pokaPreview = value;
-                if (pokaPreview) {
-                } else {
-                    if (ps != null) ps.rysowanieWToku = false;
-                }
-            }
-        }
-
         BECanvasComponent _canvasReference = null;
         Canvas2DContext _outputCanvasContext;
         PreviewService ps;
@@ -163,14 +152,10 @@ namespace WebServiceGilBT.Shared {
         }
 
         protected override async Task OnAfterRenderAsync(bool firstRender) {
-            if (pokaPreview) {
-                if (true) {
-                    _outputCanvasContext = await _canvasReference.CreateCanvas2DAsync();
-                    await _outputCanvasContext.SetTextBaselineAsync(TextBaseline.Top);
-                }
-                if (_outputCanvasContext != null) {
-                    onPokaPreview();
-                }
+            _outputCanvasContext = await _canvasReference.CreateCanvas2DAsync();
+            await _outputCanvasContext.SetTextBaselineAsync(TextBaseline.Top);
+            if (_outputCanvasContext != null) {
+                onPokaPreview();
             }
         }
 
