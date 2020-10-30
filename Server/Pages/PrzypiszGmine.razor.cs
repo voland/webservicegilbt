@@ -4,6 +4,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using WebServiceGilBT.Data;
 using WebServiceGilBT.Services;
+using WebServiceGilBT.Shared;
 
 namespace WebServiceGilBT.Pages {
     public partial class PrzypiszGmine : ComponentBase {
@@ -41,6 +42,15 @@ namespace WebServiceGilBT.Pages {
             get {
                 if (_u == null) _u = new User();
                 return _u;
+            }
+        }
+
+        Screen ekran;
+
+        [Parameter]
+        public int Uid {
+            set {
+                ekran = scrLstSrvc.GetGilBTScreenAsync(value).Result;
             }
         }
 
