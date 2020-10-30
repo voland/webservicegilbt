@@ -1,38 +1,61 @@
 ﻿@inherits LayoutComponentBase
 @using WebServiceGilBT.Data;
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject WebServiceGilBT.Services.UserMySQLService usSer
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu paireUser="paireUser" />
 </div>
 
 <AuthorizeView>
-	<Authorized>
-		<div class="main">
-			<div class="top-row px-4">
-				<a href="/changeuserpassword" >Welcome @context.User.Identity.Name</a>
-				<a href="/" @onclick="Logout">Logout</a>
-			</div>
+    <Authorized>
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="/changeuserpassword">@Lang.welcome @context.User.Identity.Name</a>
+                <select @bind="Lang.SiteLanguage" style="margin:10px" @onfocusout="updateDBLanguage">
+                    <option value="@Languages.ENG">ENG</option>
+                    <option value="@Languages.PL">PL</option>
+                </select>
 
-			<div class="content px-4">
-				@Body
-			</div>
-		</div>
-	</Authorized>
-	<NotAuthorized>
-		<div class="main">
-			<div class="top-row px-4">
-				<a href="/">Login</a>
-			</div>
-			<div class="content px-4">
-				<p> You are not authorized, please login.</p>
-			</div>
-		</div>
-	</NotAuthorized>
+                <a href="/" @onclick="Logout">@Lang.logout</a>
+            </div>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="/">Login</a>
+            </div>
+            <div class="content px-4">
+                <p> You are not authorized, please login.</p>
+            </div>
+        </div>
+    </NotAuthorized>
 </AuthorizeView>
 
 @code {
-	public void Logout(){
-		((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLogout();
-	}
+    public void Logout() {
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLogout();
+    }
+
+    User loggedUser;
+
+    void paireUser(User _user) {
+        loggedUser = _user;
+        if(_user!=null) {
+            Lang._SiteLanguage = _user.language;
+        }
+
+    }
+
+    async Task updateDBLanguage() {
+        if(loggedUser!=null) {
+            loggedUser.language = Lang.SiteLanguage;
+            await usSer.UpdateCertainProperty(loggedUser, nameof(User.language));
+        }
+    }
+
 }
