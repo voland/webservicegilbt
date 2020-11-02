@@ -111,6 +111,7 @@ namespace WebServiceGilBT.Data {
             if (ScreenAccessList != null) {
                 foreach (ScreenAccessDescriber sad in ScreenAccessList) {
                     if (sad.uid == uid) {
+						return true;
                     }
                 }
             }
