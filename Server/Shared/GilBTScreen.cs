@@ -1,4 +1,5 @@
 using System;
+using WebServiceGilBT.Data;
 
 namespace WebServiceGilBT.Shared {
     public class Screen : IScreen {
@@ -51,6 +52,8 @@ namespace WebServiceGilBT.Shared {
         public string ip { set; get; }
         public string ma { set; get; }
         public string gw { set; get; }
+        public int IdGminy;
+        public Gmina gmina = new Gmina();
 
         private Pres _pres = null;
         public void InitPres() {
@@ -78,18 +81,26 @@ namespace WebServiceGilBT.Shared {
             p4.elements.Add(PageElement.NewSensorPm10(444, 0, 8, 1, FontType.fontnormal8px));
             _pres.pages.Add(p4);
         }
+
         public Pres pres {
-            set { _pres = value; }
+            set {
+                _pres = value;
+                foreach (Page p in _pres.pages) {
+                    foreach (PageElement pe in p.elements) {
+                        pe.set_uid_for_preview(uid.ToString());
+                    }
+                }
+            }
             get {
                 if (_pres == null) InitPres();
                 return _pres;
             }
         }
 
-        public Screen() { 
-			from_led_screen = false;
-			ActualiseLastRequestTime();
-		}
+        public Screen() {
+            from_led_screen = false;
+            ActualiseLastRequestTime();
+        }
 
         public string resolution() {
             return $"{width}x{height}";
@@ -115,5 +126,6 @@ namespace WebServiceGilBT.Shared {
 		public void ActualiseLastRequestTime(){
             last_request = MyClock.Now;
 		}
+
     }
 }

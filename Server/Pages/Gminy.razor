@@ -1,0 +1,54 @@
+@page "/gminy"
+@using WebServiceGilBT.Data
+
+<h3>@lng.comunes</h3>
+
+@if (loggeduser.UserType == eUserType.admin) {
+    <table class="table" width="1000px">
+        @{rowNo = 0; }
+        <thead>
+            <tr>
+                <th width="500px">@lng.comune</th>
+                <th>@lng.screen</th>
+                <th>@lng.users</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (Gmina c in listaCT) {
+                rowNo++;
+                <tr @onclick="(() => selectedItem = c)" style="@styleBGColorString @styleBorderString">
+                    <td>@c.stringPodpowiedzi </td>
+                    <td></td>
+                    <td></td>
+                </tr>
+                @if (wybranyWiersz == rowNo) {
+                    @if (si >= ui) {
+                        for (int i = 0; i < si; i++) {
+                            <tr style="@styleBGColorString">
+                                <td></td>
+                                <td>@c.ekrany[i].name</td>
+                                <td>
+                                    @if (i < ui) {
+                                        <label> @c.uzytkownicy[i].EmailAddress , @c.uzytkownicy[i].FirstName @c.uzytkownicy[i].LastName </label>
+                                    }
+                                </td>
+                            </tr>
+                        }
+                    } else {
+                        for (int i = 0; i < ui; i++) {
+                            <tr style="@styleBGColorString">
+                                <td></td>
+                                <td>
+                                    @if (i < si) {
+                                        <label> @c.ekrany[i].name </label>
+                                    }
+                                </td>
+                                <td>@c.uzytkownicy[i].EmailAddress , @c.uzytkownicy[i].FirstName @c.uzytkownicy[i].LastName</td>
+                            </tr>
+                        }
+                    }
+                }
+            }
+        </tbody>
+    </table>
+}

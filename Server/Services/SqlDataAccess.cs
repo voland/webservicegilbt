@@ -15,7 +15,7 @@ namespace WebServiceGilBT.Services {
         }
 
         public SqlDataAccess(IConfiguration config) {
-			//actualy does notnig important now
+            //actualy does notnig important now
             _config = config;
         }
 

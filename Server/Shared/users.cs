@@ -48,10 +48,10 @@ namespace WebServiceGilBT.Shared {
                 //encrypt
                 foreach (User u in _users) {
                     u.Password = EncryptString.StringCipher.Encrypt(u.Password);
-					if ( u.UserId==0 ){
-						Random r = new Random();
-						u.UserId = r.Next();
-					}
+                    if (u.UserId == 0) {
+                        Random r = new Random();
+                        u.UserId = r.Next();
+                    }
                 }
                 //saving process
                 try {

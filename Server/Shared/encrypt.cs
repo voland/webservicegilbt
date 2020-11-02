@@ -36,7 +36,7 @@ namespace EncryptString {
 
         public static string Decrypt(this string text) {
             try {
-                string textToDecrypt = text;;
+                string textToDecrypt = text; ;
                 string ToReturn = "";
                 byte[] privatekeyByte = { };
                 privatekeyByte = System.Text.Encoding.UTF8.GetBytes(secretkey);
@@ -56,9 +56,9 @@ namespace EncryptString {
                 }
                 return ToReturn;
             } catch (Exception e) {
-				if ( e!=null)
-					Console.Write("Warrning: this password cannot be decrypded, returning original value");
-				return text;
+                if (e != null)
+                    Console.Write("Warrning: this password cannot be decrypded, returning original value");
+                return text;
             }
         }
     }

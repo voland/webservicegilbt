@@ -37,9 +37,9 @@ namespace WebServiceGilBT.Pages {
 
             if (returnedUser != null) {
                 if (returnedUser.AdditionalInfo != null) {
-					LoginMesssage = returnedUser.AdditionalInfo;
+                    LoginMesssage = returnedUser.AdditionalInfo;
                 } else {
-					LoginMesssage = "User created sucessfully, now you can click \"Alrady an user?\" and login.";
+                    LoginMesssage = "User created sucessfully, now you can click \"Alrady an user?\" and login.";
                 }
             } else {
                 LoginMesssage = "Invalid username or password";

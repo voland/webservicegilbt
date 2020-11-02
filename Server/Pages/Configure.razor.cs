@@ -1,6 +1,5 @@
 using System;
 using Microsoft.AspNetCore.Components;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 using WebServiceGilBT.Shared;
 using WebServiceGilBT.Services;
@@ -8,7 +7,7 @@ using WebServiceGilBT.Data;
 using System.Text.Json;
 
 namespace WebServiceGilBT.Pages {
-    public partial class Configure : ComponentBase {
+    public partial class Configure : ComponentBase, IDisposable {
 
         [Inject]
         protected ScreenListMySQLService ScreenListService { set; get; }
@@ -23,7 +22,6 @@ namespace WebServiceGilBT.Pages {
 
         [Inject]
         NavigationManager NavigationManager { set; get; }
-
 
         private void NavigateHome() {
             string newurl = "/index";
@@ -43,7 +41,6 @@ namespace WebServiceGilBT.Pages {
 
         protected async override Task OnInitializedAsync() {
             user = await GetLoggedUser();
-
             screenList = await ScreenListService.GetGilBTScreenListAsync();
             foreach (Screen s in screenList.Screens) {
                 if (s.uid == Uid) {
@@ -57,6 +54,7 @@ namespace WebServiceGilBT.Pages {
                 Screen.name = "NULL";
                 Screen.screen_type = eScreenType.unknown;
             }
+            lng.LangChanged += StateHasChanged;
         }
 
         protected async Task<User> GetLoggedUser() {
@@ -68,6 +66,10 @@ namespace WebServiceGilBT.Pages {
                 u = new User();
             }
             return u;
+        }
+
+        public void Dispose() {
+            lng.LangChanged -= StateHasChanged;
         }
 
         private User _u = null;

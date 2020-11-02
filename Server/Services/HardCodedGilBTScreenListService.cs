@@ -30,7 +30,7 @@ namespace WebServiceGilBT.Services {
         }
 
         public async Task PostScreenAsync(Screen argS) {
-			argS.ActualiseLastRequestTime();
+            argS.ActualiseLastRequestTime();
             argS.from_led_screen = false;
             await httpClient.PostJsonAsync("/api/screens/postscreen", argS);
         }
@@ -56,10 +56,10 @@ namespace WebServiceGilBT.Services {
             await PostScreenAsync(argS);
         }
 
-        public async Task UpdateLastRequestTime(Screen argS){
+        public async Task UpdateLastRequestTime(Screen argS) {
             //robi nic bo ta klasa jest do usuniecia
             //throw new NotImplementedException();
-			await Task.CompletedTask;
-		}
+            await Task.CompletedTask;
+        }
     }
 }

@@ -1,0 +1,36 @@
+@using WebServiceGilBT.Services;
+@inject ScreenListMySQLService sls;
+
+<input type="text" @bind-value="filterString" @bind-value:event="oninput" />
+
+<div style="background-color:azure; border:solid ; border-width:1px ; border-radius:10px ; width:50%">
+    @foreach (Screen scr in filteredListaEkranow) {
+        <label @onclick="(()=>screenSelectedEvent.InvokeAsync(scr))" class="hintLabel" style="margin:3px">
+            @scr.name , Id: @scr.uid
+        </label> <br />
+    }
+</div>
+
+@code {
+
+    [Parameter] public EventCallback<Screen> screenSelectedEvent { get; set; }
+
+    string _filterString;
+
+    string filterString {
+        get => _filterString; set {
+            _filterString = value;
+            filteredListaEkranow = listaEkranow.Where(x => x.name.ToLower().Contains(_filterString.ToLower())).ToList();
+        }
+    }
+
+    List<Screen> listaEkranow;
+
+    List<Screen> filteredListaEkranow;
+
+    protected override Task OnInitializedAsync() {
+        listaEkranow = sls.GetGilBTScreenList().Screens;
+        filteredListaEkranow = new List<Screen>(listaEkranow);
+        return base.OnInitializedAsync();
+    }
+}

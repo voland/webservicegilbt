@@ -1,38 +1,69 @@
-﻿@inherits LayoutComponentBase
+@inherits LayoutComponentBase
 @using WebServiceGilBT.Data;
 @inject AuthenticationStateProvider AuthenticationStateProvider
+@inject WebServiceGilBT.Services.UserMySQLService usSer
+@inject Lang lng
 
 <div class="sidebar">
-    <NavMenu />
+    <NavMenu OnLoggedUser="OnLoggedUser" />
 </div>
 
 <AuthorizeView>
-	<Authorized>
-		<div class="main">
-			<div class="top-row px-4">
-				<a href="/changeuserpassword" >Welcome @context.User.Identity.Name</a>
-				<a href="/" @onclick="Logout">Logout</a>
-			</div>
-
-			<div class="content px-4">
-				@Body
-			</div>
-		</div>
-	</Authorized>
-	<NotAuthorized>
-		<div class="main">
-			<div class="top-row px-4">
-				<a href="/">Login</a>
-			</div>
-			<div class="content px-4">
-				<p> You are not authorized, please login.</p>
-			</div>
-		</div>
-	</NotAuthorized>
+    <Authorized>
+        <div class="main">
+            <div class="top-row px-4">
+                <a href=@_configure_user_url>@lng.welcome @context.User.Identity.Name</a>
+                <select @bind="lng.SiteLanguage" style="margin:10px" @onfocusout="updateDBLanguage">
+                    <option value="@Languages.ENG">ENG</option>
+                    <option value="@Languages.PL">PL</option>
+                </select>
+                <a href="/" @onclick="Logout">@lng.logout</a>
+            </div>
+            <div class="content px-4">
+                @Body
+            </div>
+        </div>
+    </Authorized>
+    <NotAuthorized>
+        <div class="main">
+            <div class="top-row px-4">
+                <a href="/">Login</a>
+            </div>
+            <div class="content px-4">
+                <p> You are not authorized, please login.</p>
+            </div>
+        </div>
+    </NotAuthorized>
 </AuthorizeView>
 
 @code {
-	public void Logout(){
-		((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLogout();
+    public void Logout() {
+        ((CustomAuthenticationStateProvider)AuthenticationStateProvider).MarkUserAsLogout();
+    }
+
+    User loggedUser;
+
+	string _configure_user_url{
+		get{
+			if ( loggedUser!=null)
+				return string.Format("/ConfigureUser/{0}", loggedUser.UserId);
+			else
+				return "/Login";
+		}
 	}
+
+    void OnLoggedUser(User _user) {
+        loggedUser = _user;
+        if (_user != null) {
+            lng._SiteLanguage = _user.language;
+        }
+    }
+
+    async Task updateDBLanguage() {
+        if (loggedUser != null) {
+            loggedUser.language = lng.SiteLanguage;
+            await usSer.UpdateCertainProperty(loggedUser, nameof(User.language));
+        }
+    }
+
 }

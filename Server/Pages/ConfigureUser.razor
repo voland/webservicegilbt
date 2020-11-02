@@ -1,0 +1,126 @@
+@using WebServiceGilBT.Data
+@page "/ConfigureUser"
+@page "/ConfigureUser/{UserIdParam:int}"
+
+
+@if (edited_user != null) {
+    <EditForm Model="@edited_user">
+        @if (loggeduser.IsUserAccessedByThisUser(edited_user)) {
+            <div style="display:flex ; flex-direction:row">
+                <h1>
+                    <label>@lng.confOfUser:</label>
+                    <label>@edited_user.EmailAddress</label>
+                </h1>
+                <button class="buttonStyle" style="background-color:darkred ; margin:15px" @onclick="onDeleteClicked">@lng.deleteAccount</button>
+            </div>
+
+            <table>
+                <tr>
+                    <th><label>@lng.firstName:</label></th>
+                    <th>
+                        <input type="text" @bind="edited_user.FirstName" />
+                    </th>
+                </tr>
+                <tr>
+                    <th><label>@lng.lastName:</label></th>
+                    <th><input type="text" @bind="edited_user.LastName" /></th>
+                </tr>
+            </table>
+            <button class="buttonStyle" @onclick="NavigateToChangePassword" style="margin:10px"> @lng.changePassword</button>
+            <hr style="width:75% ;margin:20px" />
+
+            @if (loggeduser.UserType == eUserType.admin) {
+                @if (edited_user.UserType != eUserType.admin) {
+                    <table style="margin:10px">
+                        <thead>
+                            <tr>
+                                <th>@lng.accessedScreens:</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (edited_user.ScreenAccessList != null) {
+                                @foreach (ScreenAccessDescriber sad in edited_user.ScreenAccessList) {
+                                    <tr>
+                                        <td>@sad.Name</td>
+                                        <td><button class="buttonStyle" @onclick="(() => onRemoveClicked(sad))">@lng.remove</button></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <button class="buttonStyle" @onclick="(()=> showScreens=!showScreens)"> @lng.addScreenAccess</button>
+                    @if (showScreens) {
+                        <div style="margin:10px">
+                            <SearchScreen screenSelectedEvent="screenSelected" />
+
+                        </div>
+                    }
+
+                    <hr style="width:75%; margin:20px" />
+                    <table style="margin:10px">
+                        <thead>
+                            <tr>
+                                <th>@lng.comunes:</th>
+                                <th></th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @if (gminyUzytkownika != null) {
+                                @foreach (Gmina g in gminyUzytkownika) {
+                                    <tr>
+                                        <td>@g.stringPodpowiedzi</td>
+                                        <td><button class="buttonStyle" @onclick="(() => onRemoveClicked(g))">@lng.remove</button></td>
+                                    </tr>
+                                }
+                            }
+                        </tbody>
+                    </table>
+                    <button class="buttonStyle" @onclick="(()=> showComunes=!showComunes)"> @lng.addComune</button>
+                    @if (showComunes) {
+                        <div style="margin:10px">
+                            <SearchComunes screenSelectedEvent="gminaSelected" />
+                        </div>
+                    }
+
+                } else {
+                    <div>
+                        <label style="font-weight:bold; font-size:20px">@lng.accessedScreens, @lng.comunes:</label>
+                    </div>
+                    <div>
+                        <label>@lng.adminHasFullAccess</label>
+                    </div>
+                }
+                <hr style="width:75%; margin:20px" />
+            } else {
+                <div>
+                    <label style="font-weight:bold; font-size:20px">@lng.accessedScreens:</label>
+                </div>
+                <div>
+                    @if (edited_user.ScreenAccessList != null) {
+                        @foreach (ScreenAccessDescriber sad in edited_user.ScreenAccessList) {
+                            <label>@sad.Name</label><br />
+                        }
+                    }
+                </div>
+                <hr style="width:75%; margin:20px" />
+                <div>
+                    <label style="font-weight:bold; font-size:20px">@lng.comunes:</label>
+                </div>
+                <div>
+                    @if (gminyUzytkownika != null) {
+                        @foreach (Gmina gm in gminyUzytkownika) {
+                            <label>@gm.stringPodpowiedzi</label><br />
+                        }
+                    }
+                </div>
+            }
+            <p>
+                <button class="buttonStyle" @onclick="onSubmit">Accept</button>
+            </p>
+
+        } else {
+            <label>@lng.uCantEditThisUser</label>
+        }
+    </EditForm>
+}

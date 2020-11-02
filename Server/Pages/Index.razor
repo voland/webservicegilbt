@@ -1,36 +1,47 @@
-﻿@page "/index"
+@page "/index"
 @using WebServiceGilBT.Shared
 @using WebServiceGilBT.Data
 
-
 <table class="my_custom_table">
-	<tr class="my_custom_th_verydark">
-		<th>Uid</th>
-		<th>Name</th>
-		<th>Type</th>
-		<th>Resolution</th>
-		<th>Last Request</th>
-		<th>Version</th>
-		<th>Contrast</th>
-		<th>Night contrast</th>
-		<th>Configure</th>
-	</tr>
+    <tr class="my_custom_th_verydark">
+        <th @onclick='(() => mkOrnungWithScreenList(cs_gmina))' class="ClickableLabel">@lng.comune <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_uid))' class="ClickableLabel">Uid <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_name))' class="ClickableLabel">@lng.name <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_type))' class="ClickableLabel">@lng.type <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_resolution))' class="ClickableLabel">@lng.resolution <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_lastRequest))' class="ClickableLabel">@lng.lastRequest <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_ver))' class="ClickableLabel">@lng.version <i class="oi oi-elevator" /></th>
+        <th>@lng.contrast</th>
+        <th>@lng.nightContrast</th>
+        <th>@lng.configure</th>
+    </tr>
 
-	@foreach (var screen in screenList.Screens) {
-		@if ( user.IsScreenAccessedByUser( screen.uid)){
-		<tr class="my_custom_th @item_background" >
-			<td>@screen.uid</td>
-			<td>@screen.name</td>
-			<td>@screen.screen_type_str()</td>
-			<td>@screen.resolution()</td>
-			<td>@screen.last_request</td>
-			<td>@screen.firmware_ver</td>
-			<td>@screen.contrast_str()</td>
-			<td>@screen.night_contrast_str()</td>
-			<td><button class="btn btn-primary" 
-						@onclick="(()=>NavigateToConfigureScreen(screen))">Configure</button></td>
-		</tr>
-		}
-	}
+    @foreach (var screen in listaDoWyswietlania) {
+        @if (user.IsScreenAccessedByUser(screen.uid)) {
+            <tr class="my_custom_th @item_background">
+                <td>
+                    @if (screen.gmina != null) {@screen.gmina.NazwaGminy}
+                </td>
+                <td>@screen.uid</td>
+                <td>@screen.name</td>
+                <td>@screen.screen_type_str()</td>
+                <td>@screen.resolution()</td>
+                <td>@screen.last_request</td>
+                <td>@screen.firmware_ver</td>
+                <td>@screen.contrast_str()</td>
+                <td>@screen.night_contrast_str()</td>
+                <td>
+                    <button class="btn btn-primary"
+                            @onclick="(()=>NavigateToConfigureScreen(screen))">
+                        @lng.configure
+                    </button>
+
+                </td>
+            </tr>
+        }
+    }
 
 </table>
+
+@code{
+}

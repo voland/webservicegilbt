@@ -1,14 +1,17 @@
 @page "/Configure"
 @page "/Configure/{Uid:int}"
 @using WebServiceGilBT.Shared
+@inject Lang lng
 
-@if ( user.IsScreenAccessedByUser(Uid)){
-	<div class="top-row2 px-4">
-		<button class="btn btn-header" @onclick="ApplyClicked">Save changes</button>
-		<button class="btn btn-header" @onclick="CancelClicked">Exit</button>
-	</div>
+@if (user.IsScreenAccessedByUser(Uid)) {
+    <div class="top-row2 px-4">
+        <button class="btn btn-header" @onclick="ApplyClicked">@lng.saveChanges</button>
+        <button class="btn btn-header" @onclick="CancelClicked">@lng.exit</button>
+    </div>
 
-	<div class="content px-4">
-		<ScreenEditor Screen="@Screen"/>
-	</div>
+    <div class="content px-4">
+        <ScreenEditor Screen="@Screen" loggeduser="user" />
+    </div>
 }
+
+

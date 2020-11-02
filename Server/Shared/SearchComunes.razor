@@ -1,0 +1,42 @@
+@using WebServiceGilBT.Services;
+@using WebServiceGilBT.Data;
+@inject GminaMySqlService gs;
+
+<input type="text" @bind-value="filterString" @bind-value:event="oninput" style="margin:10px" />
+
+<div style="background-color:azure; border:solid ; border-width:1px ; border-radius:10px ; width:50%">
+    @foreach (Gmina gm in filteredListaGmin) {
+        <label @onclick="(()=>screenSelectedEvent.InvokeAsync(gm))" class="hintLabel" style="margin:3px">
+            @gm.stringPodpowiedzi
+        </label> <br />
+    }
+</div>
+
+@code {
+
+    [Parameter] public EventCallback<Gmina> screenSelectedEvent { get; set; }
+
+    string _filterString;
+
+    string filterString {
+        get => _filterString; set {
+            _filterString = value;
+            if (_filterString.Length > 2) {
+                filteredListaGmin = listaGmin.Where(x => x.NazwaGminy.ToLower().Contains(_filterString.ToLower())).ToList();
+            } else {
+                filteredListaGmin = new List<Gmina>();
+            }
+        }
+    }
+
+    List<Gmina> listaGmin;
+
+    List<Gmina> filteredListaGmin;
+
+    protected override async Task OnInitializedAsync() {
+        listaGmin = await gs.GetGminaListAsync();
+        filteredListaGmin = new List<Gmina>();
+        //return base.OnInitializedAsync();
+    }
+
+}

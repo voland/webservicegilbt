@@ -5,6 +5,7 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using WebServiceGilBT.Data;
+using WebServiceGilBT.Shared;
 
 namespace WebServiceGilBT.Data {
 
@@ -14,7 +15,9 @@ namespace WebServiceGilBT.Data {
         public int uid { set; get; }
         public bool allowed { set; get; }
 
-        ScreenAccessDescriber(string name, int uid, bool allowed) {
+        public ScreenAccessDescriber() { }
+
+        public ScreenAccessDescriber(string name, int uid, bool allowed) {
             this.Name = name;
             this.uid = uid;
             this.allowed = allowed;
@@ -24,7 +27,7 @@ namespace WebServiceGilBT.Data {
     public enum eUserType {
         admin,
         normal,
-		unknown
+        unknown
     }
 
     public partial class User {
@@ -63,22 +66,29 @@ namespace WebServiceGilBT.Data {
                     if (EmailAddress.Contains("patryk.brzozowski@syngeos.pl")) {
                         return eUserType.admin;
                     }
+                    if (EmailAddress.Contains("gilpiotr13@gmail.com")) {
+                        return eUserType.admin;
+                    }
                 }
                 return _ut;
             }
         }
-        public List<ScreenAccessDescriber> ScreenAccessList { set; get; }
+        public List<ScreenAccessDescriber> ScreenAccessList { set; get; } = new List<ScreenAccessDescriber>();
         public string ConfirmPassword { get; set; }
         public string AdditionalInfo { get; set; }
 
+        public List<int> IdGmin = new List<int>();
+
+        public Languages language = Languages.ENG;
+
         public bool IsUserAccessedByThisUser(User argEditedUser) {
-			//noone can edit null or unknown user
-			if ( argEditedUser== null){
-				return false;
-			}
-			if ( argEditedUser.UserType == eUserType.unknown){
-				return false;
-			}
+            //noone can edit null or unknown user
+            if (argEditedUser == null) {
+                return false;
+            }
+            if (argEditedUser.UserType == eUserType.unknown) {
+                return false;
+            }
             if (argEditedUser.UserId == UserId) {
                 Console.WriteLine("Ok you can edit yourself");
                 return true;
@@ -101,6 +111,7 @@ namespace WebServiceGilBT.Data {
             if (ScreenAccessList != null) {
                 foreach (ScreenAccessDescriber sad in ScreenAccessList) {
                     if (sad.uid == uid) {
+						return true;
                     }
                 }
             }

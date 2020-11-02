@@ -4,21 +4,28 @@
 
 
 <table class="my_custom_table">
-		<tr class="my_custom_th_verydark">
-			<th>User Id</th>
-			<th>Email</th>
-			<th>Type</th>
-			<th>Configure</th>
-		</tr>
-		@foreach (User user in _userlist) {
-			@if (loggeduser.UserType == eUserType.admin){
-				<tr class="my_custom_th @item_background">
-					<td>@user.UserId</td>
-					<td>@user.EmailAddress</td>
-					<td>@user.UserType</td>
-					<td><button class="btn btn-primary" 
-								@onclick="(()=>NavigateToConfigureUser(user))">ConfigureUser</button></td>
-				</tr>
-			}
-		}
+    <tr class="my_custom_th_verydark">
+        <th>@lng.userId </th>
+        <th>Email</th>
+        <th>@lng.type</th>
+        <th>@lng.configure</th>
+    </tr>
+    @foreach (User user in _userlist) {
+        @if (loggeduser.UserType == eUserType.admin) {
+            <tr class="my_custom_th @item_background">
+                <td>@user.UserId</td>
+                <td>@user.EmailAddress</td>
+                <td>@user.UserType</td>
+                <td>
+                    <button class="btn btn-primary"
+                            @onclick="(()=>NavigateToConfigureUser(user))">
+                        @lng.configure
+                    </button>
+                    @if (user.UserType != eUserType.admin) {
+                        <button class="btn btn-primary" style="background-color:darkred" @onclick="(()=>deleteSelectedUser(user))">@lng.delete</button>
+                    }
+                </td>
+            </tr>
+        }
+    }
 </table>

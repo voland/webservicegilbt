@@ -4,11 +4,15 @@
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
   <ItemGroup>
+    <PackageReference Include="Blazor.Extensions.Canvas" Version="1.0.0" />
     <PackageReference Include="Blazored.SessionStorage" Version="1.0.12" />
     <PackageReference Include="Dapper" Version="2.0.35" />
     <PackageReference Include="Microsoft.AspNetCore.Blazor.HttpClient" Version="3.1.0-preview4.19579.2" />
     <PackageReference Include="MySql.Data" Version="8.0.21" />
     <!-- <PackageReference Include="Microsoft.XmlSerializer.Generator" Version="5.0.0-preview.1.20120.5" /> -->
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Firmwares\" />
   </ItemGroup>
 
 </Project>

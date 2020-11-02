@@ -49,7 +49,7 @@ namespace WebServiceGilBT.Services {
 
         public async Task<User> GetUserAsync(string emailAddress) {
             /* throw new NotImplementedException(); */
-			return await Task.FromResult<User>(null);
+            return await Task.FromResult<User>(null);
         }
 
         public async Task<User> GetUserAsync(int argUserId) {
@@ -72,7 +72,7 @@ namespace WebServiceGilBT.Services {
                 UserList.users.Remove(user_to_remove);
             }
             UserList.Add(argUser);
-			await Task.FromResult<Task>(null);
+            await Task.FromResult<Task>(null);
         }
 
         public async Task<List<User>> GetUserListAsync() {
