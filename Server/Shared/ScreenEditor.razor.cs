@@ -88,11 +88,16 @@ namespace WebServiceGilBT.Shared {
         private const string unknowncity = "unknown city";
         private string _city = unknowncity;
         private Device d = null;
-        int _UnifySensorId;
-        int UnifySensorId {
-            get => _UnifySensorId; set {
-                if (value != 0 && value != _UnifySensorId) {
 
+        int _UnifySensorId {
+            set { Screen.pres.UnifiedIdx = value; }
+            get { return Screen.pres.UnifiedIdx; }
+        }
+
+        int UnifySensorId {
+            get => _UnifySensorId;
+            set {
+                if (value != 0 && value != _UnifySensorId) {
                     _UnifySensorId = value;
                     try {
                         using (WebClient wc = new WebClient()) {
@@ -111,8 +116,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        void confirmUnifiedIdx() {
-            Screen.pres.UnifiedIdx = _UnifySensorId;
+        void UpdateUnifiedIdx() {
             if (_UnifySensorId > 0) {
                 foreach (Page p in Screen.pres.pages) {
                     foreach (PageElement pe in p.elements) {
@@ -126,13 +130,21 @@ namespace WebServiceGilBT.Shared {
 
         Gmina gmina;
 
-        string nazwaGminyEkranu { get { if (gmina != null) return gmina.stringPodpowiedzi; return ""; } }
+        string nazwaGminyEkranu {
+            get {
+                if (gmina != null)
+                    return gmina.stringPodpowiedzi;
+                return "";
+            }
+        }
 
         bool pokaWyborGminy { set; get; } = false;
+
         protected override void OnInitialized() {
             lng.LangChanged += StateHasChanged;
             base.OnInitialized();
-            if (Screen != null) gmina = gs.GetGminaAsync(Screen.IdGminy).Result;
+            if (Screen != null)
+                gmina = gs.GetGminaAsync(Screen.IdGminy).Result;
         }
 
         public void Dispose() {
@@ -142,14 +154,14 @@ namespace WebServiceGilBT.Shared {
         bool pokaWczytywanieTamplatow { set; get; } = false;
         BECanvasComponent _canvasReference = null;
         Canvas2DContext _outputCanvasContext;
-        PreviewService ps;
+        PreviewService _preview_service;
         int skalaCanvasWzgledemEkranu = 4;
 
         async void PokaPreview() {
             if (_outputCanvasContext != null) {
                 try {
-                    ps = new PreviewService(_outputCanvasContext, Screen.pres, _canvasReference, skalaCanvasWzgledemEkranu);
-                    await ps.drawAllPages();
+                    _preview_service = new PreviewService(_outputCanvasContext, Screen.pres, _canvasReference, skalaCanvasWzgledemEkranu);
+                    await _preview_service.drawAllPages();
                 } catch { }
             }
         }
@@ -163,9 +175,19 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public void templatZostalWybrany(PresTemplate tm) {
+        public void SelectTemplate(PresTemplate tm) {
+            int temp_unified_idx = _UnifySensorId;
             pokaWczytywanieTamplatow = false;
             Screen.pres = tm.prezentacja;
+            _UnifySensorId = temp_unified_idx;
+            UpdateUnifiedIdx();
+            _preview_service?.SetPresentationToPlay(Screen.pres);
+        }
+
+        private void OnGminaSelected(Gmina argGmina) {
+            Console.WriteLine("Gmina changed to {0}", argGmina.NazwaGminy);
+            gmina = argGmina;
+            pokaWyborGminy = false;
         }
 
     }

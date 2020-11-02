@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Components;
 using WebServiceGilBT.Data;
 using WebServiceGilBT.Services;
+using Microsoft.AspNetCore.Components.Web;
 
 namespace WebServiceGilBT.Shared {
     public partial class PrzypiszGmineComponent : ComponentBase, IDisposable {
@@ -16,6 +17,9 @@ namespace WebServiceGilBT.Shared {
 
         [Inject]
         Lang lng { set; get; }
+
+        [Parameter]
+        public EventCallback<Gmina> GminaSelected { get; set; }
 
         protected async override Task OnInitializedAsync() {
             lng.LangChanged += StateHasChanged;
@@ -30,7 +34,8 @@ namespace WebServiceGilBT.Shared {
         string filterString {
             get => _filterString; set {
                 _filterString = value;
-                if (_filterString.Length > 2) filteredList = pelnaListaGmin.Where(x => x.NazwaGminy.ToLower().Contains(filterString.ToLower())).ToList();
+                if (_filterString.Length > 2)
+                    filteredList = pelnaListaGmin.Where(x => x.NazwaGminy.ToLower().Contains(filterString.ToLower())).ToList();
                 if (gminaWybrana) gminaWybrana = false;
             }
         }
@@ -43,11 +48,12 @@ namespace WebServiceGilBT.Shared {
         List<Gmina> filteredList = new List<Gmina>();
         List<Gmina> pelnaListaGmin = new List<Gmina>();
 
-        void wybranoGmine(Gmina gm) {
+        void WybierzGmine(Gmina gm) {
             filterString = gm.NazwaGminy;
             wybranaGm = gm;
             _ekran.IdGminy = wybranaGm.Id;
             gminaWybrana = true;
+            GminaSelected.InvokeAsync(gm);
         }
 
         int IdGminyEkranu;
@@ -65,6 +71,14 @@ namespace WebServiceGilBT.Shared {
                     Gmina g = gs.GetGminaAsync(IdGminyEkranu).Result;
                     nazwaGminyEkranu = g.stringPodpowiedzi;
                 }
+            }
+        }
+
+        public void KeyDown(KeyboardEventArgs e) {
+            switch (e.Key) {
+                case "Tab":
+                    WybierzGmine(filteredList[0]);
+                    break;
             }
         }
     }

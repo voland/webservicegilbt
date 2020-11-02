@@ -39,6 +39,7 @@ namespace WebServiceGilBT.Shared {
 
         public void AddElement(Page p) {
             PageElement pe = new PageElement("Tekst", 0, 0, 1, FontType.fontnormal8px);
+            if (Pres.UnifiedIdx > 0) pe.idx = Pres.UnifiedIdx;
             p.elements.Add(pe);
         }
 
@@ -59,6 +60,7 @@ namespace WebServiceGilBT.Shared {
         public void DeleteElement(Page p, PageElement pe) {
             p.elements.Remove(pe);
         }
+
         private void HandleValidSubmit() {
             Debuger.PrintLn("OnValidSubmit");
         }

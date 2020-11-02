@@ -5,7 +5,7 @@
 
 <div style="display:flex ; flex-direction:row">
     <div style="display:flex ; flex-direction:column">
-        <input style="margin:10px" type="text" @bind="filterString" @bind:event="oninput" />
+		<input style="margin:10px" type="text" @bind="filterString" @bind:event="oninput" @onkeydown="KeyDown"/>
     </div>
 </div>
 
@@ -18,7 +18,7 @@
 @if (filterString.Length > 2 && !gminaWybrana) {
     <div style="display:inline-block ; border:solid ; border-width:1px ; background-color:azure ; width:50% ">
         @foreach (Gmina g in filteredList) {
-            <label class="hintLabel" @onclick="(() => wybranoGmine(g))"> @g.stringPodpowiedzi</label><br />
+            <label class="hintLabel" @onclick="(() => WybierzGmine(g))"> @g.stringPodpowiedzi</label><br />
         }
     </div>
 }

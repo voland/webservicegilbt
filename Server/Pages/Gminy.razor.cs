@@ -111,7 +111,7 @@ namespace WebServiceGilBT.Pages {
 
         List<Gmina> pelnaListaGmin = new List<Gmina>();
 
-        void wybranoGmine(Gmina gm) {
+        void WybierzGmine(Gmina gm) {
             filterString = gm.NazwaGminy;
             wybranaGm = gm;
             gminaWybrana = true;

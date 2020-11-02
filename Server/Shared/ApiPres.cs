@@ -25,6 +25,7 @@ namespace WebServiceGilBT.Shared {
         SENSOR_PM10_STATUS,
         SENSOR_PM1_STATUS
     }
+
     [Serializable]
     public enum FontType {
         fontnormal8px,

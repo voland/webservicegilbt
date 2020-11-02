@@ -15,9 +15,13 @@ namespace WebServiceGilBT.Services {
 
         public bool rysowanieWToku = true;
 
-        public PreviewService(Canvas2DContext context, Pres przntcja, BECanvasComponent Canvas, int skala) {
+        public void SetPresentationToPlay(Pres argPres) {
+            prezentacja = argPres;
+        }
+
+        public PreviewService(Canvas2DContext context, Pres argPres, BECanvasComponent Canvas, int skala) {
             _outputCanvasContext = context;
-            prezentacja = przntcja;
+            SetPresentationToPlay(argPres);
             _canvasReference = Canvas;
             this.skala = skala;
         }

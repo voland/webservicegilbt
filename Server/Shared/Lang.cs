@@ -18,7 +18,7 @@ namespace WebServiceGilBT.Shared {
                 if (_SiteLanguage != value) {
                     _SiteLanguage = value;
                     LangChanged?.Invoke();
-					Console.WriteLine("Language chages");
+                    Console.WriteLine("Language chages");
                 }
             }
         }
@@ -184,7 +184,7 @@ namespace WebServiceGilBT.Shared {
                     case Languages.ENG:
                         return "assign comune";
                     case Languages.PL:
-                        return "lokalizacja";
+                        return "przypisz gminę";
                 }
                 return "";
             }
@@ -245,7 +245,7 @@ namespace WebServiceGilBT.Shared {
                     case Languages.ENG:
                         return "One sensor Id for all pages";
                     case Languages.PL:
-                        return "Stałe Id czujnika dla wszystkich stron";
+                        return "Stały Id czujnika dla wszystkich stron";
                 }
                 return "";
             }
@@ -267,9 +267,9 @@ namespace WebServiceGilBT.Shared {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
-                        return "Type 0 to turn off one sensor for all";
+                        return "Type 0 to disable";
                     case Languages.PL:
-                        return "Wpisz 0 by wyłączyć stałe Id dla wszystkich";
+                        return "Wpisz 0 by wyłączyć";
                 }
                 return "";
             }
@@ -501,9 +501,9 @@ namespace WebServiceGilBT.Shared {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
-                        return "Delete from Data Base";
+                        return "Delete screen from data base";
                     case Languages.PL:
-                        return "Usuń z bazy danych";
+                        return "Usuń ekran z bazy danych";
                 }
                 return "";
             }

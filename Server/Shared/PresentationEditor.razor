@@ -109,11 +109,7 @@
     }
     <p>
         <button class="btn btn-primary" @onclick="AddPageClicked">@lng.addBlankPage</button>
-    </p>
-    <p>
         <button class="btn btn-primary" @onclick="(()=>chooseTeamplate = !chooseTeamplate)">@lng.addTemplatePage</button>
-    </p>
-    <p>
         <button class="btn btn-primary" @onclick="(()=>showTypeTemplateName=!showTypeTemplateName)">@lng.savePresAsTemplate</button>
         @if (showTypeTemplateName) {
             <input type="text" @bind-value="templateName" />
