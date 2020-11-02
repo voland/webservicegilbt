@@ -1,9 +1,0 @@
-@page "/PrzypiszGmine"
-@page "/PrzypiszGmine/{Uid:int}"
-@using WebServiceGilBT.Data
-
-@if (loggeduser.UserType == eUserType.admin) {
-    <PrzypiszGmineComponent ekran="ekran" />
-} else {
-    <label> Access denied.</label>
-}
