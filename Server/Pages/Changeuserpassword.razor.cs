@@ -15,7 +15,6 @@ namespace WebServiceGilBT.Pages {
         [Parameter]
         public int UserIdParameter { set; get; }
 
-
         [Inject]
         NavigationManager NavigationManager { set; get; }
 
@@ -30,7 +29,6 @@ namespace WebServiceGilBT.Pages {
             string newurl = "/index";
             NavigationManager.NavigateTo(newurl);
         }
-
 
         protected async Task<User> GetEditedUser(int argUserId) {
             User editeduser = await userService.GetUserAsync(argUserId);
