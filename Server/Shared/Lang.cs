@@ -179,7 +179,7 @@ namespace WebServiceGilBT.Shared {
                     case Languages.ENG:
                         return "assign comune";
                     case Languages.PL:
-                        return "przypisz gminę";
+                        return "lokalizacja";
                 }
                 return "";
             }
