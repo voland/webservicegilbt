@@ -4,6 +4,7 @@
 @inject Blazored.SessionStorage.ISessionStorageService _sessionStorageService
 @inject UserMySQLService us;
 @implements IDisposable
+@inject Lang lng
 
 <div class="top-row pl-4 navbar navbar-dark">
     <a class="navbar-brand" href="">WebServiceGilBT</a>
@@ -16,14 +17,14 @@
     <ul class="nav flex-column">
         <li class="nav-item px-3">
             <NavLink class="nav-link" href="/index" Match="NavLinkMatch.All">
-                <span class="oi oi-home" aria-hidden="true"></span> @Lang.screenList
+                <span class="oi oi-home" aria-hidden="true"></span> @lng.screenList
             </NavLink>
             @if (loggeduser.UserType == eUserType.admin) {
                 <NavLink class="nav-link" href="/users" Match="NavLinkMatch.All">
-                    <span class="oi oi-people" aria-hidden="true"></span> @Lang.usersList
+                    <span class="oi oi-people" aria-hidden="true"></span> @lng.usersList
                 </NavLink>
                 <NavLink class="nav-link" href="/gminy" Match="NavLinkMatch.All">
-                    <span class="oi oi-home" aria-hidden="true"></span> @Lang.comunes
+                    <span class="oi oi-home" aria-hidden="true"></span> @lng.comunes
                 </NavLink>
             }
         </li>
@@ -74,11 +75,11 @@
     }
 
     protected override void OnInitialized() {
-        Lang.LangChanged += StateHasChanged;
+        @* lng.LangChanged += StateHasChanged; *@
     }
 
     public void Dispose() {
-        Lang.LangChanged -= StateHasChanged;
+        @* lng.LangChanged -= StateHasChanged; *@
     }
 
 }

@@ -1,16 +1,16 @@
 @page "/gminy"
 @using WebServiceGilBT.Data
 
-<h3>@Lang.comunes</h3>
+<h3>@lng.comunes</h3>
 
 @if (loggeduser.UserType == eUserType.admin) {
     <table class="table" width="1000px">
         @{rowNo = 0; }
         <thead>
             <tr>
-                <th width="500px">@Lang.comune</th>
-                <th>@Lang.screen</th>
-                <th>@Lang.users</th>
+                <th width="500px">@lng.comune</th>
+                <th>@lng.screen</th>
+                <th>@lng.users</th>
             </tr>
         </thead>
         <tbody>

@@ -14,13 +14,16 @@ namespace WebServiceGilBT.Shared {
         [Inject]
         GminaMySqlService gs { set; get; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         protected async override Task OnInitializedAsync() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             pelnaListaGmin = await gs.GetGminaListAsync();
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
 
         string _filterString = "";

@@ -27,11 +27,14 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         GminaMySqlService gs { set; get; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         protected override void OnInitialized() {
             Debuger.PrintLn("Initialising ScreenList");
             //just temp screnlist
             screenList = ScreenListService.GetGilBTScreenList();
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
         }
 
         protected async override Task OnInitializedAsync() {
@@ -176,8 +179,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
-
+            lng.LangChanged -= StateHasChanged;
         }
     }
 }

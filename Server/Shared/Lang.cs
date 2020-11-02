@@ -6,21 +6,26 @@ using System.Threading.Tasks;
 namespace WebServiceGilBT.Shared {
 
     public enum Languages { PL, ENG }
+
     public class Lang {
-        public static Languages _SiteLanguage = Languages.ENG;
-        public static Languages SiteLanguage {
-            get => _SiteLanguage; set {
+        public Languages _SiteLanguage = Languages.ENG;
+
+        public Lang() { }
+
+        public Languages SiteLanguage {
+            get => _SiteLanguage;
+            set {
                 if (_SiteLanguage != value) {
                     _SiteLanguage = value;
-                    LangChanged.Invoke();
+                    LangChanged?.Invoke();
+					Console.WriteLine("Language chages");
                 }
             }
         }
 
+        public Action LangChanged;
 
-        public static Action LangChanged;
-
-        public static string configure {
+        public string configure {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -31,7 +36,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string screenList {
+        public string screenList {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -42,7 +47,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string usersList {
+        public string usersList {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -53,7 +58,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string comunes {
+        public string comunes {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -65,7 +70,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string welcome {
+        public string welcome {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -77,7 +82,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string logout {
+        public string logout {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -89,7 +94,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string name {
+        public string name {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -101,7 +106,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string type {
+        public string type {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -113,7 +118,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string resolution {
+        public string resolution {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -125,7 +130,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string lastRequest {
+        public string lastRequest {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -137,7 +142,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string version {
+        public string version {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -149,7 +154,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string contrast {
+        public string contrast {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -161,7 +166,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string nightContrast {
+        public string nightContrast {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -173,7 +178,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string assignComune {
+        public string assignComune {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -186,7 +191,7 @@ namespace WebServiceGilBT.Shared {
         }
 
 
-        public static string saveChanges {
+        public string saveChanges {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -198,7 +203,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string exit {
+        public string exit {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -210,7 +215,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string confOfScreen {
+        public string confOfScreen {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -222,7 +227,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string preferFirmwareVer {
+        public string preferFirmwareVer {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -234,7 +239,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string oneSensorIdforAll {
+        public string oneSensorIdforAll {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -246,7 +251,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string unkownCity {
+        public string unkownCity {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -258,7 +263,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string type0ToTurnOffUnification {
+        public string type0ToTurnOffUnification {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -270,7 +275,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string confirm {
+        public string confirm {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -282,7 +287,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string ekran {
+        public string ekran {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -294,7 +299,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string slideShow {
+        public string slideShow {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -306,7 +311,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string position {
+        public string position {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -318,7 +323,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string parameters {
+        public string parameters {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -330,7 +335,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string result {
+        public string result {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -341,7 +346,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string load {
+        public string load {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -353,7 +358,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string delete {
+        public string delete {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -364,7 +369,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string deletePage {
+        public string deletePage {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -376,7 +381,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string addElement {
+        public string addElement {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -388,7 +393,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string moveUp {
+        public string moveUp {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -399,7 +404,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string moveDown {
+        public string moveDown {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -411,7 +416,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string timeInSec {
+        public string timeInSec {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -423,7 +428,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string addBlankPage {
+        public string addBlankPage {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -435,7 +440,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string addTemplatePage {
+        public string addTemplatePage {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -447,7 +452,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string dateTime {
+        public string dateTime {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -458,7 +463,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string pressureTemp {
+        public string pressureTemp {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -470,7 +475,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string airQuality {
+        public string airQuality {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -481,7 +486,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string cancel {
+        public string cancel {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -492,7 +497,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string deleteFromDB {
+        public string deleteFromDB {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -503,7 +508,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string confirmDeleteFromDB {
+        public string confirmDeleteFromDB {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -514,7 +519,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string screen {
+        public string screen {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -525,7 +530,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string assignedTo {
+        public string assignedTo {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -536,7 +541,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string typeComuneNameAndPickIt {
+        public string typeComuneNameAndPickIt {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -547,7 +552,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string assigne {
+        public string assigne {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -559,7 +564,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string userId {
+        public string userId {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -571,7 +576,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string confOfUser {
+        public string confOfUser {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -582,7 +587,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string deleteAccount {
+        public string deleteAccount {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -593,7 +598,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string firstName {
+        public string firstName {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -604,7 +609,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string lastName {
+        public string lastName {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -615,7 +620,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string additionalInfo {
+        public string additionalInfo {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -627,7 +632,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string changePassword {
+        public string changePassword {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -638,7 +643,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string accessedScreens {
+        public string accessedScreens {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -650,7 +655,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string remove {
+        public string remove {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -661,7 +666,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string addScreenAccess {
+        public string addScreenAccess {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -673,7 +678,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string adminHasFullAccess {
+        public string adminHasFullAccess {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -685,7 +690,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string uCantEditThisUser {
+        public string uCantEditThisUser {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -696,7 +701,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string yourPassword {
+        public string yourPassword {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -707,7 +712,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string newPassword {
+        public string newPassword {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -718,7 +723,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string repeatNewPassword {
+        public string repeatNewPassword {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -730,7 +735,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string comune {
+        public string comune {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -742,7 +747,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string rUSureUWantDeleteUser {
+        public string rUSureUWantDeleteUser {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -753,7 +758,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string rUSureUWantDeleteThisAccount {
+        public string rUSureUWantDeleteThisAccount {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -765,7 +770,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string yourAccountHasBeenDeleted {
+        public string yourAccountHasBeenDeleted {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -777,7 +782,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string addComune {
+        public string addComune {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -788,7 +793,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string savePresAsTemplate {
+        public string savePresAsTemplate {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -799,7 +804,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string save {
+        public string save {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -810,7 +815,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string templateHasBeenSaved {
+        public string templateHasBeenSaved {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -821,7 +826,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string templateNameIsEmpty {
+        public string templateNameIsEmpty {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -833,7 +838,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string loadTemplate {
+        public string loadTemplate {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -844,7 +849,7 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-        public static string users {
+        public string users {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -856,7 +861,7 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
-        public static string preview {
+        public string preview {
             get {
                 switch (SiteLanguage) {
                     case Languages.ENG:
@@ -867,8 +872,5 @@ namespace WebServiceGilBT.Shared {
                 return "";
             }
         }
-
-
-
     }
 }

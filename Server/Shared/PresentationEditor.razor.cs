@@ -16,6 +16,9 @@ namespace WebServiceGilBT.Shared {
         [Parameter]
         public User loggeduser { get; set; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         UniversalMysqlService<PresTemplate> presTemplateService;
         //element edit
         public void MoveUp(Page p) {
@@ -138,12 +141,12 @@ namespace WebServiceGilBT.Shared {
         }
 
         protected override void OnInitialized() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             base.OnInitialized();
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
 
         bool showTypeTemplateName { set; get; } = false;
@@ -156,9 +159,9 @@ namespace WebServiceGilBT.Shared {
                 string data = DateTime.Now.ToString("G");
                 PresTemplate pt = new PresTemplate() { TemplateName = templateName, Width = scr.width, Height = scr.height, prezentacja = Pres, ScreenType = scr.screen_type, UserAuthorId = loggeduser.UserId, CreateDate = data };
                 await presTemplateService.PostRecordAsync(pt);
-                templateKomunikat = Lang.templateHasBeenSaved;
+                templateKomunikat = lng.templateHasBeenSaved;
             } else {
-                templateKomunikat = Lang.templateNameIsEmpty;
+                templateKomunikat = lng.templateNameIsEmpty;
             }
         }
     }

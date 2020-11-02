@@ -4,16 +4,16 @@
 
 <table class="my_custom_table">
     <tr class="my_custom_th_verydark">
-        <th @onclick='(() => mkOrnungWithScreenList(cs_gmina))' class="ClickableLabel">@Lang.comune <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_gmina))' class="ClickableLabel">@lng.comune <i class="oi oi-elevator" /></th>
         <th @onclick='(() => mkOrnungWithScreenList(cs_uid))' class="ClickableLabel">Uid <i class="oi oi-elevator" /></th>
-        <th @onclick='(() => mkOrnungWithScreenList(cs_name))' class="ClickableLabel">@Lang.name <i class="oi oi-elevator" /></th>
-        <th @onclick='(() => mkOrnungWithScreenList(cs_type))' class="ClickableLabel">@Lang.type <i class="oi oi-elevator" /></th>
-        <th @onclick='(() => mkOrnungWithScreenList(cs_resolution))' class="ClickableLabel">@Lang.resolution <i class="oi oi-elevator" /></th>
-        <th @onclick='(() => mkOrnungWithScreenList(cs_lastRequest))' class="ClickableLabel">@Lang.lastRequest <i class="oi oi-elevator" /></th>
-        <th @onclick='(() => mkOrnungWithScreenList(cs_ver))' class="ClickableLabel">@Lang.version <i class="oi oi-elevator" /></th>
-        <th>@Lang.contrast</th>
-        <th>@Lang.nightContrast</th>
-        <th>@Lang.configure</th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_name))' class="ClickableLabel">@lng.name <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_type))' class="ClickableLabel">@lng.type <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_resolution))' class="ClickableLabel">@lng.resolution <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_lastRequest))' class="ClickableLabel">@lng.lastRequest <i class="oi oi-elevator" /></th>
+        <th @onclick='(() => mkOrnungWithScreenList(cs_ver))' class="ClickableLabel">@lng.version <i class="oi oi-elevator" /></th>
+        <th>@lng.contrast</th>
+        <th>@lng.nightContrast</th>
+        <th>@lng.configure</th>
     </tr>
 
     @foreach (var screen in listaDoWyswietlania) {
@@ -33,7 +33,7 @@
                 <td>
                     <button class="btn btn-primary"
                             @onclick="(()=>NavigateToConfigureScreen(screen))">
-                        @Lang.configure
+                        @lng.configure
                     </button>
 
                 </td>

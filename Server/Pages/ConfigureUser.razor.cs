@@ -31,6 +31,9 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         AuthenticationStateProvider asp { get; set; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         [Parameter]
         public int UserIdParam {
             get => _UserIdParam;
@@ -59,7 +62,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         protected async override Task OnInitializedAsync() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             _userlist = await userService.GetUserListAsync();
             loggeduser = await GetLoggedUser();
         }
@@ -119,7 +122,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         async Task onDeleteClicked() {
-            bool confirmed = await js.InvokeAsync<bool>("confirm", Lang.rUSureUWantDeleteThisAccount);
+            bool confirmed = await js.InvokeAsync<bool>("confirm", lng.rUSureUWantDeleteThisAccount);
             if (confirmed) {
                 await deleteUser();
             }
@@ -140,7 +143,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
     }
 }

@@ -21,6 +21,9 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         UserMySQLService userService { set; get; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         protected string OldPasswd { set; get; }
         protected string NewPasswd { set; get; }
         protected string NewPasswd2 { set; get; }
@@ -51,7 +54,7 @@ namespace WebServiceGilBT.Pages {
         protected string LoginMesssage { set; get; }
 
         protected async override Task OnInitializedAsync() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             OldPasswdInputDisabled = false;
             logged_user = await GetLoggedUser();
 
@@ -102,7 +105,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
 
         private User _edited_user = null;

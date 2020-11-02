@@ -25,6 +25,9 @@ namespace WebServiceGilBT.Shared {
         [Inject]
         GminaMySqlService gs { set; get; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         [Parameter]
         public Screen Screen { set; get; }
 
@@ -68,7 +71,7 @@ namespace WebServiceGilBT.Shared {
         }
 
         public async Task DeleteClicked() {
-            bool confirmed = await js.InvokeAsync<bool>("confirm", Lang.confirmDeleteFromDB);
+            bool confirmed = await js.InvokeAsync<bool>("confirm", lng.confirmDeleteFromDB);
             if (confirmed) {
                 ScreenListService.DeleteScreenAsync(Screen).Wait();
                 NavigateHome();
@@ -101,7 +104,7 @@ namespace WebServiceGilBT.Shared {
                         }
                     } catch (Exception e) {
                         Console.WriteLine(e.Message);
-                        _city = Lang.unkownCity;
+                        _city = lng.unkownCity;
                         //  text = "unknown device";
                     }
                 } else { _UnifySensorId = 0; }
@@ -127,13 +130,13 @@ namespace WebServiceGilBT.Shared {
 
         bool pokaWyborGminy { set; get; } = false;
         protected override void OnInitialized() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             base.OnInitialized();
             if (Screen != null) gmina = gs.GetGminaAsync(Screen.IdGminy).Result;
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
 
         bool pokaWczytywanieTamplatow { set; get; } = false;

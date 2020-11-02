@@ -2,6 +2,7 @@
 @using WebServiceGilBT.Data;
 @inject AuthenticationStateProvider AuthenticationStateProvider
 @inject WebServiceGilBT.Services.UserMySQLService usSer
+@inject Lang lng
 
 <div class="sidebar">
     <NavMenu OnLoggedUser="OnLoggedUser" />
@@ -11,12 +12,12 @@
     <Authorized>
         <div class="main">
             <div class="top-row px-4">
-                <a href=@_configure_user_url>@Lang.welcome @context.User.Identity.Name</a>
-                <select @bind="Lang.SiteLanguage" style="margin:10px" @onfocusout="updateDBLanguage">
+                <a href=@_configure_user_url>@lng.welcome @context.User.Identity.Name</a>
+                <select @bind="lng.SiteLanguage" style="margin:10px" @onfocusout="updateDBLanguage">
                     <option value="@Languages.ENG">ENG</option>
                     <option value="@Languages.PL">PL</option>
                 </select>
-                <a href="/" @onclick="Logout">@Lang.logout</a>
+                <a href="/" @onclick="Logout">@lng.logout</a>
             </div>
             <div class="content px-4">
                 @Body
@@ -54,13 +55,13 @@
     void OnLoggedUser(User _user) {
         loggedUser = _user;
         if (_user != null) {
-            Lang._SiteLanguage = _user.language;
+            lng._SiteLanguage = _user.language;
         }
     }
 
     async Task updateDBLanguage() {
         if (loggedUser != null) {
-            loggedUser.language = Lang.SiteLanguage;
+            loggedUser.language = lng.SiteLanguage;
             await usSer.UpdateCertainProperty(loggedUser, nameof(User.language));
         }
     }

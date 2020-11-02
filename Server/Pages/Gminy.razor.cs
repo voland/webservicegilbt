@@ -27,8 +27,11 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         ScreenListMySQLService screenService { set; get; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         protected async override Task OnInitializedAsync() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             _userlist = await userService.GetUserListAsync();
             loggeduser = await GetLoggedUser();
             listaCT = await przygotujListeCrossTableGmiy();
@@ -115,7 +118,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
 
         string styleBGColorString {

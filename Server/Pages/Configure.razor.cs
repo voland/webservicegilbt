@@ -54,7 +54,7 @@ namespace WebServiceGilBT.Pages {
                 Screen.name = "NULL";
                 Screen.screen_type = eScreenType.unknown;
             }
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
         }
 
         protected async Task<User> GetLoggedUser() {
@@ -69,7 +69,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
 
         private User _u = null;

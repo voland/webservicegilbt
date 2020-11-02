@@ -19,6 +19,9 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         ScreenListMySQLService scrLstSrvc { set; get; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         protected async override Task OnInitializedAsync() {
             _userlist = await userService.GetUserListAsync();
             loggeduser = await GetLoggedUser();

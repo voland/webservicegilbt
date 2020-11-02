@@ -1,26 +1,27 @@
 @using WebServiceGilBT.Services;
 @using WebServiceGilBT.Data;
 @inject UserMySQLService usrService;
+@inject Lang lng
 
 <div style="background-color:azure; border:solid ; border-width:1px ; border-radius:10px ; width:50% ; margin:10px">
     @if (pokaUzytkownikow && loggeduser.UserType == eUserType.admin) {
         @foreach (PresTemplate tm in listaUsersNames) {
-            <label style="margin:15px">@Lang.users:</label><br />
+            <label style="margin:15px">@lng.users:</label><br />
             <label @onclick="(()=>wybranoUsera(tm.UserAuthorId))" class="hintLabel" style="margin:3px">
                 @tm.authorName
             </label> <br />
         }
     } else {
         @if (loggeduser.UserType == eUserType.admin) {
-            <label @onclick="usersListClicked" class="hintLabel" style="margin:15px">@Lang.users</label><br />
+            <label @onclick="usersListClicked" class="hintLabel" style="margin:15px">@lng.users</label><br />
         }
 
         @foreach (PresTemplate tm in listaTemplatesOfUser) {
             <label style="margin:3px ; font-size:10px">
                 @string.Format("{0} , {1}x{2} {3} , {4}", tm.TemplateName, tm.Width, tm.Height, tm.ScreenType, tm.CreateDate)
             </label>
-            <label @onclick="(()=>wybranoTemplate(tm))" class="hintLabel" style="font-size:12px ; font-weight:bold ; margin-left:20px">@Lang.load</label>
-            <label @onclick="(()=>usunTemplate(tm))" class="hintLabel" style="font-size:12px ; font-weight:bold ; margin-left:15px">@Lang.delete</label><br />
+            <label @onclick="(()=>wybranoTemplate(tm))" class="hintLabel" style="font-size:12px ; font-weight:bold ; margin-left:20px">@lng.load</label>
+            <label @onclick="(()=>usunTemplate(tm))" class="hintLabel" style="font-size:12px ; font-weight:bold ; margin-left:15px">@lng.delete</label><br />
         }
     }
 </div>

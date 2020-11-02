@@ -1,18 +1,18 @@
 @* @using webservicegilbt.shared *@
 <EditForm Model="@Pres" OnInvalidSubmit="@HandleValidSubmit">
     <h1>
-        <h>@Lang.slideShow:</h>
+        <h>@lng.slideShow:</h>
     </h1>
     <p>
         @foreach (Page p in Pres.pages) {
             <hr style="height:2px;border-width:0;color:gray;background-color:gray">
             <table class="my_custom_table" style="width:80%">
                 <tr class="my_custom_th_verydark">
-                    <th>@Lang.type</th>
-                    <th>@Lang.position</th>
-                    <th>@Lang.parameters</th>
-                    <th>@Lang.result</th>
-                    <th>@Lang.delete</th>
+                    <th>@lng.type</th>
+                    <th>@lng.position</th>
+                    <th>@lng.parameters</th>
+                    <th>@lng.result</th>
+                    <th>@lng.delete</th>
                 </tr>
                 @foreach (PageElement pe in p.elements) {
                     <tr class="my_custom_th @item_background">
@@ -80,45 +80,45 @@
                             }
                         </td>
                         <td><label>@pe.text</label></td>
-                        <td> <button class="btn btn-primary" @onclick="()=>DeleteElement(p, pe)">@Lang.delete</button> </td>
+                        <td> <button class="btn btn-primary" @onclick="()=>DeleteElement(p, pe)">@lng.delete</button> </td>
                     </tr>
                 }
             </table>
 
-            <button class="btn btn-primary" @onclick="()=>DeletePage(p)">@Lang.deletePage</button>
-            <button class="btn btn-primary" @onclick="()=>AddElement(p)">@Lang.addElement</button>
-            <button class="btn btn-primary" @onclick="()=>MoveUp(p)">@Lang.moveUp</button>
-            <button class="btn btn-primary" @onclick="()=>MoveDown(p)">@Lang.moveDown</button>
-            <label>@Lang.timeInSec: </label>
+            <button class="btn btn-primary" @onclick="()=>DeletePage(p)">@lng.deletePage</button>
+            <button class="btn btn-primary" @onclick="()=>AddElement(p)">@lng.addElement</button>
+            <button class="btn btn-primary" @onclick="()=>MoveUp(p)">@lng.moveUp</button>
+            <button class="btn btn-primary" @onclick="()=>MoveDown(p)">@lng.moveDown</button>
+            <label>@lng.timeInSec: </label>
             <InputNumber TValue="Int32" @bind-Value="p.time" style="width:50px" min="1" max="60" />
         }
     </p>
     <hr style="height:2px;border-width:0;color:gray;background-color:black">
     @if (chooseTeamplate) {
         <div style="display:flex ; flex-direction:row">
-            <button class="btn btn-primary" style="margin:10px" @onclick="AddNameTemplateClicked">@Lang.name</button>
-            <button class="btn btn-primary" style="margin:10px" @onclick="AddDateTimeTemplateClicked">@Lang.dateTime</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddNameTemplateClicked">@lng.name</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddDateTimeTemplateClicked">@lng.dateTime</button>
             <button class="btn btn-primary" style="margin:10px" @onclick="AddPM10TemplateClicked">PM 10</button>
             <button class="btn btn-primary" style="margin:10px" @onclick="AddPM2_5TemplateClicked">PM 2.5</button>
-            <button class="btn btn-primary" style="margin:10px" @onclick="AddPreassureTempTemplateClicked">@Lang.pressureTemp</button>
-            <button class="btn btn-primary" style="margin:10px" @onclick="AddAirQualityTemplateClicked"> @Lang.airQuality</button>
-            <button class="btn btn-primary" style="margin:10px" @onclick="(()=>chooseTeamplate = false)"> @Lang.cancel</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddPreassureTempTemplateClicked">@lng.pressureTemp</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="AddAirQualityTemplateClicked"> @lng.airQuality</button>
+            <button class="btn btn-primary" style="margin:10px" @onclick="(()=>chooseTeamplate = false)"> @lng.cancel</button>
         </div>
         <hr style="height:2px;border-width:0;color:gray;background-color:black">
 
     }
     <p>
-        <button class="btn btn-primary" @onclick="AddPageClicked">@Lang.addBlankPage</button>
+        <button class="btn btn-primary" @onclick="AddPageClicked">@lng.addBlankPage</button>
     </p>
     <p>
-        <button class="btn btn-primary" @onclick="(()=>chooseTeamplate = !chooseTeamplate)">@Lang.addTemplatePage</button>
+        <button class="btn btn-primary" @onclick="(()=>chooseTeamplate = !chooseTeamplate)">@lng.addTemplatePage</button>
     </p>
     <p>
-        <button class="btn btn-primary" @onclick="(()=>showTypeTemplateName=!showTypeTemplateName)">@Lang.savePresAsTemplate</button>
+        <button class="btn btn-primary" @onclick="(()=>showTypeTemplateName=!showTypeTemplateName)">@lng.savePresAsTemplate</button>
         @if (showTypeTemplateName) {
             <input type="text" @bind-value="templateName" />
             <button class="btn btn-primary" @onclick="SaveAsTemplateClicked">
-                @Lang.save
+                @lng.save
             </button>
         }
         @if (!string.IsNullOrEmpty(templateKomunikat)) {<br /><label>@templateKomunikat</label>}

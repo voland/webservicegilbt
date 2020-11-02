@@ -1,17 +1,17 @@
 @* @using webservicegilbt.shared *@
 <EditForm Model="@Screen" OnInvalidSubmit="@HandleValidSubmit">
     <h1>
-        <h>@Lang.confOfScreen</h>
+        <h>@lng.confOfScreen</h>
         <label>Uid: </label>
         <label>@Screen.uid</label>
     </h1>
     <div style="margin:10px">
-        <label>@Lang.comune: @nazwaGminyEkranu</label>
+        <label>@lng.comune: @nazwaGminyEkranu</label>
         @{ string stylJasnegoGuzika = "";
             if (!(Screen.IdGminy > 0)) stylJasnegoGuzika = "; background-color:yellowgreen"; }
         <button class="btn btn-primary" style="margin-left:30px @stylJasnegoGuzika"
                 @onclick="(()=>pokaWyborGminy=!pokaWyborGminy)">
-            @Lang.assignComune
+            @lng.assignComune
         </button>
     </div>
     @if (pokaWyborGminy) {
@@ -19,7 +19,7 @@
         <hr style="width:60% ; margin:10px" />
     }
     <p>
-        <label>@Lang.preferFirmwareVer: </label>
+        <label>@lng.preferFirmwareVer: </label>
         <InputSelect TValue="String" @bind-Value="Screen.firmware_ver">
             @foreach (string s in FirmwareList) {
                 <option value="@s">@s</option>
@@ -27,48 +27,48 @@
         </InputSelect>
     </p>
     <p>
-        <label>@Lang.lastRequest:</label>
+        <label>@lng.lastRequest:</label>
         <label>@Screen.last_request</label>
     </p>
     <p>
-        <label>@Lang.resolution: </label>
+        <label>@lng.resolution: </label>
         <InputNumber TValue="Int32" @bind-Value="Screen.width" style="width:70px" min="32" max="512" step="32" />
         X
         <InputNumber TValue="Int32" @bind-Value="Screen.height" style="width:70px" min="16" max="256" step="16" />
     </p>
 
     <p>
-        <label>@Lang.type: </label>
+        <label>@lng.type: </label>
         <label>"@Screen.screen_type_str()"</label>
     </p>
 
     <p>
-        <label>@Lang.name: </label>
+        <label>@lng.name: </label>
         <input @bind="Screen.name" />
     </p>
 
     <p>
-        <label>@Lang.contrast: </label>
+        <label>@lng.contrast: </label>
         <input type="range" min="1" max="@Screen.contrast_max" @bind="Screen.contrast" class="slider" id="slcontrast" />
     </p>
 
     <p>
-        <label>@Lang.nightContrast: </label>
+        <label>@lng.nightContrast: </label>
         <input type="range" min="1" max="@Screen.contrast_max" @bind="Screen.contrast_night" class="slider" id="slcontrastnight" />
     </p>
 
     <p>
-        <label>@Lang.oneSensorIdforAll: </label>
+        <label>@lng.oneSensorIdforAll: </label>
         <input type="number" @bind="UnifySensorId" style="width:100px" />
         <label> @_city</label>
-        <button class="btn btn-primary" @onclick="confirmUnifiedIdx" style="margin-left:10px">@Lang.confirm</button>
-        <label style="font-size:10px ; margin-left:5px">(@Lang.type0ToTurnOffUnification)</label>
+        <button class="btn btn-primary" @onclick="confirmUnifiedIdx" style="margin-left:10px">@lng.confirm</button>
+        <label style="font-size:10px ; margin-left:5px">(@lng.type0ToTurnOffUnification)</label>
 
 
     </p>
 
     <p>
-        <button class="btn btn-primary" @onclick="(()=>pokaWczytywanieTamplatow=!pokaWczytywanieTamplatow)">@Lang.loadTemplate </button>
+        <button class="btn btn-primary" @onclick="(()=>pokaWczytywanieTamplatow=!pokaWczytywanieTamplatow)">@lng.loadTemplate </button>
         @if (pokaWczytywanieTamplatow) {
             <SearchTemplates templateSelectedEvent="templatZostalWybrany" loggeduser="loggeduser" ekran="Screen" />
         }
@@ -86,7 +86,7 @@
 
 
     <p>
-        <button class="btn btn-primary" @onclick="DeleteClicked">@Lang.deleteFromDB</button>
+        <button class="btn btn-primary" @onclick="DeleteClicked">@lng.deleteFromDB</button>
     </p>
 
 </EditForm>

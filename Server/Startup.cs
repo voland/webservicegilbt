@@ -10,12 +10,12 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using WebServiceGilBT.Data;
-/* using WebServiceGilBT.Shared; */
 using Microsoft.AspNetCore.Components.Authorization;
 using Blazored.SessionStorage;
 /* using Microsoft.JSInterop; */
 using WebServiceGilBT.Services;
 /* using System.Configuration; */
+using WebServiceGilBT.Shared;
 
 namespace WebServiceGilBT {
     public class Startup {
@@ -36,6 +36,7 @@ namespace WebServiceGilBT {
             services.AddTransient<ScreenListMySQLService>();
             services.AddTransient<UserMySQLService>();
             services.AddTransient<GminaMySqlService>();
+			services.AddScoped<Lang>();
             /* WebServiceGilBT.Controller.ScreensController.CopyDataToDb(); */
         }
 

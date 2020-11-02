@@ -24,8 +24,11 @@ namespace WebServiceGilBT.Pages {
         [Inject]
         IJSRuntime js { get; set; }
 
+        [Inject]
+        Lang lng { set; get; }
+
         protected async override Task OnInitializedAsync() {
-            Lang.LangChanged += StateHasChanged;
+            lng.LangChanged += StateHasChanged;
             _userlist = await userService.GetUserListAsync();
             loggeduser = await GetLoggedUser();
         }
@@ -69,7 +72,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         async Task deleteSelectedUser(User user) {
-            bool confirmed = await js.InvokeAsync<bool>("confirm", $"{Lang.rUSureUWantDeleteUser} {user.EmailAddress}?");
+            bool confirmed = await js.InvokeAsync<bool>("confirm", $"{lng.rUSureUWantDeleteUser} {user.EmailAddress}?");
             if (confirmed) {
                 await DeleteUser(user);
             }
@@ -82,7 +85,7 @@ namespace WebServiceGilBT.Pages {
         }
 
         public void Dispose() {
-            Lang.LangChanged -= StateHasChanged;
+            lng.LangChanged -= StateHasChanged;
         }
     }
 }
