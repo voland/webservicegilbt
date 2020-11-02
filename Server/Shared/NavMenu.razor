@@ -56,7 +56,7 @@
     public User loggeduser {
         set {
             _u = value;
-            paireUser.InvokeAsync(value);
+            OnLoggedUser.InvokeAsync(value);
         }
         get {
             if (_u == null) {
@@ -67,7 +67,7 @@
         }
     }
 
-    [Parameter] public EventCallback<User> paireUser { get; set; }
+    [Parameter] public EventCallback<User> OnLoggedUser { get; set; }
 
     protected async override Task OnInitializedAsync() {
         loggeduser = await GetLoggedUser();

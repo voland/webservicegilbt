@@ -4,19 +4,18 @@
 @inject WebServiceGilBT.Services.UserMySQLService usSer
 
 <div class="sidebar">
-    <NavMenu paireUser="paireUser" />
+    <NavMenu OnLoggedUser="OnLoggedUser" />
 </div>
 
 <AuthorizeView>
     <Authorized>
         <div class="main">
             <div class="top-row px-4">
-                <a href="/changeuserpassword">@Lang.welcome @context.User.Identity.Name</a>
+                <a href=@_configure_user_url>@Lang.welcome @context.User.Identity.Name</a>
                 <select @bind="Lang.SiteLanguage" style="margin:10px" @onfocusout="updateDBLanguage">
                     <option value="@Languages.ENG">ENG</option>
                     <option value="@Languages.PL">PL</option>
                 </select>
-
                 <a href="/" @onclick="Logout">@Lang.logout</a>
             </div>
             <div class="content px-4">
@@ -43,12 +42,20 @@
 
     User loggedUser;
 
-    void paireUser(User _user) {
+	string _configure_user_url{
+		get{
+			if ( loggedUser!=null)
+				return string.Format("/ConfigureUser/{0}", loggedUser.UserId);
+			else
+				return "/Login";
+		}
+	}
+
+    void OnLoggedUser(User _user) {
         loggedUser = _user;
         if (_user != null) {
             Lang._SiteLanguage = _user.language;
         }
-
     }
 
     async Task updateDBLanguage() {
