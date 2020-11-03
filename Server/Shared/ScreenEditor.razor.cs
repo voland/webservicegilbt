@@ -84,44 +84,32 @@ namespace WebServiceGilBT.Shared {
 
         public bool ShowConfirmDelete = false;
 
-        private string url = "https://api.syngeos.pl/api/public/data/device/{0}";
         private const string unknowncity = "unknown city";
-        private string _city = unknowncity;
+        private string _city {
+            get {
+                if (UnifySensorId == 0) return "Wyłączony";
+                try {
+                    Device d = DeviceList.GetDeviceById(UnifySensorId);
+                    return d.city;
+                } catch {
+                }
+                return unknowncity;
+            }
+        }
+
         private Device d = null;
 
-        int _UnifySensorId {
+        int UnifySensorId {
             set { Screen.pres.UnifiedIdx = value; }
             get { return Screen.pres.UnifiedIdx; }
         }
 
-        int UnifySensorId {
-            get => _UnifySensorId;
-            set {
-                if (value != 0 && value != _UnifySensorId) {
-                    _UnifySensorId = value;
-                    try {
-                        using (WebClient wc = new WebClient()) {
-                            var json = wc.DownloadString(string.Format(url, value));
-                            d = JsonSerializer.Deserialize<Device>(json);
-                            if (d != null) {
-                                _city = d.city;
-                            }
-                        }
-                    } catch (Exception e) {
-                        Console.WriteLine(e.Message);
-                        _city = lng.unkownCity;
-                        //  text = "unknown device";
-                    }
-                } else { _UnifySensorId = 0; }
-            }
-        }
-
         void UpdateUnifiedIdx() {
-            if (_UnifySensorId > 0) {
+            if (UnifySensorId > 0) {
                 foreach (Page p in Screen.pres.pages) {
                     foreach (PageElement pe in p.elements) {
                         if (pe.type.ToString().ToLower().Contains("sensor")) {
-                            pe.idx = _UnifySensorId;
+                            pe.idx = UnifySensorId;
                         }
                     }
                 }
@@ -176,10 +164,10 @@ namespace WebServiceGilBT.Shared {
         }
 
         public void SelectTemplate(PresTemplate tm) {
-            int temp_unified_idx = _UnifySensorId;
+            int temp_unified_idx = UnifySensorId;
             pokaWczytywanieTamplatow = false;
             Screen.pres = tm.prezentacja;
-            _UnifySensorId = temp_unified_idx;
+            UnifySensorId = temp_unified_idx;
             UpdateUnifiedIdx();
             _preview_service?.SetPresentationToPlay(Screen.pres);
         }

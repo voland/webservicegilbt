@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Text.Json.Serialization;
+using System.Net;
+using System.Text.Json;
 
 namespace WebServiceGilBT.Shared {
     [Serializable]
@@ -60,7 +63,6 @@ namespace WebServiceGilBT.Shared {
     }
 
     [Serializable]
-
     public class Device {
         public IList<double> coordinates { get; set; }
         public int id { get; set; }
@@ -69,5 +71,61 @@ namespace WebServiceGilBT.Shared {
         public string address { get; set; }
         public IList<DeviceSensor> sensors { get; set; }
         public bool send_reports { get; set; }
+        [JsonIgnore]
+        public DateTime last_read_device { set; get; }
+    }
+
+    public class DeviceList {
+        private static List<Device> devices;
+
+        private static string url = "https://api.syngeos.pl/api/public/data/device/{0}";
+
+        private static string GetDeviceUrl(int id) {
+            return string.Format(url, id);
+        }
+
+        private static Device DownloadDevice(int id) {
+            try {
+                using (WebClient wc = new WebClient()) {
+                    var json = wc.DownloadString(GetDeviceUrl(id));
+                    Device _device = JsonSerializer.Deserialize<Device>(json);
+                    _device.last_read_device = MyClock.Now;
+                    return _device;
+                }
+            } catch (Exception e) {
+                Debuger.PrintLn(e.Message);
+                Device _device = new Device();
+                _device.city = "unknown city";
+                _device.id = id;
+                _device.last_read_device = MyClock.Now;
+                _device.sensors = new List<DeviceSensor>();
+                return _device;
+            }
+            return null;
+        }
+
+        private static object locker = new Object();
+
+        public static Device GetDeviceById(int id) {
+            lock (locker) {
+                Device retval = null;
+                if (devices == null) devices = new List<Device>();
+                foreach (Device d in devices) if (d.id == id) retval = d;
+                if (retval == null) {
+                    Device d = DownloadDevice(id);
+                    Debuger.PrintLn("Add new device {0}", d.city);
+                    devices.Add(d);
+                    return d;
+                }
+                if (MyClock.Now > retval.last_read_device.AddHours(1)) {
+                    Device d = DownloadDevice(id);
+                    devices.Remove(retval);
+                    Debuger.PrintLn("Time elapsed for device {0}", retval.city);
+                    devices.Add(d);
+                    return d;
+                }
+                return retval;
+            }
+        }
     }
 }

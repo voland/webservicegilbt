@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using System.Net;
 using System;
 using System.Text.Json;
+using System.Text.Json.Serialization;
 
 namespace WebServiceGilBT.Shared {
     [Serializable]
@@ -66,68 +67,34 @@ namespace WebServiceGilBT.Shared {
         private int _idx;
         public int idx {
             set {
-                if (value != _idx) {
-                    _idx = value;
-                    try {
-                        using (WebClient wc = new WebClient()) {
-                            var json = wc.DownloadString(GetUrl());
-                            d = JsonSerializer.Deserialize<Device>(json);
-                            if (d != null) {
-                                _city = d.city;
-                            }
-                        }
-                    } catch (Exception e) {
-                        Console.WriteLine(e.Message);
-                        _city = unknowncity;
-                        text = "unknown device";
-                    }
-                }
+                _idx = value;
             }
             get {
                 return _idx;
             }
         }
-        private string url = "https://api.syngeos.pl/api/public/data/device/{0}";
-        private const string unknowncity = "unknown city";
-        private string _city = unknowncity;
-        private Device d = null;
-        private DateTime last_read_device;
 
-        private string GetUrl() {
-            return string.Format(url, idx);
+        private const string unknowncity = "unknown city";
+
+        [JsonIgnore]
+        private Device _device {
+            get {
+                return DeviceList.GetDeviceById(idx);
+            }
         }
 
         public string city {
-            get { return _city; }
-
-            set { _city = value; }
+            get { return _device.city; }
         }
 
         private string GenerateSensorText(string sensor_name) {
-            if (last_read_device == null) last_read_device = MyClock.Now.AddHours(-100);
             //setting default sensor in case its 0;
             if (idx < 0) idx = 444;
-            if (idx == -1) {
-                //find idx based on city
-                if (city == "") {
-                    return "SensFail";
-                } else {
-                }
-            }
-
             try {
-                if ((d == null) | (MyClock.Now > last_read_device.AddHours(1))) {
-                    using (WebClient wc = new WebClient()) {
-                        last_read_device = MyClock.Now;
-                        var json = wc.DownloadString(GetUrl());
-                        d = JsonSerializer.Deserialize<Device>(json);
-                    }
-                }
                 //innitial value of retvalue
                 string retvalue = $"cant find {sensor_name} sensor.";
-                if (d != null) {
-                    /* city = d.city; */
-                    foreach (DeviceSensor ds in d.sensors) {
+                if (_device != null) {
+                    foreach (DeviceSensor ds in _device.sensors) {
                         if (ds.name == sensor_name) {
                             retvalue = string.Format("{0} {1}", ds.data[0].value, ds.unit);
                         }
@@ -140,9 +107,9 @@ namespace WebServiceGilBT.Shared {
         }
 
         private string uid_for_preview = null;
-		public void set_uid_for_preview(string argUid){
-			uid_for_preview = argUid;
-		}
+        public void set_uid_for_preview(string argUid) {
+            uid_for_preview = argUid;
+        }
 
         public string text {
             set {
@@ -175,10 +142,10 @@ namespace WebServiceGilBT.Shared {
                         }
                 }
                 try {
-                    if (d != null) {
+                    if (_device != null) {
                         switch (type) {
                             case ElementType.SENSOR_PM2_5_PERCENT: {
-                                    foreach (DeviceSensor s in d.sensors) {
+                                    foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm2_5) {
                                             return s.GetPercentageValue();
                                         }
@@ -186,7 +153,7 @@ namespace WebServiceGilBT.Shared {
                                     return "Not Found " + pm2_5;
                                 }
                             case ElementType.SENSOR_PM10_PERCENT: {
-                                    foreach (DeviceSensor s in d.sensors) {
+                                    foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm10) {
                                             return s.GetPercentageValue();
                                         }
@@ -194,7 +161,7 @@ namespace WebServiceGilBT.Shared {
                                     return "Not Found " + pm10;
                                 }
                             case ElementType.SENSOR_PM2_5_STATUS: {
-                                    foreach (DeviceSensor s in d.sensors) {
+                                    foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm2_5) {
                                             return s.GetStatusValue();
                                         }
@@ -202,7 +169,7 @@ namespace WebServiceGilBT.Shared {
                                     return "Not Found " + pm2_5;
                                 }
                             case ElementType.SENSOR_PM10_STATUS: {
-                                    foreach (DeviceSensor s in d.sensors) {
+                                    foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm10) {
                                             return s.GetStatusValue();
                                         }
@@ -210,7 +177,7 @@ namespace WebServiceGilBT.Shared {
                                     return "Not Found " + pm10;
                                 }
                             case ElementType.SENSOR_PM1_PERCENT: {
-                                    foreach (DeviceSensor s in d.sensors) {
+                                    foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm1) {
                                             return s.GetPercentageValue();
                                         }
@@ -218,7 +185,7 @@ namespace WebServiceGilBT.Shared {
                                     return "Not Found " + pm1;
                                 }
                             case ElementType.SENSOR_PM1_STATUS: {
-                                    foreach (DeviceSensor s in d.sensors) {
+                                    foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm1) {
                                             return s.GetStatusValue();
                                         }
@@ -247,7 +214,8 @@ namespace WebServiceGilBT.Shared {
                     } else {
                         return "unknown device";
                     }
-                } catch {
+                } catch (Exception e) {
+                    Debuger.PrintLn(e.Message);
                     return "exception during download sensor";
                 }
                 return "element not supported!";
@@ -301,10 +269,10 @@ namespace WebServiceGilBT.Shared {
         }
 
         public static PageElement NewText(string text, int x, int y, uint color, FontType font, string uid) {
-			PageElement pe = NewText(text, x, y, color, font);
-			pe.set_uid_for_preview(uid);
-			return pe;
-		}
+            PageElement pe = NewText(text, x, y, color, font);
+            pe.set_uid_for_preview(uid);
+            return pe;
+        }
 
         public static PageElement NewText(string text, int x, int y, uint color, FontType font) {
             PageElement temp = new PageElement();
