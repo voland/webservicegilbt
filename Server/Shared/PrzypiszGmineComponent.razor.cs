@@ -77,7 +77,8 @@ namespace WebServiceGilBT.Shared {
         public void KeyDown(KeyboardEventArgs e) {
             switch (e.Key) {
                 case "Tab":
-                    WybierzGmine(filteredList[0]);
+                    if (filteredList.Count > 0)
+                        WybierzGmine(filteredList[0]);
                     break;
             }
         }
