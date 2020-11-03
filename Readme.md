@@ -1,13 +1,13 @@
 #TODOs: kazde wykonane zadanie oznaczamy przedrostkiem done! i przesówamy na koniec listy
 ## rzeczy do zrobienia 
+	zmienić 2x uzytkownicy w wybraniu template dla screeneditor
 	sortowanie gmin dziala tylko w jedna strone
-	zoptymalizowanie przy ustawianiu unifiedIdx, implemetacja ustawiania unifiedIdx w apipres nie screen editor, generowaniw jednego device dla wszystki stron
 	Edycja zwykłego usera
 	Uproszczona edycja ekranów, slajdów dla użytkowinika koncowego
 	wyświetlanie wersji strony w trybie admin
 	nowy serwer
-	wyłączenie debugera
 
+	done! zoptymalizowanie przy ustawianiu unifiedIdx, implemetacja ustawiania unifiedIdx w apipres nie screen editor, generowaniw jednego device dla wszystki stron
 	done! Sortowanie listy tablic po nazwach, uid, ostatniej aktualizacji itp
 	done! w edycji ekranu opcja: ustaw idx dla czujnika wszystkich slajdow
 	done! usunąć przyciks wyślij firmware w edycji ekranu
