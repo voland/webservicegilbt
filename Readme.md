@@ -1,6 +1,8 @@
 #TODOs: kazde wykonane zadanie oznaczamy przedrostkiem done! i przesówamy na koniec listy
 ## rzeczy do zrobienia 
-	zmienić 2x uzytkownicy w wybraniu template dla screeneditor
+	po usunieciu tablicy exception
+	zapamietanie sortowania dla uzytkownika
+	zmienić zwielokrotnienie napisu uzytkownicy w wybraniu template dla screeneditor
 	sortowanie gmin dziala tylko w jedna strone
 	Edycja zwykłego usera
 	Uproszczona edycja ekranów, slajdów dla użytkowinika koncowego
