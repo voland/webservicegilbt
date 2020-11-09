@@ -101,7 +101,6 @@ namespace WebServiceGilBT.Shared {
                 _device.sensors = new List<DeviceSensor>();
                 return _device;
             }
-            return null;
         }
 
         private static object locker = new Object();
