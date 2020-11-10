@@ -16,16 +16,16 @@ namespace WebServiceGilBT.Shared {
             Console.WriteLine(txt);
 #else
 				//dodajemy 2 h dla serwera gdzies za granica
-				lock(wf_locker){
-					using (FileStream fs = new FileStream(debugfilename, FileMode.Append)) {
-						using (BinaryWriter bw = new BinaryWriter(fs)) {
-							bw.Write(now.ToString());
-							bw.Write("-> ");
-							bw.Write(txt);
-							bw.Write("\n");
-						}
-					}
-				}
+				/* lock(wf_locker){ */
+				/* 	using (FileStream fs = new FileStream(debugfilename, FileMode.Append)) { */
+				/* 		using (BinaryWriter bw = new BinaryWriter(fs)) { */
+				/* 			bw.Write(now.ToString()); */
+				/* 			bw.Write("-> "); */
+				/* 			bw.Write(txt); */
+				/* 			bw.Write("\n"); */
+				/* 		} */
+				/* 	} */
+				/* } */
 #endif
         }
 
