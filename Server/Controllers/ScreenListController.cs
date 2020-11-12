@@ -53,6 +53,21 @@ namespace WebServiceGilBT.Controller {
         }
 
         [HttpGet("{uid:int}")]
+        public ScreenBin GetScreenBin(int uid) {
+            Debuger.PrintLn($"Getting Binary representatin of screen {uid}");
+            Screen _screen = sls.GetGilBTScreenAsync(uid).Result;
+            if (_screen == null) {
+                Debuger.PrintLn("GetScreen(): have found screen");
+                _screen = new Screen { name = "null", uid = 0 };
+            } else {
+                Debuger.PrintLn("GetScreen(): have not found screen");
+                sls.UpdateLastRequestTime(_screen);
+            }
+            ScreenBin retval = _screen.GetScreenBin();
+            return retval;
+        }
+
+        [HttpGet("{uid:int}")]
         public Screen GetScreen(int uid) {
             Debuger.PrintLn($"Getting {uid}");
             Screen retval = sls.GetGilBTScreenAsync(uid).Result;

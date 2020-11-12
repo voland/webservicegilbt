@@ -295,35 +295,83 @@ namespace WebServiceGilBT.Shared {
             this.text = text;
             this.font = font;
         }
+
+        public PageElementBin GetPageElementBin() {
+            PageElementBin pes = new PageElementBin();
+            pes.type = (byte)this.type;
+            pes.x = (ushort)this.x;
+            pes.y = (ushort)this.y;
+            pes.color = this.color;
+            pes.font = (byte)this.font;
+            pes.text = this.text;
+            return pes;
+        }
+
     }
 
     [Serializable]
     public class Page {
         public int ver { get { return 2; } }
+
         public int time { set; get; }
+
         public int elements_count { get { return elements.Count; } }
+
         public List<PageElement> elements { set; get; }
+
         //as parameter is duation time in seconds
         public Page(int time) {
             this.time = time;
             elements = new List<PageElement>();
         }
+
         public Page() { }
+
         public override string ToString() {
             return String.Format("page: time {0}, elements_count {1}", time, elements.Count);
         }
+
+        public PageBin GetPageBin() {
+            PageBin pb = new PageBin();
+            pb.time = (ushort)this.time;
+            pb.elements = new List<PageElementBin>();
+            if (this.elements != null) {
+                foreach (PageElement pe in this.elements) {
+                    pb.elements.Add(pe.GetPageElementBin());
+                }
+                pb.el_cnt_ro = (byte)pb.elements.Count;
+            }
+            return pb;
+        }
+
     }
 
     [Serializable]
     public class Pres {
+
         public int ver { get { return 2; } }
+
         public int UnifiedIdx { get; set; }
+
         public int pages_count {
             get { return pages.Count; }
         }
+
         public List<Page> pages { get; set; }
+
         public Pres() {
             pages = new List<Page>();
+        }
+
+        public PresBin GetPresBin() {
+            PresBin ps = new PresBin();
+            ps.pgs = new List<PageBin>();
+            if (pages != null)
+                foreach (Page p in pages) {
+                    ps.pgs.Add(p.GetPageBin());
+                }
+            ps.pg_cnt_ro = (byte)ps.pgs.Count;
+            return ps;
         }
 
     }
