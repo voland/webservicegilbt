@@ -57,7 +57,56 @@ namespace WebServiceGilBT.Shared {
         public ElementType type { set; get; }
         public int x { set; get; }
         public int y { set; get; }
-        public uint color { set; get; }
+
+		public const uint white = 0xffffffff;
+
+        private uint _color=white;
+
+        public uint color {
+            set { _color = value; }
+            get {
+                switch (type) {
+                    /* case ElementType.TEXT: return _text; */
+                    /* case ElementType.UID: */
+                    /* case ElementType.TIME: */
+                    /* case ElementType.DATE: */
+                    /* case ElementType.RECTANGLE: */
+                    /* case ElementType.IMAGE: */
+                    case ElementType.SENSOR_PM2_5_PERCENT:
+                    case ElementType.SENSOR_PM2_5:
+                    case ElementType.SENSOR_PM2_5_STATUS:
+                        foreach (DeviceSensor s in _device.sensors) {
+                            if (s.name == pm2_5) {
+                                return s.GetStatusColor();
+                            }
+                        }
+						break;
+                    case ElementType.SENSOR_PM10_STATUS:
+                    case ElementType.SENSOR_PM10_PERCENT:
+                    case ElementType.SENSOR_PM10:
+                        foreach (DeviceSensor s in _device.sensors) {
+                            if (s.name == pm10) {
+                                return s.GetStatusColor();
+                            }
+                        }
+                        break;
+                    case ElementType.SENSOR_PM1_PERCENT:
+                    case ElementType.SENSOR_PM1_STATUS:
+                    case ElementType.SENSOR_PM1:
+                        foreach (DeviceSensor s in _device.sensors) {
+                            if (s.name == pm1) {
+                                return s.GetStatusColor();
+                            }
+                        }
+                        break;
+                        /* case ElementType.SENSOR_TEMPERATURE: */
+                        /* case ElementType.SENSOR_PRESSURE: */
+                        /* case ElementType.SENSOR_HUMIDITY: */
+                }
+                return white;
+            }
+        }
+
         public FontType font { set; get; }
         private string _text = "Text...";
 

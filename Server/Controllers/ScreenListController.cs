@@ -57,10 +57,8 @@ namespace WebServiceGilBT.Controller {
             Debuger.PrintLn($"Getting Binary representatin of screen {uid}");
             Screen _screen = sls.GetGilBTScreenAsync(uid).Result;
             if (_screen == null) {
-                Debuger.PrintLn("GetScreen(): have found screen");
                 _screen = new Screen { name = "null", uid = 0 };
             } else {
-                Debuger.PrintLn("GetScreen(): have not found screen");
                 sls.UpdateLastRequestTime(_screen);
             }
             ScreenBin retval = _screen.GetScreenBin();
@@ -72,10 +70,8 @@ namespace WebServiceGilBT.Controller {
             Debuger.PrintLn($"Getting {uid}");
             Screen retval = sls.GetGilBTScreenAsync(uid).Result;
             if (retval == null) {
-                Debuger.PrintLn("GetScreen(): have found screen");
                 retval = new Screen { name = "null", uid = 0 };
             } else {
-                Debuger.PrintLn("GetScreen(): have found screen");
                 sls.UpdateLastRequestTime(retval);
             }
             return retval;
@@ -92,10 +88,8 @@ namespace WebServiceGilBT.Controller {
             if (argScreen != null) {
                 Screen temp = sls.GetGilBTScreenAsync(argScreen.uid).Result;
                 if (temp != null) {
-                    Debuger.PrintLn("Already exists Uid {0}.", argScreen.uid);
                     return Created($"Already exists.", null);
                 } else {
-                    Debuger.PrintLn("Adding screen Uid {0}.", argScreen.uid);
                     argScreen.from_led_screen = true;
                     sls.PostScreenAsync(argScreen);
                     return Created($"Success, added Uid {argScreen.uid}.", null);

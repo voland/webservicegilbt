@@ -46,6 +46,28 @@ namespace WebServiceGilBT.Shared {
             }
         }
 
+        public const uint bardzo_zly_colo = ((uint)0xff << 24) | (174 << 16) | (0 << 8) | (14);
+        public const uint zly_colo = ((uint)0xff << 24) | (232 << 16) | (2 << 8) | (62);
+        public const uint dostateczny_colo = ((uint)0xff << 24) | (253 << 16) | (125 << 8) | (81);
+        public const uint umiarkowany_colo = ((uint)0xff << 24) | (251 << 16) | (238 << 8) | (74);
+        public const uint dobry_colo = ((uint)0xff << 24) | (189 << 16) | (235 << 8) | (104);
+        public const uint bardzo_dobry_colo = ((uint)0xff << 24) | (81 << 16) | (224 << 8) | (125);
+
+        public uint GetStatusColor() {
+            if (norm != null) {
+                uint retvalue = bardzo_zly_colo;
+                int value = (int)data[0].value;
+                if (value <= norm.grade_e.lt) retvalue = zly_colo;
+                if (value <= norm.grade_d.lt) retvalue = dostateczny_colo;
+                if (value <= norm.grade_c.lt) retvalue = umiarkowany_colo;
+                if (value <= norm.grade_b.lt) retvalue = dobry_colo;
+                if (value <= norm.grade_a.lt) retvalue = bardzo_dobry_colo;
+                return (uint)retvalue;
+            } else {
+                return 0;
+            }
+        }
+
         public string GetStatusValue() {
             if (norm != null) {
                 string retvalue = "Bardzo Zły";
