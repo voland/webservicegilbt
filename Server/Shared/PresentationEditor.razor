@@ -41,7 +41,6 @@
                                 @* data in emot status representation *@
                                 <option value="@ElementType.SENSOR_PM2_5_EMOT">Sensor pm2,5 emot</option>
                                 <option value="@ElementType.SENSOR_PM10_EMOT">Sensor pm10 emot</option>
-                                <option value="@ElementType.SENSOR_PM1_EMOT">Sensor pm1 emot</option>
                                 @* just uid of screen *@
                                 <option value="@ElementType.UID">Screen id</option>
                             </InputSelect>
@@ -76,20 +75,30 @@
                                 case ElementType.SENSOR_PM2_5_STATUS:
                                 case ElementType.SENSOR_PM10_STATUS:
                                 case ElementType.SENSOR_PM1_STATUS:
-                                    @if (Pres.UnifiedIdx > 0) {<label style="margin-left:5px ; margin-right:5px">Id: @Pres.UnifiedIdx</label> } else {<InputNumber TValue="Int32" @bind-Value="pe.idx" @oninput="OnIdxChanched" style="width:70px" min="0" max="1024" />}
-
-                                    <label>@pe.city</label>
-                                    break;
                                 case ElementType.SENSOR_PM2_5_EMOT:
                                 case ElementType.SENSOR_PM10_EMOT:
-                                case ElementType.SENSOR_PM1_EMOT:
-                                    <label>just emot</label>
-								break;
+                                    @if (Pres.UnifiedIdx > 0) {
+                                        <label style="margin-left:5px ; margin-right:5px">Id: @Pres.UnifiedIdx</label> 
+                                    } else {
+                                        <InputNumber TValue="Int32" @bind-Value="pe.idx" @oninput="OnIdxChanched" style="width:70px" min="0" max="1024" />
+                                    }
+                                    <label>@pe.city</label>
+                                    break;
                                 default:
                                     break;
                             }
                         </td>
-                        <td><label>@pe.text</label></td>
+                        <td>
+                            @switch (pe.type) {
+                                case ElementType.SENSOR_PM2_5_EMOT:
+                                case ElementType.SENSOR_PM10_EMOT:
+									<i class=@pe.text></i> 
+                                    break;
+                                default:
+                                    <label>@pe.text</label>
+                                    break;
+                            }
+                        </td>
                         <td> <button class="btn btn-primary" @onclick="()=>DeleteElement(p, pe)">@lng.delete</button> </td>
                     </tr>
                 }

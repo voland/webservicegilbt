@@ -27,6 +27,17 @@ namespace WebServiceGilBT.Shared {
         public Grade grade_e { get; set; }
         public Grade grade_f { get; set; }
     }
+
+    public enum eAirQualityLevel {
+        nieznany,
+        bardzo_zly,
+        zly,
+        dostateczny,
+        umiarkowany,
+        dobry,
+        bardzo_dobry
+    }
+
     [Serializable]
     public class DeviceSensor {
         public string unit { get; set; }
@@ -34,6 +45,39 @@ namespace WebServiceGilBT.Shared {
         public IList<Datum> data { get; set; }
         public string display_type { get; set; }
         public Norm norm { get; set; }
+
+        public eAirQualityLevel GetAirQualityLevel() {
+            if (norm != null) {
+                eAirQualityLevel retvalue = eAirQualityLevel.bardzo_zly;
+                int value = (int)data[0].value;
+                if (value <= norm.grade_e.lt) retvalue = eAirQualityLevel.zly;
+                if (value <= norm.grade_d.lt) retvalue = eAirQualityLevel.dostateczny;
+                if (value <= norm.grade_c.lt) retvalue = eAirQualityLevel.umiarkowany;
+                if (value <= norm.grade_b.lt) retvalue = eAirQualityLevel.dobry;
+                if (value <= norm.grade_a.lt) retvalue = eAirQualityLevel.bardzo_dobry;
+                return retvalue;
+            } else {
+                return eAirQualityLevel.nieznany;
+            }
+        }
+
+        public string GetEmotFromAwesomeFont() {
+            switch (GetAirQualityLevel()) {
+                case eAirQualityLevel.bardzo_zly:
+                    return "fas fa-smile";
+                case eAirQualityLevel.zly:
+                    return  "fas fa-smile";
+                case eAirQualityLevel.dostateczny:
+                    return  "fas fa-smile";
+                case eAirQualityLevel.umiarkowany:
+                    return  "fas fa-smile";
+                case eAirQualityLevel.dobry:
+                    return  "fas fa-smile";
+                case eAirQualityLevel.bardzo_dobry:
+                    return  "fas fa-smile";
+            }
+            return "Z";
+        }
 
         public string GetPercentageValue() {
             if (norm != null) {

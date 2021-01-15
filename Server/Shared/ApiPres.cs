@@ -28,7 +28,6 @@ namespace WebServiceGilBT.Shared {
         SENSOR_PM1_STATUS,
         SENSOR_PM2_5_EMOT,
         SENSOR_PM10_EMOT,
-        SENSOR_PM1_EMOT
     }
 
     [Serializable]
@@ -225,6 +224,22 @@ namespace WebServiceGilBT.Shared {
                                     foreach (DeviceSensor s in _device.sensors) {
                                         if (s.name == pm10) {
                                             return s.GetStatusValue();
+                                        }
+                                    }
+                                    return "Not Found " + pm10;
+                                }
+                            case ElementType.SENSOR_PM2_5_EMOT: {
+                                    foreach (DeviceSensor s in _device.sensors) {
+                                        if (s.name == pm2_5) {
+                                            return s.GetEmotFromAwesomeFont();
+                                        }
+                                    }
+                                    return "Not Found " + pm2_5;
+                                }
+                            case ElementType.SENSOR_PM10_EMOT: {
+                                    foreach (DeviceSensor s in _device.sensors) {
+                                        if (s.name == pm10) {
+                                            return s.GetEmotFromAwesomeFont();
                                         }
                                     }
                                     return "Not Found " + pm10;
