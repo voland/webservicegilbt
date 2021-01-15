@@ -38,6 +38,11 @@
                                 <option value="@ElementType.SENSOR_PM2_5_STATUS">Sensor pm2,5 status</option>
                                 <option value="@ElementType.SENSOR_PM10_STATUS">Sensor pm10 status</option>
                                 <option value="@ElementType.SENSOR_PM1_STATUS">Sensor pm1 status</option>
+                                @* data in emot status representation *@
+                                <option value="@ElementType.SENSOR_PM2_5_EMOT">Sensor pm2,5 emot</option>
+                                <option value="@ElementType.SENSOR_PM10_EMOT">Sensor pm10 emot</option>
+                                <option value="@ElementType.SENSOR_PM1_EMOT">Sensor pm1 emot</option>
+                                @* just uid of screen *@
                                 <option value="@ElementType.UID">Screen id</option>
                             </InputSelect>
                         </td>
@@ -75,6 +80,11 @@
 
                                     <label>@pe.city</label>
                                     break;
+                                case ElementType.SENSOR_PM2_5_EMOT:
+                                case ElementType.SENSOR_PM10_EMOT:
+                                case ElementType.SENSOR_PM1_EMOT:
+                                    <label>just emot</label>
+								break;
                                 default:
                                     break;
                             }

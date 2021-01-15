@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace WebServiceGilBT.Shared {
     [Serializable]
+
     public enum ElementType {
         TEXT = 0,
         RECTANGLE = 1,
@@ -24,7 +25,10 @@ namespace WebServiceGilBT.Shared {
         SENSOR_PM1_PERCENT,
         SENSOR_PM2_5_STATUS,
         SENSOR_PM10_STATUS,
-        SENSOR_PM1_STATUS
+        SENSOR_PM1_STATUS,
+        SENSOR_PM2_5_EMOT,
+        SENSOR_PM10_EMOT,
+        SENSOR_PM1_EMOT
     }
 
     [Serializable]
